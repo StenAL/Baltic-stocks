@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  db:
+    image: mariadb:10.4
+    container_name: baltic-stock-db
+    environment:
+      MYSQL_DATABASE: baltic-stock
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    ports:
+      - 13306:3306
+    command: ['mysqld', '--character-set-server=utf8']
