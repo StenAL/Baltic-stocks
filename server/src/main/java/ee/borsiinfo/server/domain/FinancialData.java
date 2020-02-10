@@ -1,25 +1,29 @@
 package ee.borsiinfo.server.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class FinancialData {
     private int year;
 
-    private double revenue;
-    private double operatingIncome;
-    private double netIncome;
-    private double earningsPerShare;
-    private int dilutedSharesOutstanding;
+    private Double revenue;
+    private Double operatingIncome;
+    private Double netIncome;
+    private Double earningsPerShare;
+    private Integer dilutedSharesOutstanding;
 
-    private double currentAssets;
-    private double nonCurrentAssets;
-    private double totalAssets;
-    private double currentLiabilities;
-    private double totalLiabilities;
-    private double totalEquity;
+    private Double currentAssets;
+    private Double nonCurrentAssets;
+    private Double totalAssets;
+    private Double currentLiabilities;
+    private Double totalLiabilities;
+    private Double totalEquity;
 
-    private double operatingCashFlow;
-    private double capitalExpenditure;
-    private double freeCashFlow;
+    private Double operatingCashFlow;
+    private Double capitalExpenditure;
+    private Double freeCashFlow;
 }

@@ -1,10 +1,12 @@
 package ee.borsiinfo.server.domain;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@Builder
 public class Stock {
     private String name;
     private String ticker;

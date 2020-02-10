@@ -1,16 +1,22 @@
 package ee.borsiinfo.server.domain;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.ToString;
 
-@Data
+@Getter
+@ToString
+@Builder
+@AllArgsConstructor
 public class KeyStats {
-    private double priceEarningTtm;
-    private double priceBook;
-    private double priceSalesTtm;
-    private double revenueGrowth3YearAvg;
-    private double epsGrowth3YearAvg;
-    private double operatingMarginTtm;
-    private double netMarginTtm;
-    private double roeTtm;
-    private double debtEquity;
+    private Double priceEarningTtm;
+    private Double priceBook;
+    private Double priceSalesTtm;
+    private Double revenueGrowth3YearAvg;
+    private Double epsGrowth3YearAvg;
+    private Double operatingMarginTtm;
+    private Double netMarginTtm;
+    private Double roeTtm;
+    private Double debtEquity;
 }
