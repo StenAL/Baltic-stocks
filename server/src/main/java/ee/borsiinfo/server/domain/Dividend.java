@@ -15,7 +15,7 @@ public class Dividend {
     @Id @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @ToString.Exclude @JsonIgnore
     private Stock stock;
 

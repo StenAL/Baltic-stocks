@@ -1,9 +1,6 @@
 package ee.borsiinfo.server.service.importing;
 
-import ee.borsiinfo.server.domain.Dividend;
-import ee.borsiinfo.server.domain.FinancialData;
-import ee.borsiinfo.server.domain.KeyStats;
-import ee.borsiinfo.server.domain.Stock;
+import ee.borsiinfo.server.domain.*;
 import ee.borsiinfo.server.util.StringParserUtil;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
@@ -20,13 +17,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DataImportingService {
 
-    private static final String API_BASE_URL = "https://lt.morningstar.com/gj8uge2g9k/stockreport/default.aspx?externalid=";
-    private static final String API_FACT_SHEET_SUFFIX = "&externalidexchange=EX$$$$XTAL&externalidtype=ISIN&LanguageId=en-GB&CurrencyId=EUR&tab=0";
-
+    private static final String API_BASE_URL = "https://lt.morningstar.com/gj8uge2g9k/stockreport/default.aspx";
+    private static final int ISIN_PREFIX_LENGTH = 2;
     private final DateTimeFormatter dateTimeFormatter;
 
     public Stock fetchData(String isin) throws IOException {
-        String url = API_BASE_URL + isin + API_FACT_SHEET_SUFFIX;
+        String url = generateApiUrl(isin);
         Document doc = Jsoup.connect(url).get();
 
         Element financialDataTable = doc.selectFirst("#OverviewFinancials table");
@@ -49,6 +45,14 @@ public class DataImportingService {
         stock.getFinancialData().forEach(f -> f.setStock(stock));
         stock.getDividends().forEach(d -> d.setStock(stock));
         return stock;
+    }
+
+    private String generateApiUrl(String isin) {
+        String exchangeCode = Exchange.findByPrefix(isin.substring(0, ISIN_PREFIX_LENGTH)).getExchangeCode();
+        return API_BASE_URL +
+            "?externalid=" + isin +
+            "&externalidexchange=" + exchangeCode
+            + "&externalidtype=ISIN&LanguageId=en-GB&CurrencyId=EUR&tab=0";
     }
 
     private List<FinancialData> convertHtmlToFinancialData(Element financialDataTable) {
