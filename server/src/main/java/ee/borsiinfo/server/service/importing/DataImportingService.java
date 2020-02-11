@@ -5,7 +5,7 @@ import ee.borsiinfo.server.domain.FinancialData;
 import ee.borsiinfo.server.domain.KeyStats;
 import ee.borsiinfo.server.domain.Stock;
 import ee.borsiinfo.server.util.StringParserUtil;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -17,8 +17,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
-public class StockDataImportingService {
+@RequiredArgsConstructor
+public class DataImportingService {
 
     private static final String API_BASE_URL = "https://lt.morningstar.com/gj8uge2g9k/stockreport/default.aspx?externalid=";
     private static final String API_FACT_SHEET_SUFFIX = "&externalidexchange=EX$$$$XTAL&externalidtype=ISIN&LanguageId=en-GB&CurrencyId=EUR&tab=0";
@@ -37,9 +37,6 @@ public class StockDataImportingService {
 
         Element dividendsTable = doc.selectFirst("#OverviewDividends table");
         List<Dividend> dividends = convertHtmlToDividends(dividendsTable);
-
-        financialData.forEach(System.out::println);
-        System.out.println(keyStats);
 
         return Stock.builder()
             .name(doc.selectFirst(".securityName").text())
@@ -125,8 +122,8 @@ public class StockDataImportingService {
             .priceEarningTtm(StringParserUtil.parseDoubleIfPresent(squares.get(1).text()).orElse(null))
             .priceBook(StringParserUtil.parseDoubleIfPresent(squares.get(2).text()).orElse(null))
             .priceSalesTtm(StringParserUtil.parseDoubleIfPresent(squares.get(3).text()).orElse(null))
-            .revenueGrowth3YearAvg(StringParserUtil.parseDoubleIfPresent(squares.get(4).text()).orElse(null))
-            .epsGrowth3YearAvg(StringParserUtil.parseDoubleIfPresent(squares.get(5).text()).orElse(null))
+            .revenueGrowthThreeYearAvg(StringParserUtil.parseDoubleIfPresent(squares.get(4).text()).orElse(null))
+            .epsGrowthThreeYearAvg(StringParserUtil.parseDoubleIfPresent(squares.get(5).text()).orElse(null))
             .operatingMarginTtm(StringParserUtil.parseDoubleIfPresent(squares.get(6).text()).orElse(null))
             .netMarginTtm(StringParserUtil.parseDoubleIfPresent(squares.get(7).text()).orElse(null))
             .roeTtm(StringParserUtil.parseDoubleIfPresent(squares.get(8).text()).orElse(null))

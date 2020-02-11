@@ -1,20 +1,27 @@
 package ee.borsiinfo.server.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
-@Getter
-@ToString
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
+@Entity
 public class KeyStats {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private Double priceEarningTtm;
     private Double priceBook;
     private Double priceSalesTtm;
-    private Double revenueGrowth3YearAvg;
-    private Double epsGrowth3YearAvg;
+    private Double revenueGrowthThreeYearAvg;
+    private Double epsGrowthThreeYearAvg;
     private Double operatingMarginTtm;
     private Double netMarginTtm;
     private Double roeTtm;
