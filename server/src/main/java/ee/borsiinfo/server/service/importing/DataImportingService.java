@@ -38,7 +38,7 @@ public class DataImportingService {
         Element dividendsTable = doc.selectFirst("#OverviewDividends table");
         List<Dividend> dividends = convertHtmlToDividends(dividendsTable);
 
-        return Stock.builder()
+        Stock stock = Stock.builder()
             .name(doc.selectFirst(".securityName").text())
             .ticker(doc.selectFirst(".securitySymbol").text())
             .isin(isin)
@@ -46,6 +46,9 @@ public class DataImportingService {
             .keyStats(keyStats)
             .dividends(dividends)
             .build();
+        stock.getFinancialData().forEach(f -> f.setStock(stock));
+        stock.getDividends().forEach(d -> d.setStock(stock));
+        return stock;
     }
 
     private List<FinancialData> convertHtmlToFinancialData(Element financialDataTable) {

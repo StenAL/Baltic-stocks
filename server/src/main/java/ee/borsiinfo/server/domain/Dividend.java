@@ -1,5 +1,6 @@
 package ee.borsiinfo.server.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,10 +12,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Entity
 public class Dividend {
-    @Id
+    @Id @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @ToString.Exclude @JsonIgnore
     private Stock stock;
 
     private LocalDate declaredDate;

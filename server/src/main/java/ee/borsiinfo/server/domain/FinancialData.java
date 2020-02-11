@@ -1,8 +1,10 @@
 package ee.borsiinfo.server.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -11,10 +13,11 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 public class FinancialData {
-    @Id
+    @Id @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @ToString.Exclude @JsonIgnore
     private Stock stock;
     private int year;
 

@@ -1,5 +1,6 @@
 package ee.borsiinfo.server.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -13,7 +14,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Entity
 public class KeyStats {
-    @Id
+    @Id @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

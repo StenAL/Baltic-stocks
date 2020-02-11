@@ -2,27 +2,29 @@ package ee.borsiinfo.server.rest;
 
 import ee.borsiinfo.server.domain.Stock;
 import ee.borsiinfo.server.dto.ImportingRequest;
+import ee.borsiinfo.server.repository.StockRepository;
 import ee.borsiinfo.server.service.importing.DataImportingService;
-import ee.borsiinfo.server.service.importing.StockService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/stocks")
+@Slf4j
 public class ImportingController {
 
     private final DataImportingService dataImportingService;
-    private final StockService stockService;
+    private final StockRepository stockRepository;
 
-    @RequestMapping("/import")
+    @PostMapping("/import")
     public Stock importStock(@RequestBody ImportingRequest importingRequest) throws IOException {
         Stock stock = dataImportingService.fetchData(importingRequest.getIsin());
-        stockService.saveStock(stock);
+        log.debug("Fetched stock: {}", stock);
+        System.out.println(stock);
+        stockRepository.save(stock);
         return stock;
     }
 }
