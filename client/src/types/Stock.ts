@@ -9,4 +9,5 @@ export interface Stock {
     financialData: FinancialData[],
     keyStats: KeyStats,
     dividends: Dividend[],
+    visible: boolean,
 }
