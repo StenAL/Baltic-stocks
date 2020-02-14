@@ -1,0 +1,17 @@
+export interface FinancialData {
+    year: number,
+    revenue: number,
+    operatingIncome: number,
+    netIncome: number,
+    earningsPerShare: number,
+    dilutedSharesOutstanding: number,
+    currentAssets: number,
+    nonCurrentAssets: number,
+    totalAssets: number,
+    currentLiabilities: number,
+    totalLiabilities: number,
+    totalEqutiy: number,
+    operatingCashFlow: number,
+    capitalExpenditure: number,
+    freeCashFlow: number,
+}
