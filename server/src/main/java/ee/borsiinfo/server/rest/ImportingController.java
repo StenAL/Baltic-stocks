@@ -6,9 +6,10 @@ import ee.borsiinfo.server.repository.StockRepository;
 import ee.borsiinfo.server.service.importing.DataImportingService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
@@ -20,10 +21,9 @@ public class ImportingController {
     private final StockRepository stockRepository;
 
     @PostMapping("/import")
-    public Stock importStock(@RequestBody ImportingRequest importingRequest) throws IOException {
+    public Stock importStock(@RequestBody ImportingRequest importingRequest) {
         Stock stock = dataImportingService.fetchData(importingRequest.getIsin());
         log.debug("Fetched stock: {}", stock);
-        System.out.println(stock);
         stockRepository.save(stock);
         return stock;
     }

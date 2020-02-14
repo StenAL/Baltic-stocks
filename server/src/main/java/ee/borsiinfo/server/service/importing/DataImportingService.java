@@ -21,9 +21,14 @@ public class DataImportingService {
     private static final int ISIN_PREFIX_LENGTH = 2;
     private final DateTimeFormatter dateTimeFormatter;
 
-    public Stock fetchData(String isin) throws IOException {
+    public Stock fetchData(String isin) {
         String url = generateApiUrl(isin);
-        Document doc = Jsoup.connect(url).get();
+        Document doc;
+        try {
+            doc = Jsoup.connect(url).get();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         Element financialDataTable = doc.selectFirst("#OverviewFinancials table");
         List<FinancialData> financialData = convertHtmlToFinancialData(financialDataTable);
