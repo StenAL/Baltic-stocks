@@ -1,16 +1,16 @@
 import React from "react";
 import {StockTableHeader} from "./StockTableHeader";
 import {StockTableRow} from "./StockTableRow";
-import {Stock} from "../types/Stock";
 import "../style/StockTable.css"
 
 interface StockTableProps {
-    stocks: Stock[],
+    stocks: object[],
+    columnTitles: string[],
 }
 
 export class StockTable extends React.Component<StockTableProps, any> {
-    getTableRows = (stocks: Stock[]) => {
-        return stocks.map(s => <StockTableRow stock={s} key={s.isin}/>)
+    getTableRows = (stocks) => {
+        return stocks.map(s => <StockTableRow stock={s} key={stocks.id}/>)
     };
 
     render() {
@@ -18,7 +18,7 @@ export class StockTable extends React.Component<StockTableProps, any> {
         return (
             <table className="stockTable">
                 <thead>
-                    <StockTableHeader/>
+                    <StockTableHeader titles={this.props.columnTitles}/>
                 </thead>
                 <tbody>
                     {tableRows}

@@ -1,5 +1,5 @@
 import React from "react";
-
+import "../style/StockTableRow.css"
 import {Stock} from "../types/Stock";
 
 interface StockTableRowProps {
@@ -7,13 +7,17 @@ interface StockTableRowProps {
 }
 
 export class StockTableRow extends React.Component<StockTableRowProps, any> {
-    render() {
+
+    getRowCells = () => {
         const stock = this.props.stock;
+        return Object.entries(stock).map(e => <td className="tableCell" key={stock.id}>{e[1] === null ? "-" : e[1]}</td>)
+    };
+
+    render() {
+        const cells = this.getRowCells();
         return (
             <tr>
-                <td>{stock.name}</td>
-                <td>{stock.isin}</td>
-                <td>{stock.keyStats.priceEarningTtm}</td>
+                {cells}
             </tr>
         )
     }

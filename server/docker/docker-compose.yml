@@ -6,9 +6,9 @@ services:
     container_name: baltic-stock-db
     environment:
       MYSQL_DATABASE: baltic-stock
-      MYSQL_ROOT_PASSWORD: admin
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: administrator
+      MYSQL_PASSWORD: asd123
     ports:
       - 13306:3306
     command: ['mysqld', '--character-set-server=utf8']

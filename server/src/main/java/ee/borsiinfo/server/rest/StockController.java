@@ -3,6 +3,7 @@ package ee.borsiinfo.server.rest;
 import ee.borsiinfo.server.domain.Stock;
 import ee.borsiinfo.server.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +19,13 @@ public class StockController {
 
     private final StockRepository stockRepository;
 
-    @RequestMapping("/")
+    @RequestMapping("")
     @Cacheable("stocks")
     public List<Stock> getAllStocks() {
         return stockRepository.findAll();
     }
+
+    @CacheEvict("stocks")
+    @RequestMapping("/evictCache")
+    public void evictCache() {}
 }

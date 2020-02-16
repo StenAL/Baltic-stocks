@@ -1,12 +1,20 @@
 import React from "react";
+import "../style/StockTableHeader.css"
 
-export class StockTableHeader extends React.Component<any, any> {
+interface StockTableHeaderProps {
+    titles: string[]
+}
+
+export class StockTableHeader extends React.Component<StockTableHeaderProps, any> {
+    getTableHeaders = () => {
+        return this.props.titles.map(t => <th className="tableHeader" key={t}>{t}</th>)
+    };
+
     render() {
+        const headers = this.getTableHeaders();
         return (
             <tr>
-                <th>Nimi</th>
-                <th>ISIN</th>
-                <th>12 kuu P/E</th>
+                {headers}
             </tr>
         )
     }

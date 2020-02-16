@@ -1,6 +1,5 @@
 package ee.borsiinfo.server.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,12 +14,12 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 public class Stock {
-    @Id @JsonIgnore
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
     private String ticker;
+    private String name;
     private String isin;
 
     @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
