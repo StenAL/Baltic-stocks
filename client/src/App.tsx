@@ -4,6 +4,7 @@ import {Header} from "./components/Header";
 import {StockTable} from "./components/StockTable";
 import "./style/App.css"
 import {Column} from "./types/Column";
+import {ColumnFiltersContainer} from "./components/ColumnFiltersContainer";
 
 interface AppState {
     stocks: Stock[];
@@ -46,22 +47,28 @@ export default class App extends Component<object, AppState> {
             .catch(e => console.log(e));
     }
 
-    getStockDisplayedData = (s: Stock) => {
-        const copy = Object.assign({}, s);
-        Object.assign(copy, s.keyStats);
+    getStockDisplayedData = (stock: Stock) => {
+        const copy = Object.assign({}, stock);
+        Object.assign(copy, stock.keyStats);
         // TODO display dividends and yearly financial results (in a separate table?)
         Object.keys(copy).filter(k => !(k in this.titles)).forEach(k => delete copy[k]);
-        this.state.columns.filter(c => !c.visible).map(c => c.title).forEach(k => delete copy[k]);
+        this.state.columns.filter(c => !c.visible && c.title !== "id").map(c => c.title).forEach(k => delete copy[k]);
         return copy;
     };
 
+    invertColumnVisibility = (event) => {
+        const columns = this.state.columns.map(col => col.name === event.target.name ? {...col, visible: !col.visible} : col);
+        this.setState({columns: columns});
+    };
+
     render() {
-        const visibleStocks = this.state.stocks.map(s => this.getStockDisplayedData(s));
-        const visibleColumns = this.state.columns.filter(c => c.visible).map(c => c.name);
+        const visibleStocksData = this.state.stocks.map(s => this.getStockDisplayedData(s));
+        const visibleColumnNames = this.state.columns.filter(c => c.visible).map(c => c.name);
         return (
             <div className="App">
                 <Header/>
-                <StockTable stocks={visibleStocks} columnTitles={visibleColumns}/>
+                <ColumnFiltersContainer columns={this.state.columns} onChange={this.invertColumnVisibility}/>
+                <StockTable stocks={visibleStocksData} columnTitles={visibleColumnNames}/>
             </div>
         );
     }

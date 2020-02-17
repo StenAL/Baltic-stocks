@@ -10,7 +10,7 @@ interface StockTableProps {
 
 export class StockTable extends React.Component<StockTableProps, any> {
     getTableRows = (stocks) => {
-        return stocks.map(s => <StockTableRow stock={s} key={stocks.id}/>)
+        return stocks.map(s => <StockTableRow stock={s} key={"stock_" + s.id}/>)
     };
 
     render() {

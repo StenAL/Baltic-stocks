@@ -10,7 +10,10 @@ export class StockTableRow extends React.Component<StockTableRowProps, any> {
 
     getRowCells = () => {
         const stock = this.props.stock;
-        return Object.entries(stock).map(e => <td className="tableCell" key={stock.id}>{e[1] === null ? "-" : e[1]}</td>)
+        return Object.entries(stock)
+            .filter(e => e[0] !== "id")
+            .map(e => <td className="tableCell" key={stock.id + "_" + e[0]}>
+                {e[1] === null ? "-" : e[1]}</td>)
     };
 
     render() {
