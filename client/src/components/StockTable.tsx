@@ -6,6 +6,7 @@ import "../style/StockTable.css"
 interface StockTableProps {
     stocks: object[],
     columnTitles: string[],
+    onHeaderClick: (event) => void,
 }
 
 export class StockTable extends React.Component<StockTableProps, any> {
@@ -18,7 +19,7 @@ export class StockTable extends React.Component<StockTableProps, any> {
         return (
             <table className="stockTable">
                 <thead>
-                    <StockTableHeader titles={this.props.columnTitles}/>
+                    <StockTableHeader onHeaderClick={this.props.onHeaderClick} titles={this.props.columnTitles}/>
                 </thead>
                 <tbody>
                     {tableRows}

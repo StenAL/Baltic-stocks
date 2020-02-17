@@ -1,0 +1,10 @@
+.logo {
+    height: 36px;
+    display: inline;
+}
+
+header h1 {
+    font-size: 36px;
+    padding-left: 10px;
+    display: inline;
+}

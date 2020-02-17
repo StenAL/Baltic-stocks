@@ -7,8 +7,9 @@ import {Column} from "./types/Column";
 import {ColumnFiltersContainer} from "./components/ColumnFiltersContainer";
 
 interface AppState {
-    stocks: Stock[];
-    columns: Column[]
+    stocks: Stock[],
+    columns: Column[],
+    sortingStocksBy: string,
 }
 
 export default class App extends Component<object, AppState> {
@@ -16,7 +17,7 @@ export default class App extends Component<object, AppState> {
         super(props);
         this.titles = {
             id: "id -- this should never be seen",
-            ticker: "Ticker",
+            ticker: "Tiksuja",
             name: "Nimi",
             isin: "ISIN",
             priceEarningTtm: "12 kuu P/E",
@@ -31,7 +32,7 @@ export default class App extends Component<object, AppState> {
         };
         const columns = Object.entries(this.titles).map(title => ({title: title[0], visible: true, name: title[1]}));
         columns[0].visible = false; // don't show id
-        this.state = {stocks: [], columns: columns};
+        this.state = {stocks: [], columns: columns, sortingStocksBy: "ticker"};
 
     }
 
@@ -61,6 +62,24 @@ export default class App extends Component<object, AppState> {
         this.setState({columns: columns});
     };
 
+    sortByAttribute = (columnTitle) => {
+        const stocks = this.state.stocks;
+        const attribute = Object.entries(this.titles).filter(e => e[1] === columnTitle).map(e => e[0])[0];
+        if (attribute === this.state.sortingStocksBy) {
+            this.setState({stocks: stocks.reverse()});
+        } else {
+            let sortedStocks : Stock[] = stocks
+                .filter(s => s.keyStats[attribute] !== null)
+                .sort((a, b) => {
+                    const aAttribute = a[attribute] ? a[attribute] : "";
+                    const bAttribute = b[attribute] ? b[attribute] : "";
+                    return a.keyStats[attribute] - b.keyStats[attribute] || aAttribute.localeCompare(bAttribute)
+                });
+            sortedStocks = [...stocks.filter(s => s.keyStats[attribute] === null), ...sortedStocks];
+            this.setState({stocks: sortedStocks, sortingStocksBy: attribute})
+        }
+    };
+
     render() {
         const visibleStocksData = this.state.stocks.map(s => this.getStockDisplayedData(s));
         const visibleColumnNames = this.state.columns.filter(c => c.visible).map(c => c.name);
@@ -68,7 +87,7 @@ export default class App extends Component<object, AppState> {
             <div className="App">
                 <Header/>
                 <ColumnFiltersContainer columns={this.state.columns} onChange={this.invertColumnVisibility}/>
-                <StockTable stocks={visibleStocksData} columnTitles={visibleColumnNames}/>
+                <StockTable onHeaderClick={this.sortByAttribute} stocks={visibleStocksData} columnTitles={visibleColumnNames}/>
             </div>
         );
     }
