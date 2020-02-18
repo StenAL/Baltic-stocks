@@ -6,6 +6,7 @@ import {StockTable} from "./components/StockTable";
 import {Column} from "./types/Column";
 import {FiltersContainer} from "./components/FiltersContainer";
 import {HighlightedStats} from "./components/HighlightedStats";
+import {Footer} from "./components/Footer";
 
 interface AppState {
     stocks: Stock[],
@@ -63,8 +64,13 @@ export default class App extends Component<object, AppState> {
         this.setState({columns: columns});
     };
 
+    invertStockVisibility = (event) => {
+        const stocks = this.state.stocks.map(stock => stock.name === event.target.name ? {...stock, visible: !stock.visible} : stock);
+        this.setState({stocks: stocks});
+    };
+
     sortByAttribute = (columnTitle) => {
-        const stocks = this.state.stocks;
+        const stocks = this.state.stocks.slice();
         const attribute = Object.entries(this.titles).filter(e => e[1] === columnTitle).map(e => e[0])[0];
         if (attribute === this.state.sortingStocksBy) {
             this.setState({stocks: stocks.reverse()});
@@ -82,14 +88,18 @@ export default class App extends Component<object, AppState> {
     };
 
     render() {
-        const visibleStocksData = this.state.stocks.map(s => this.getStockDisplayedData(s));
+        const visibleStocksData = this.state.stocks
+            .filter(s => s.visible)
+            .map(s => this.getStockDisplayedData(s));
         const visibleColumnNames = this.state.columns.filter(c => c.visible).map(c => c.name);
+        const tickerSortedStocks = this.state.stocks.slice().sort((a, b) => a.ticker.localeCompare(b.ticker));
         return (
             <div className="App">
                 <Header/>
-                <HighlightedStats/>
-                <FiltersContainer columns={this.state.columns} onChange={this.invertColumnVisibility}/>
+                <HighlightedStats stocks={this.state.stocks}/>
+                <FiltersContainer columns={this.state.columns} stocks={tickerSortedStocks} onColumnChange={this.invertColumnVisibility} onStockChange={this.invertStockVisibility}/>
                 <StockTable onHeaderClick={this.sortByAttribute} stocks={visibleStocksData} columnTitles={visibleColumnNames}/>
+                <Footer/>
             </div>
         );
     }

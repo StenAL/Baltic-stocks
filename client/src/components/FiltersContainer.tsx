@@ -2,10 +2,14 @@ import React from "react";
 import "../style/FiltersContainer.css"
 import {Column} from "../types/Column";
 import {ColumnFilter} from "./ColumnFilter";
+import {Stock} from "../types/Stock";
+import {StockFilter} from "./StockFilter";
 
 interface FilterersContainerProps {
     columns: Column[],
-    onChange: (event) => void,
+    stocks: Stock[],
+    onColumnChange: (event) => void,
+    onStockChange: (event) => void,
 }
 
 export class FiltersContainer extends React.Component<FilterersContainerProps, any> {
@@ -13,23 +17,29 @@ export class FiltersContainer extends React.Component<FilterersContainerProps, a
     getColumnFilters = () => {
         return this.props.columns
             .filter(col => col.title !== "id")
-            .map(col => <ColumnFilter column={col} key={col.title} onChange={this.props.onChange}/>)
+            .map(col => <ColumnFilter column={col} key={col.title} onChange={this.props.onColumnChange}/>)
+    };
+
+    getStockFilters = () => {
+        return this.props.stocks
+            .map(stock => <StockFilter stock={stock} key={stock.name} onChange={this.props.onStockChange}/>)
     };
 
     render() {
         const columnFilters = this.getColumnFilters();
+        const stockFilters = this.getStockFilters();
         return (
             <div className={"filtersContainer"}>
-                <div className="filter">
-                    <h2>Columns filtering</h2>
+                <div className="filter propertyFilter">
+                    <h2>Näitajad</h2>
                     <ul>
                         {columnFilters}
                     </ul>
                 </div>
-                <div className="filter">
-                    <h2>Rows filtering</h2>
+                <div className="filter stockFilter">
+                    <h2>Aktsiad</h2>
                     <ul>
-                        {columnFilters}
+                        {stockFilters}
                     </ul>
                 </div>
             </div>

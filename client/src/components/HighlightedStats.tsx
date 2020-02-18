@@ -1,17 +1,34 @@
 import React from "react";
 import "../style/HighlightedStats.css"
-export class HighlightedStats extends React.Component<any, any> {
+import {Stock} from "../types/Stock";
+
+interface HighlightedStatsProps {
+    stocks: Stock[],
+}
+
+export class HighlightedStats extends React.Component<HighlightedStatsProps, any> {
+
+    getTotalProfitString = () => {
+        const stocks = this.props.stocks;
+        let profit =  stocks.map(s => s.financialData[0])
+            .map(data => data.netIncome)
+            .reduce((acc, curr) => acc + curr, 0);
+        profit = Math.round(profit) * 1000000;
+        let profitString = profit.toString().match(/(\d+?)(?=(\d{3})+(?!\d)|$)/g);
+        profitString = profitString == null ? ["0"] : profitString;
+        return profitString.join(" ");
+    };
 
     render() {
         return (
             <div className={"highlightContainer"}>
                 <div className={"highlightedStat"}>
-                    <h2>200</h2>
-                    <p>miljonit eurot kasumit teenisid Balti põhinimekirja aktsiad viimase 12 kuuga</p>
+                    <h2>{this.getTotalProfitString()} €</h2>
+                    <p>Balti põhinimekirja ettevõtete viimase 12 kuu kasum</p>
                 </div>
                 <div className={"highlightedStat"}>
-                    <h2>1300 €</h2>
-                    <p>investeeringu väärtus, kui oleksid ostnud 12 kuud tagasi 1000 € eest aktisaid</p>
+                    <h2>{"1300"} €</h2>
+                    <p>mingi lahe näitaja läheb siia</p>
                 </div>
             </div>
         );

@@ -1,6 +1,14 @@
 .stockTable {
     border: 1px solid black;
     border-collapse: collapse;
-    margin: 0 auto 50px auto;
+    margin: 0 auto;
     width: 100%;
+}
+
+.stockTable+p {
+    text-align: left;
+}
+
+p .refreshDate {
+    font-weight: bold;
 }

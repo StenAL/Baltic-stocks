@@ -17,14 +17,17 @@ export class StockTable extends React.Component<StockTableProps, any> {
     render() {
         const tableRows = this.getTableRows(this.props.stocks);
         return (
-            <table className="stockTable">
-                <thead>
-                    <StockTableHeader onHeaderClick={this.props.onHeaderClick} titles={this.props.columnTitles}/>
-                </thead>
-                <tbody>
-                    {tableRows}
-                </tbody>
-            </table>
+            <div>
+                <table className="stockTable">
+                    <thead>
+                        <StockTableHeader onHeaderClick={this.props.onHeaderClick} titles={this.props.columnTitles}/>
+                    </thead>
+                    <tbody>
+                        {tableRows}
+                    </tbody>
+                </table>
+                <p>Andmed seisuga <span className={"refreshDate"}>08:00 18.02.2020</span></p>
+            </div>
         )
     }
 }
