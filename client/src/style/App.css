@@ -1,7 +1,15 @@
-body {
+* {
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
     font-family: Roboto, sans-serif;
+    max-width: 1400px;
 }
 
-h1 {
+.App {
+    text-align: center;
+}
+
+h1, h2, h3, h4, h5, h6 {
     font-family: Montserrat, sans-serif;
 }

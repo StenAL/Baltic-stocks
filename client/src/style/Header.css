@@ -1,10 +1,14 @@
-.logo {
+header {
+    margin: 50px 0 30px 0;
+}
+
+header .logo {
     height: 36px;
     display: inline;
 }
 
 header h1 {
-    font-size: 36px;
+    font-size: 44px;
     padding-left: 10px;
     display: inline;
 }

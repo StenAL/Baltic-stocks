@@ -6,3 +6,11 @@
 .tableHeader:hover {
     cursor: pointer;
 }
+
+.sorted {
+    color: red;
+}
+
+.reverseSorted {
+    color: green;
+}

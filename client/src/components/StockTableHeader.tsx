@@ -8,8 +8,17 @@ interface StockTableHeaderProps {
 
 export class StockTableHeader extends React.Component<StockTableHeaderProps, any> {
 
+    onClick = (event, title) => {
+        this.props.onHeaderClick(title);
+        if (event.target.className === "tableHeader sorted") {
+            event.target.className = "tableHeader reverseSorted";
+        } else {
+            event.target.className = "tableHeader sorted";
+        }
+    };
+
     getTableHeaders = () => {
-        return this.props.titles.map(t => <th className="tableHeader" key={t} onClick={event => this.props.onHeaderClick(t)}>{t}</th>)
+        return this.props.titles.map(t => <th className={"tableHeader" + (t === 'Tiksuja' ? ' sorted' : '')} key={t} onClick={event => this.onClick(event, t)}>{t}</th>)
     };
 
     render() {

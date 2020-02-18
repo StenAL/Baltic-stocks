@@ -1,0 +1,15 @@
+.highlightContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 50px 0 100px 0;
+}
+
+.highlightContainer h2 {
+    font-size: 36px;
+    color: green;
+}
+
+.highlightContainer .highlightedStat {
+    max-width: 400px;
+}

@@ -1,0 +1,16 @@
+.filtersContainer {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 50px;
+    background-color: #e8e8e8;
+}
+
+.filtersContainer .filter h2 {
+    margin-bottom: 10px;
+}
+
+.filtersContainer .filter ul {
+    list-style: none;
+    text-align: left;
+    column-count: 2;
+}

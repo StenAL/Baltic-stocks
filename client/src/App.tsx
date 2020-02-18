@@ -1,10 +1,11 @@
+import "./style/App.css"
 import React, {Component} from 'react';
 import {Stock} from "./types/Stock";
 import {Header} from "./components/Header";
 import {StockTable} from "./components/StockTable";
-import "./style/App.css"
 import {Column} from "./types/Column";
-import {ColumnFiltersContainer} from "./components/ColumnFiltersContainer";
+import {FiltersContainer} from "./components/FiltersContainer";
+import {HighlightedStats} from "./components/HighlightedStats";
 
 interface AppState {
     stocks: Stock[],
@@ -51,7 +52,7 @@ export default class App extends Component<object, AppState> {
     getStockDisplayedData = (stock: Stock) => {
         const copy = Object.assign({}, stock);
         Object.assign(copy, stock.keyStats);
-        // TODO display dividends and yearly financial results (in a separate table?)
+        // TODO display dividends and yearly financial results (popup in a separate table?)
         Object.keys(copy).filter(k => !(k in this.titles)).forEach(k => delete copy[k]);
         this.state.columns.filter(c => !c.visible && c.title !== "id").map(c => c.title).forEach(k => delete copy[k]);
         return copy;
@@ -86,7 +87,8 @@ export default class App extends Component<object, AppState> {
         return (
             <div className="App">
                 <Header/>
-                <ColumnFiltersContainer columns={this.state.columns} onChange={this.invertColumnVisibility}/>
+                <HighlightedStats/>
+                <FiltersContainer columns={this.state.columns} onChange={this.invertColumnVisibility}/>
                 <StockTable onHeaderClick={this.sortByAttribute} stocks={visibleStocksData} columnTitles={visibleColumnNames}/>
             </div>
         );
