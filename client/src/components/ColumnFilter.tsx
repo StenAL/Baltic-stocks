@@ -1,5 +1,5 @@
 import React from "react";
-import "../style/ColumnFilter.css"
+import "../style/FiltersContainer.css"
 import {Column} from "../types/Column";
 
 interface ColumnFilterProps {
@@ -12,8 +12,8 @@ export class ColumnFilter extends React.Component<ColumnFilterProps, any> {
     render() {
         return (
             <li className="itemFilter">
-                <input type="checkbox" name={this.props.column.name} defaultChecked={this.props.column.visible} onChange={this.props.onChange}/>
-                <label htmlFor={this.props.column.name}>{this.props.column.name}</label>
+                <input type="checkbox" className="checkbox-filter" id={"checkbox-" + this.props.column.name} defaultChecked={this.props.column.visible} onChange={this.props.onChange}/>
+                <label htmlFor={"checkbox-" + this.props.column.name}>{this.props.column.name}</label>
             </li>
         )
     }

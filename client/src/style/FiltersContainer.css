@@ -22,3 +22,41 @@
     column-count: 2;
     column-span: all;
 }
+
+.checkbox-filter {
+    position: absolute;
+    opacity: 0;
+}
+
+.checkbox-filter + label {
+    position: relative;
+    cursor: pointer;
+    padding: 0;
+}
+
+.checkbox-filter + label:before {
+    content: "";
+    display: inline-block;
+    vertical-align: text-top;
+    width: 20px;
+    height: 20px;
+    margin: 0 10px 3px 0;
+    background: white;
+}
+
+.checkbox-filter:checked + label:before {
+    background: #216c2a;
+}
+
+.checkbox-filter:checked + label:after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 9px;
+    background: white;
+    width: 2px;
+    height: 2px;
+    box-shadow: 2px 0 0 white, 4px 0 0 white, 4px -2px 0 white, 4px -4px 0 white, 4px -6px 0 white, 4px -8px 0 white;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}

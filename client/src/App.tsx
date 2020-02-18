@@ -59,12 +59,12 @@ export default class App extends Component<object, AppState> {
     };
 
     invertColumnVisibility = (event) => {
-        const columns = this.state.columns.map(col => col.name === event.target.name ? {...col, visible: !col.visible} : col);
+        const columns = this.state.columns.map(col => "checkbox-" + col.name === event.target.id ? {...col, visible: !col.visible} : col);
         this.setState({columns: columns});
     };
 
     invertStockVisibility = (event) => {
-        const stocks = this.state.stocks.map(stock => stock.name === event.target.name ? {...stock, visible: !stock.visible} : stock);
+        const stocks = this.state.stocks.map(stock => "checkbox-" + stock.name === event.target.id ? {...stock, visible: !stock.visible} : stock);
         this.setState({stocks: stocks});
     };
 

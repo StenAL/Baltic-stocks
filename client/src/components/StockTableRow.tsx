@@ -3,7 +3,8 @@ import "../style/StockTableRow.css"
 import {Stock} from "../types/Stock";
 
 interface StockTableRowProps {
-    stock: Stock
+    stock: Stock,
+    alternateRow: boolean,
 }
 
 export class StockTableRow extends React.Component<StockTableRowProps, any> {
@@ -19,7 +20,7 @@ export class StockTableRow extends React.Component<StockTableRowProps, any> {
     render() {
         const cells = this.getRowCells();
         return (
-            <tr>
+            <tr className={this.props.alternateRow ? "alternateRow" : ""}>
                 {cells}
             </tr>
         )

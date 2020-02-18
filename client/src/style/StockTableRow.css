@@ -1,3 +1,7 @@
-.tableCell {
+.alternateRow {
+    background-color: #e8e8e8;
+}
+
+tr td.tableCell {
     text-align: center;
 }
