@@ -1,5 +1,5 @@
 import React from "react";
-import {StockTableHeader} from "./StockTableHeader";
+import {StockTableHead} from "./StockTableHead";
 import {StockTableRow} from "./StockTableRow";
 import "../style/StockTable.css"
 
@@ -20,7 +20,7 @@ export class StockTable extends React.Component<StockTableProps, any> {
             <div>
                 <table className="stockTable">
                     <thead>
-                        <StockTableHeader onHeaderClick={this.props.onHeaderClick} titles={this.props.columnTitles}/>
+                        <StockTableHead onHeaderClick={this.props.onHeaderClick} titles={this.props.columnTitles}/>
                     </thead>
                     <tbody>
                         {tableRows}
@@ -28,6 +28,6 @@ export class StockTable extends React.Component<StockTableProps, any> {
                 </table>
                 <p>Andmed seisuga <span className={"refreshDate"}>08:00 18.02.2020</span></p>
             </div>
-        )
+        ) // todo make date dynamic
     }
 }

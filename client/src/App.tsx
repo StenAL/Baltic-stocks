@@ -26,7 +26,6 @@ export default class App extends Component<object, AppState> {
             priceBook: "P/B",
             priceSalesTtm: "12 kuu P/S",
             revenueGrowthThreeYearAvg: "3 aasta keskmise tulu kasv",
-            epsGrowthThreeYearAvg: "3 aasta keskmise EPS kasv",
             operatingMarginTtm: "12 kuu operating margin",
             netMarginTtm: "12 kuu net margin",
             roeTtm: "12 kuu ROE",
