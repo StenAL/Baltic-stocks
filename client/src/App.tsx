@@ -4,7 +4,7 @@ import {Stock} from "./types/Stock";
 import {Header} from "./components/Header";
 import {StockTable} from "./components/StockTable";
 import {Column} from "./types/Column";
-import {FiltersContainer} from "./components/FiltersContainer";
+import {FiltersContainer} from "./components/filtering/FiltersContainer";
 import {HighlightedStats} from "./components/HighlightedStats";
 import {Footer} from "./components/Footer";
 
@@ -63,6 +63,13 @@ export default class App extends Component<object, AppState> {
         this.setState({columns: columns});
     };
 
+    invertCountryVisibility = (event) => {
+        const stocks = this.state.stocks
+            .map(s => ("checkbox-" + s.isin).startsWith(event.target.id) ? ({...s, visible: event.target.checked}) : s);
+        console.log(stocks);
+        this.setState({stocks: stocks});
+    };
+
     invertStockVisibility = (event) => {
         const stocks = this.state.stocks.map(stock => "checkbox-" + stock.name === event.target.id ? {...stock, visible: !stock.visible} : stock);
         this.setState({stocks: stocks});
@@ -96,7 +103,8 @@ export default class App extends Component<object, AppState> {
             <div className="App">
                 <Header/>
                 <HighlightedStats stocks={this.state.stocks}/>
-                <FiltersContainer columns={this.state.columns} stocks={tickerSortedStocks} onColumnChange={this.invertColumnVisibility} onStockChange={this.invertStockVisibility}/>
+                <FiltersContainer columns={this.state.columns} stocks={tickerSortedStocks} onColumnChange={this.invertColumnVisibility}
+                                  onStockChange={this.invertStockVisibility} onCountryChange={this.invertCountryVisibility}/>
                 <StockTable onHeaderClick={this.sortByAttribute} stocks={visibleStocksData} columnTitles={visibleColumnNames}/>
                 <Footer/>
             </div>

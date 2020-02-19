@@ -1,7 +1,7 @@
 .stockTable {
     border: 1px solid black;
     border-collapse: collapse;
-    margin: 0 auto;
+    margin: 5px auto;
     width: 100%;
 }
 

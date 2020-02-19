@@ -13,8 +13,13 @@ export class StockTableRow extends React.Component<StockTableRowProps, any> {
         const stock = this.props.stock;
         return Object.entries(stock)
             .filter(e => e[0] !== "id")
-            .map(e => <td className="tableCell" key={stock.id + "_" + e[0]}>
-                {e[1] === null ? "-" : e[1]}</td>)
+            .map(e => <td className={"tableCell " + (Number.isFinite(e[1]) || e[1] === null ? "right-align" : "left-align")}
+                          key={stock.id + "_" + e[0]}>{this.getCellDisplayValue(e[1])}</td>)
+    };
+
+    getCellDisplayValue = (initalValue) => {
+        if (initalValue === null) return "-";
+        return Number.isFinite(initalValue) ? initalValue.toFixed(2) : initalValue;
     };
 
     render() {

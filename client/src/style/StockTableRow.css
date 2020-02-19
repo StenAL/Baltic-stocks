@@ -2,6 +2,10 @@
     background-color: #e8e8e8;
 }
 
-tr td.tableCell {
-    text-align: center;
+tr td.left-align {
+    text-align: left;
+}
+
+tr td.right-align {
+    text-align: right;
 }
