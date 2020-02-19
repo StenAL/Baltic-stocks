@@ -10,7 +10,9 @@ export class HighlightedStats extends React.Component<HighlightedStatsProps, any
 
     getTotalProfitString = () => {
         const stocks = this.props.stocks;
-        let profit =  stocks.map(s => s.financialData[0])
+        let profit =  stocks.map(s => s.financialData.slice(-1).pop())
+            .flat()
+            .filter(f => f.year === 2018)
             .map(data => data.netIncome)
             .reduce((acc, curr) => acc + curr, 0);
         profit = Math.round(profit) * 1000000;

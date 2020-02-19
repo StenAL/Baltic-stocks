@@ -26,7 +26,7 @@ export class CountryFilter extends React.Component<CountryFilterProps, any> {
             <li>
                 <input type="checkbox" className="checkbox-filter" id={"checkbox-" + this.props.country}
                        checked={this.allCountryStocksVisible()} onChange={this.props.onChange}/>
-                <label htmlFor={"checkbox-" + this.props.country}>{this.countries[this.props.country]}</label>
+                <label htmlFor={"checkbox-" + this.props.country}><b>{this.countries[this.props.country]}</b></label>
             </li>
         )
     }

@@ -27,7 +27,6 @@ export class StockTableHead extends React.Component<StockTableHeadProps, StockTa
             .map(t => <th className={t === title ? newClass : 'tableHeader'} key={t}
                           onClick={event => this.onClick(event, t)}>{t}</th>);
         this.setState({tableHeaders: headers});
-        console.log(this.state.tableHeaders);
     };
 
     generateTableHeaders = () => {

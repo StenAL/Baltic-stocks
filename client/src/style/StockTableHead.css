@@ -1,16 +1,26 @@
 .tableHeader {
     border: 1px solid black;
-    padding: 0 4px;
+    padding: 0 12px 0 0;
 }
 
 .tableHeader:hover {
     cursor: pointer;
 }
 
-.sorted {
-    color: red;
+.sorted, .reverseSorted {
+    padding: 0 0 0 0;
 }
 
-.reverseSorted {
-    color: green;
+.sorted:after {
+    position: relative;
+    bottom: 2px;
+    content: ' \25BC';
+    font-size: 10px;
+}
+
+.reverseSorted:after {
+    position: relative;
+    bottom: 1px;
+    content: ' \25B2';
+    font-size: 10px;
 }
