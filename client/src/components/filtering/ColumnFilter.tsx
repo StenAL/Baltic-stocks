@@ -7,7 +7,7 @@ interface ColumnFilterProps {
     onChange: (event) => void;
 }
 
-export class ColumnFilter extends React.Component<ColumnFilterProps, any> {
+export class ColumnFilter extends React.Component<ColumnFilterProps, object> {
 
     render() {
         return (
@@ -15,6 +15,6 @@ export class ColumnFilter extends React.Component<ColumnFilterProps, any> {
                 <input type="checkbox" className="checkbox-filter" id={"checkbox-" + this.props.column.name} checked={this.props.column.visible} onChange={this.props.onChange}/>
                 <label htmlFor={"checkbox-" + this.props.column.name}>{this.props.column.name}</label>
             </li>
-        )
+        );
     }
 }

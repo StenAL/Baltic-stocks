@@ -8,15 +8,15 @@ interface CountryFilterProps {
     onChange: (event) => void;
 }
 
-export class CountryFilter extends React.Component<CountryFilterProps, any> {
+export class CountryFilter extends React.Component<CountryFilterProps, object> {
 
-    countries = {
+    static countries = {
         EE: "Eesti",
         LV: "Läti",
-        LT: "Leedu"
+        LT: "Leedu",
     };
 
-    allCountryStocksVisible = () => {
+    allCountryStocksVisible = () : boolean => {
         return this.props.stocks.filter(s => s.isin.startsWith(this.props.country))
             .every(s => s.visible);
     };
@@ -26,8 +26,8 @@ export class CountryFilter extends React.Component<CountryFilterProps, any> {
             <li>
                 <input type="checkbox" className="checkbox-filter" id={"checkbox-" + this.props.country}
                        checked={this.allCountryStocksVisible()} onChange={this.props.onChange}/>
-                <label htmlFor={"checkbox-" + this.props.country}><b>{this.countries[this.props.country]}</b></label>
+                <label htmlFor={"checkbox-" + this.props.country}><b>{CountryFilter.countries[this.props.country]}</b></label>
             </li>
-        )
+        );
     }
 }

@@ -6,9 +6,9 @@ interface HighlightedStatsProps {
     stocks: Stock[],
 }
 
-export class HighlightedStats extends React.Component<HighlightedStatsProps, any> {
+export class HighlightedStats extends React.Component<HighlightedStatsProps, object> {
 
-    getTotalProfitString = () => {
+    getTotalProfitString = () : string => {
         const stocks = this.props.stocks;
         let profit =  stocks.map(s => s.financialData.slice(-1).pop())
             .flat()

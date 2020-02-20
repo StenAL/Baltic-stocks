@@ -1,4 +1,4 @@
-import React, {ReactElement} from "react";
+import React from "react";
 import "../style/StockTableHead.css"
 
 interface StockTableHeadProps {
@@ -7,7 +7,7 @@ interface StockTableHeadProps {
 }
 
 interface StockTableHeadState {
-    tableHeaders: ReactElement[],
+    tableHeaders: JSX.Element[], // tableHeaders are kept in state to keep track which direction table is sorted in to apply appropriate styling
 }
 
 export class StockTableHead extends React.Component<StockTableHeadProps, StockTableHeadState> {
@@ -19,9 +19,9 @@ export class StockTableHead extends React.Component<StockTableHeadProps, StockTa
         this.state = {tableHeaders: headers}
     }
 
-    onClick = (event, title) => {
+    onClick = (event, title) : void => {
         this.props.onHeaderClick(title);
-        const newClass = event.target.className === "tableHeader sorted" ? "tableHeader reverseSorted" : "tableHeader sorted";
+        const newClass : string = event.target.className === "tableHeader sorted" ? "tableHeader reverseSorted" : "tableHeader sorted";
         const headers = this.state.tableHeaders.slice()
             .map(t => t.props.children)
             .map(t => <th className={t === title ? newClass : 'tableHeader'} key={t}
@@ -29,8 +29,10 @@ export class StockTableHead extends React.Component<StockTableHeadProps, StockTa
         this.setState({tableHeaders: headers});
     };
 
-    generateTableHeaders = () => {
-        return this.state.tableHeaders.filter(t => this.props.titles.includes(t.props.children))
+    generateTableHeaders = () : JSX.Element[] => {
+        return this.state.tableHeaders
+            .filter(t => this.props.titles.includes(t.props.children)) // JSX.Element.props.children resolves to value of text inside element
+                                                                       // this checks if the currently displayed column titles includes a tableHeader's text
     };
 
     render() {
@@ -38,6 +40,6 @@ export class StockTableHead extends React.Component<StockTableHeadProps, StockTa
             <tr>
                 {this.generateTableHeaders()}
             </tr>
-        )
+        );
     }
 }

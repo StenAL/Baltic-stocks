@@ -14,20 +14,20 @@ interface FilterersContainerProps {
     onCountryChange: (event) => void,
 }
 
-export class FiltersContainer extends React.Component<FilterersContainerProps, any> {
+export class FiltersContainer extends React.Component<FilterersContainerProps, object> {
 
-    getColumnFilters = () => {
+    getColumnFilters = () : JSX.Element[] => {
         return this.props.columns
             .filter(col => col.title !== "id")
             .map(col => <ColumnFilter column={col} key={col.title} onChange={this.props.onColumnChange}/>)
     };
 
-    getCountryFilters = () => {
+    getCountryFilters = () : JSX.Element[] => {
         return ["EE", "LV", "LT"]
             .map(country => <CountryFilter stocks={this.props.stocks} key={country} onChange={this.props.onCountryChange} country={country}/>)
     };
 
-    getStockFilters = () => {
+    getStockFilters = () : JSX.Element[] => {
         return this.props.stocks
             .map(stock => <StockFilter stock={stock} key={stock.name} onChange={this.props.onStockChange}/>)
     };
@@ -54,6 +54,6 @@ export class FiltersContainer extends React.Component<FilterersContainerProps, a
                     </ul>
                 </div>
             </div>
-        )
+        );
     }
 }

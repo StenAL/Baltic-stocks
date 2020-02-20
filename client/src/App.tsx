@@ -7,6 +7,7 @@ import {Column} from "./types/Column";
 import {FiltersContainer} from "./components/filtering/FiltersContainer";
 import {HighlightedStats} from "./components/HighlightedStats";
 import {Footer} from "./components/Footer";
+import {FinancialData} from "./types/FinancialData";
 
 interface AppState {
     stocks: Stock[],
@@ -16,7 +17,10 @@ interface AppState {
 }
 
 export default class App extends Component<object, AppState> {
-    constructor(props: any) {
+
+    titles: object = {};
+
+    constructor(props: object) {
         super(props);
         this.titles = {
             id: "id -- this should never be seen",
@@ -34,71 +38,73 @@ export default class App extends Component<object, AppState> {
             revenue: "Tulu",
             netIncome: "Kasum",
         };
-        const columns = Object.entries(this.titles).map(title => ({title: title[0], visible: true, name: title[1]}));
-        columns[0].visible = false; // don't show id
+        const columns : Column[] = Object.entries(this.titles)
+            .map(title => ({title: title[0], visible: title[0] !== 'id', name: title[1]}));
         this.state = {stocks: [], columns: columns, sortingStocksBy: "ticker", financialDataYear: 2017};
 
     }
-
-    titles: object = {};
 
     componentDidMount(): void {
         fetch("http://localhost:12345/stocks")
             .then(res => res.json())
             .then((data) => {
-                const stocks = data.map((d: Stock) => ({...d, visible: true}));
+                const stocks : Stock[] = data.map((d: Stock) => ({...d, visible: true}));
                 this.setState({stocks: stocks})
             })
             .catch(e => console.log(e));
     }
 
-    getStockDisplayedData = (stock: Stock) => {
-        const copy = Object.assign({}, stock);
+    getStockDisplayedData = (stock: Stock) : object => {
+        const copy : object = Object.assign({}, stock);
         Object.assign(copy, stock.keyStats);
         Object.assign(copy, this.getDisplayedFinancialData(stock));
-        Object.keys(copy).filter(k => !(k in this.titles)).forEach(k => delete copy[k]);
-        this.state.columns.filter(c => !c.visible && c.title !== "id").map(c => c.title).forEach(k => delete copy[k]);
+        Object.keys(copy).filter(k => !(k in this.titles)).forEach(k => delete copy[k]); // delete attributes that are never displayed in table
+
+        this.state.columns.filter(c => !c.visible && c.title !== "id") // delete attributes that are currently not visible except id
+            .map(c => c.title)
+            .forEach(k => delete copy[k]);
         return copy;
     };
 
-    invertColumnVisibility = (event) => {
-        const columns = this.state.columns.map(col => "checkbox-" + col.name === event.target.id ? {...col, visible: !col.visible} : col);
+    invertColumnVisibility = (event) : void => {
+        const columns : Column[] = this.state.columns.map(col => "checkbox-" + col.name === event.target.id ? {...col, visible: !col.visible} : col);
         this.setState({columns: columns});
     };
 
-    invertCountryVisibility = (event) => {
-        const stocks = this.state.stocks
+    invertCountryVisibility = (event) : void => {
+        const stocks : Stock[] = this.state.stocks
             .map(s => ("checkbox-" + s.isin).startsWith(event.target.id) ? ({...s, visible: event.target.checked}) : s);
         this.setState({stocks: stocks});
     };
 
-    invertStockVisibility = (event) => {
-        const stocks = this.state.stocks.map(stock => "checkbox-" + stock.name === event.target.id ? {...stock, visible: !stock.visible} : stock);
+    invertStockVisibility = (event) : void => {
+        const stocks : Stock[] = this.state.stocks.map(stock => "checkbox-" + stock.name === event.target.id ? {...stock, visible: !stock.visible} : stock);
         this.setState({stocks: stocks});
     };
 
-    getDisplayedFinancialData = (stock) => {
+    getDisplayedFinancialData = (stock : Stock) : FinancialData | undefined => {
         return stock.financialData.filter(f => f.year === this.state.financialDataYear).pop();
     };
 
-    sortByAttribute = (columnTitle) => {
-        const stocks = this.state.stocks.slice();
-        const attribute = Object.entries(this.titles).filter(e => e[1] === columnTitle)
+    sortStocksByAttribute = (columnTitle : string) : void => {
+        const stocks : Stock[] = this.state.stocks.slice();
+        const attribute : string = Object.entries(this.titles).filter(e => e[1] === columnTitle)
             .map(e => e[0])[0];
-        if (attribute === this.state.sortingStocksBy) {
+        if (attribute === this.state.sortingStocksBy) { // already sorting table by this attribute, reverse the order
             this.setState({stocks: stocks.reverse()});
         } else {
             let sortedStocks: Stock[] = stocks
-                .filter(s => s.keyStats[attribute] !== null && this.getDisplayedFinancialData(s)?.[attribute] !== null)
+                .filter(s => s.keyStats[attribute] !== null && this.getDisplayedFinancialData(s)?.[attribute] !== null) // don't sort stocks where sorting attribute is null (not undefined)
                 .sort((a, b) => this.stockSortByAttribute(a, b, attribute));
-            sortedStocks = [...stocks.filter(s => s.keyStats[attribute] === null || this.getDisplayedFinancialData(s)?.[attribute] === null), ...sortedStocks];
+            sortedStocks = [...stocks.filter(s => s.keyStats[attribute] === null || this.getDisplayedFinancialData(s)?.[attribute] === null),
+                ...sortedStocks]; // add nulls to beginning of sorted sequence
             this.setState({stocks: sortedStocks, sortingStocksBy: attribute})
         }
     };
 
     stockSortByAttribute = (a : Stock, b : Stock, attribute : string) : number => {
-        const aStockAttribute = a[attribute] ? a[attribute] : "";
-        const bStockAttribute = b[attribute] ? b[attribute] : "";
+        const aStockAttribute : string = a[attribute] ? a[attribute] : "";
+        const bStockAttribute : string = b[attribute] ? b[attribute] : "";
 
         return a.keyStats[attribute] - b.keyStats[attribute] ||
             this.getDisplayedFinancialData(a)?.[attribute] - this.getDisplayedFinancialData(b)?.[attribute] ||
@@ -119,7 +125,7 @@ export default class App extends Component<object, AppState> {
                                   onColumnChange={this.invertColumnVisibility}
                                   onStockChange={this.invertStockVisibility}
                                   onCountryChange={this.invertCountryVisibility}/>
-                <StockTable onHeaderClick={this.sortByAttribute} stocks={visibleStocksData}
+                <StockTable onHeaderClick={this.sortStocksByAttribute} stockDisplayValues={visibleStocksData}
                             columnTitles={visibleColumnNames}/>
                 <Footer/>
             </div>
