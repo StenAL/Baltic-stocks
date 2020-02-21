@@ -7,18 +7,18 @@
     cursor: pointer;
 }
 
-.sorted, .reverseSorted {
+.desc, .asc {
     padding: 0 0 0 0;
 }
 
-.sorted:after {
+.desc:after {
     position: relative;
     bottom: 2px;
     content: ' \25BC';
     font-size: 10px;
 }
 
-.reverseSorted:after {
+.asc:after {
     position: relative;
     bottom: 1px;
     content: ' \25B2';

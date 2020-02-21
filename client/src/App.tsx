@@ -13,12 +13,14 @@ interface AppState {
     stocks: Stock[],
     columns: Column[],
     sortingStocksBy: string,
-    financialDataYear: number,
+    sortingOrder: ("asc" | "desc"),
+    selectedYear: number,
 }
 
 export default class App extends Component<object, AppState> {
 
-    titles: object = {};
+    titles: object;
+    yearlyData: string[];
 
     constructor(props: object) {
         super(props);
@@ -38,10 +40,16 @@ export default class App extends Component<object, AppState> {
             revenue: "Tulu",
             netIncome: "Kasum",
         };
+
+        this.yearlyData = [
+            "revenue", "operatingIncome", "netIncome", "earningsPerShare", "dilutedSharesOutstanding", "currentAssets",
+            "nonCurrentAssets", "totalAssets", "currentLiabilities", "totalLiabilities", "totalEquity", "operatingCashFlow",
+            "capitalExpenditure", "freeCashFlow"
+        ];
+
         const columns : Column[] = Object.entries(this.titles)
             .map(title => ({title: title[0], visible: title[0] !== 'id', name: title[1]}));
-        this.state = {stocks: [], columns: columns, sortingStocksBy: "ticker", financialDataYear: 2017};
-
+        this.state = {stocks: [], columns: columns, sortingStocksBy: "ticker", sortingOrder: "desc", selectedYear: 2019};
     }
 
     componentDidMount(): void {
@@ -63,6 +71,11 @@ export default class App extends Component<object, AppState> {
         this.state.columns.filter(c => !c.visible && c.title !== "id") // delete attributes that are currently not visible except id
             .map(c => c.title)
             .forEach(k => delete copy[k]);
+
+        this.state.columns.filter(c => c.visible) // add missing attributes as nulls
+            .map(c => c.title)
+            .filter(k => copy[k] === undefined)
+            .forEach(k => copy[k] = null);
         return copy;
     };
 
@@ -83,7 +96,7 @@ export default class App extends Component<object, AppState> {
     };
 
     getDisplayedFinancialData = (stock : Stock) : FinancialData | undefined => {
-        return stock.financialData.filter(f => f.year === this.state.financialDataYear).pop();
+        return stock.financialData.filter(f => f.year === this.state.selectedYear).pop();
     };
 
     sortStocksByAttribute = (columnTitle : string) : void => {
@@ -91,24 +104,45 @@ export default class App extends Component<object, AppState> {
         const attribute : string = Object.entries(this.titles).filter(e => e[1] === columnTitle)
             .map(e => e[0])[0];
         if (attribute === this.state.sortingStocksBy) { // already sorting table by this attribute, reverse the order
-            this.setState({stocks: stocks.reverse()});
+            this.setState({stocks: stocks.reverse(), sortingOrder: this.state.sortingOrder === "desc" ? "asc" : "desc"});
         } else {
             let sortedStocks: Stock[] = stocks
-                .filter(s => s.keyStats[attribute] !== null && this.getDisplayedFinancialData(s)?.[attribute] !== null) // don't sort stocks where sorting attribute is null (not undefined)
-                .sort((a, b) => this.stockSortByAttribute(a, b, attribute));
-            sortedStocks = [...stocks.filter(s => s.keyStats[attribute] === null || this.getDisplayedFinancialData(s)?.[attribute] === null),
-                ...sortedStocks]; // add nulls to beginning of sorted sequence
-            this.setState({stocks: sortedStocks, sortingStocksBy: attribute})
+                .filter(s => s.keyStats[attribute] || this.getDisplayedFinancialData(s)?.[attribute]) // don't sort stocks where sorting attribute is not available
+                .sort((a, b) => this.compareStocksByAttribute(a, b, attribute));
+            sortedStocks = [...stocks.filter(s => !s.keyStats[attribute] && !this.getDisplayedFinancialData(s)?.[attribute]),
+                ...sortedStocks]; // add null/undefined to beginning of sorted sequence
+            this.setState({stocks: sortedStocks, sortingStocksBy: attribute, sortingOrder: "desc"})
         }
     };
 
-    stockSortByAttribute = (a : Stock, b : Stock, attribute : string) : number => {
+    compareStocksByAttribute = (a : Stock, b : Stock, attribute : string) : number => {
         const aStockAttribute : string = a[attribute] ? a[attribute] : "";
         const bStockAttribute : string = b[attribute] ? b[attribute] : "";
 
         return a.keyStats[attribute] - b.keyStats[attribute] ||
             this.getDisplayedFinancialData(a)?.[attribute] - this.getDisplayedFinancialData(b)?.[attribute] ||
             aStockAttribute.localeCompare(bStockAttribute)
+    };
+
+    getVisibleYears = () : number[] => {
+        const visibleYears : number[] = this.state.stocks.filter(s => s.visible)
+            .map(s => s.financialData)
+            .flat()
+            .filter(f => Object.values(f) // object has non-null values in more than column (year is always non-null)
+                .reduce((previousValue, currentValue) => currentValue !== null ? previousValue + 1: previousValue, 0) > 1)
+            .map(f => f.year);
+        const visibleYearsNoDuplicates = Array.from(new Set(visibleYears)); // get rid of duplicates
+        visibleYearsNoDuplicates.sort();
+        return visibleYearsNoDuplicates;
+    };
+
+    selectYear = (event) : void => {
+        const year : number = Number.parseInt(event.target.id.replace("radio-", ""));
+        let sortingBy = this.state.sortingStocksBy;
+        if (this.yearlyData.includes(this.state.sortingStocksBy)) {
+            sortingBy = "invalid";
+        }
+        this.setState({selectedYear: year, sortingStocksBy: sortingBy})
     };
 
     render() {
@@ -121,11 +155,14 @@ export default class App extends Component<object, AppState> {
             <div className="App">
                 <Header/>
                 <HighlightedStats stocks={this.state.stocks}/>
-                <FiltersContainer columns={this.state.columns} stocks={tickerSortedStocks}
+                <FiltersContainer columns={this.state.columns} stocks={tickerSortedStocks} years={this.getVisibleYears()}
+                                  selectedYear={this.state.selectedYear}
                                   onColumnChange={this.invertColumnVisibility}
                                   onStockChange={this.invertStockVisibility}
+                                  onYearChange={this.selectYear}
                                   onCountryChange={this.invertCountryVisibility}/>
                 <StockTable onHeaderClick={this.sortStocksByAttribute} stockDisplayValues={visibleStocksData}
+                            sortingBy={this.titles[this.state.sortingStocksBy]} sortingOrder={this.state.sortingOrder}
                             columnTitles={visibleColumnNames}/>
                 <Footer/>
             </div>

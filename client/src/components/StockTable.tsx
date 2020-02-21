@@ -5,6 +5,8 @@ import "../style/StockTable.css"
 
 interface StockTableProps {
     stockDisplayValues: object[],
+    sortingBy: string,
+    sortingOrder: ("asc" | "desc"),
     columnTitles: string[],
     onHeaderClick: (event) => void,
 }
@@ -20,7 +22,9 @@ export class StockTable extends React.Component<StockTableProps, object> {
             <div>
                 <table className="stockTable">
                     <thead>
-                        <StockTableHead onHeaderClick={this.props.onHeaderClick} titles={this.props.columnTitles}/>
+                        <StockTableHead onHeaderClick={this.props.onHeaderClick} titles={this.props.columnTitles}
+                                        sortingOrder={this.props.sortingOrder} sortingBy={this.props.sortingBy}
+                        />
                     </thead>
                     <tbody>
                         {tableRows}
