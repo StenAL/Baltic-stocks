@@ -10,6 +10,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -46,6 +47,7 @@ public class DataImportingService {
             .financialData(financialData)
             .keyStats(keyStats)
             .dividends(dividends)
+            .timeFetched(LocalDateTime.now())
             .build();
         stock.getFinancialData().forEach(f -> f.setStock(stock));
         stock.getDividends().forEach(d -> d.setStock(stock));

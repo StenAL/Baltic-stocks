@@ -15,6 +15,7 @@ interface AppState {
     sortingStocksBy: string,
     sortingOrder: ("asc" | "desc"),
     selectedYear: number,
+    timeFetched: string,
 }
 
 export default class App extends Component<object, AppState> {
@@ -49,15 +50,15 @@ export default class App extends Component<object, AppState> {
 
         const columns : Column[] = Object.entries(this.titles)
             .map(title => ({title: title[0], visible: title[0] !== 'id', name: title[1]}));
-        this.state = {stocks: [], columns: columns, sortingStocksBy: "ticker", sortingOrder: "desc", selectedYear: 2019};
+        this.state = {stocks: [], columns: columns, sortingStocksBy: "ticker", sortingOrder: "desc", selectedYear: 2019, timeFetched: ""};
     }
 
     componentDidMount(): void {
         fetch("http://localhost:12345/stocks")
             .then(res => res.json())
             .then((data) => {
-                const stocks : Stock[] = data.map((d: Stock) => ({...d, visible: true}));
-                this.setState({stocks: stocks})
+                const stocks : Stock[] = data.stocks.map((d: Stock) => ({...d, visible: true}));
+                this.setState({stocks: stocks, timeFetched: data.timeFetched})
             })
             .catch(e => console.log(e));
     }
@@ -163,7 +164,7 @@ export default class App extends Component<object, AppState> {
                                   onCountryChange={this.invertCountryVisibility}/>
                 <StockTable onHeaderClick={this.sortStocksByAttribute} stockDisplayValues={visibleStocksData}
                             sortingBy={this.titles[this.state.sortingStocksBy]} sortingOrder={this.state.sortingOrder}
-                            columnTitles={visibleColumnNames}/>
+                            columnTitles={visibleColumnNames} timeFetched={this.state.timeFetched}/>
                 <Footer/>
             </div>
         );

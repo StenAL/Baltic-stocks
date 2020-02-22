@@ -7,6 +7,7 @@ interface StockTableProps {
     stockDisplayValues: object[],
     sortingBy: string,
     sortingOrder: ("asc" | "desc"),
+    timeFetched,
     columnTitles: string[],
     onHeaderClick: (event) => void,
 }
@@ -30,8 +31,8 @@ export class StockTable extends React.Component<StockTableProps, object> {
                         {tableRows}
                     </tbody>
                 </table>
-                <p>Andmed seisuga <span className={"refreshDate"}>08:00 18.02.2020</span></p>
+                <p>Andmed seisuga <span className={"refreshDate"}>{this.props.timeFetched}</span></p>
             </div>
-        ); // todo make date dynamic
+        );
     }
 }
