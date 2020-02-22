@@ -9,6 +9,7 @@ import {YearFilter} from "./YearFilter";
 
 interface FilterersContainerProps {
     columns: Column[],
+    financialDataColumnTitles: string[],
     stocks: Stock[],
     years: number[],
     selectedYear: number,
@@ -20,9 +21,17 @@ interface FilterersContainerProps {
 
 export class FiltersContainer extends React.Component<FilterersContainerProps, object> {
 
-    getColumnFilters = () : JSX.Element[] => {
+    getKeyStatsFilters = () : JSX.Element[] => {
         return this.props.columns
             .filter(col => col.title !== "id")
+            .filter(col => !this.props.financialDataColumnTitles.includes(col.title))
+            .map(col => <ColumnFilter column={col} key={col.title} onChange={this.props.onColumnChange}/>)
+    };
+
+    getFinancialDataFilters = () : JSX.Element[] => {
+        return this.props.columns
+            .filter(col => col.title !== "id")
+            .filter(col => this.props.financialDataColumnTitles.includes(col.title))
             .map(col => <ColumnFilter column={col} key={col.title} onChange={this.props.onColumnChange}/>)
     };
 
@@ -42,20 +51,24 @@ export class FiltersContainer extends React.Component<FilterersContainerProps, o
     };
 
     render() {
-        const columnFilters = this.getColumnFilters();
+        const keyStatsFilters = this.getKeyStatsFilters();
+        const financialDataFilters = this.getFinancialDataFilters();
         const countryFilters = this.getCountryFilters();
         const stockFilters = this.getStockFilters();
         const yearFilters = this.getYearFilters();
         return (
             <div className={"filtersContainer"}>
                 <div className="filter">
-                    <h2>Näitajad</h2>
-                    <ul className={"propertyFilter"}>
-                        {columnFilters}
+                    <h2>Üldnäitajad</h2>
+                    <ul className={"keyStatsFilter"}>
+                        {keyStatsFilters}
                     </ul>
-                    <ul>
-                        <h3>Aasta</h3>
+                    <h2>Finantsnäitajad</h2>
+                    <ul className={"yearFilter"}>
                         {yearFilters}
+                    </ul>
+                    <ul className={"financialDataFilter"}>
+                        {financialDataFilters}
                     </ul>
                 </div>
                 <div className="filter">

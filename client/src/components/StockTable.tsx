@@ -14,7 +14,7 @@ interface StockTableProps {
 
 export class StockTable extends React.Component<StockTableProps, object> {
     getTableRows = (stocks) : JSX.Element[] => {
-        return stocks.map((s, i) => <StockTableRow alternateRow={i % 2 === 0} stockDisplayValue={s} key={"stock_" + s.id}/>)
+        return stocks.map((s, i) => <StockTableRow alternateRow={i % 2 === 1} stockDisplayValue={s} key={"stock_" + s.id}/>)
     };
 
     render() {
