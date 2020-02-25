@@ -1,16 +1,15 @@
 import React from "react";
-import "../style/HighlightedStats.css"
-import {Stock} from "../types/Stock";
+import "../style/HighlightedStats.css";
+import { Stock } from "../types/Stock";
 
 interface HighlightedStatsProps {
     stocks: Stock[],
 }
 
 export class HighlightedStats extends React.Component<HighlightedStatsProps, object> {
-
     getTotalProfitString = () : string => {
-        const stocks = this.props.stocks;
-        let profit =  stocks.map(s => s.financialData.slice(-1).pop())
+        const { stocks } = this.props;
+        let profit = stocks.map(s => s.financialData.slice(-1).pop())
             .flat()
             .filter(f => f.year === 2018)
             .map(data => data.netIncome)
@@ -23,16 +22,24 @@ export class HighlightedStats extends React.Component<HighlightedStatsProps, obj
 
     render() {
         return (
-            <div className={"highlightContainer"}>
-                <div className={"highlightedStat"}>
-                    <h2>{this.getTotalProfitString()} €</h2>
-                    <p>Balti põhinimekirja ettevõtete viimase 12 kuu kasum</p>
-                </div>
-                <div className={"highlightedStat"}>
-                    <h2>{"1300"} €</h2>
+            <div className="highlightContainer">
+                <div className="highlightedStat">
+                <h2>
+                    {this.getTotalProfitString()}
+                    {' '}
+                    €
+</h2>
+                <p>Balti põhinimekirja ettevõtete viimase 12 kuu kasum</p>
+              </div>
+                <div className="highlightedStat">
+                    <h2>
+                        {"1300"}
+                        {' '}
+                    €
+</h2>
                     <p>mingi lahe näitaja läheb siia</p>
-                </div>
-            </div>
+              </div>
+          </div>
         );
     }
 }

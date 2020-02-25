@@ -1,5 +1,5 @@
 import React from "react";
-import "../style/StockTableHead.css"
+import "../style/StockTableHead.css";
 
 interface StockTableHeadProps {
     titles: string[],
@@ -9,25 +9,27 @@ interface StockTableHeadProps {
 }
 
 export class StockTableHead extends React.Component<StockTableHeadProps, object> {
-
    getHeaderClassName = (title : string) : string => {
        let className = "tableHeader";
        if (this.props.sortingBy === title) {
-           className += " " + this.props.sortingOrder;
+           className += ` ${this.props.sortingOrder}`;
        }
        return className;
    };
 
-    generateTableHeaders = () : JSX.Element[] => {
-        return this.props.titles.map(t => <th className={this.getHeaderClassName(t)}
-                                              key={t} onClick={() => this.props.onHeaderClick(t)}>{t}</th>);
-    };
+    generateTableHeaders = () : JSX.Element[] => this.props.titles.map(t => (
+      <th
+          className={this.getHeaderClassName(t)}
+          key={t} onClick={() => this.props.onHeaderClick(t)}
+        >{t}
+        </th>
+    ));
 
     render() {
         return (
             <tr>
                 {this.generateTableHeaders()}
-            </tr>
+          </tr>
         );
     }
 }

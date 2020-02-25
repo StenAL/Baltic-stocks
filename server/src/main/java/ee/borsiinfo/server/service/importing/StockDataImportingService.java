@@ -16,11 +16,11 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class DataImportingService {
+public class StockDataImportingService {
 
     private static final String API_BASE_URL = "https://lt.morningstar.com/gj8uge2g9k/stockreport/default.aspx";
     private static final int ISIN_PREFIX_LENGTH = 2;
-    private final DateTimeFormatter dateTimeFormatter;
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yy");
 
     public Stock fetchData(String isin) {
         String url = generateApiUrl(isin);
@@ -149,15 +149,15 @@ public class DataImportingService {
         Elements squares = dividendsTable.select("td");
         return List.of(
             Dividend.builder()
-                .declaredDate(StringParserUtil.parseLocalDateIfPresent(squares.get(1).text(), dateTimeFormatter).orElse(null))
-                .exDiv(StringParserUtil.parseLocalDateIfPresent(squares.get(3).text(), dateTimeFormatter).orElse(null))
-                .paid(StringParserUtil.parseLocalDateIfPresent(squares.get(5).text(), dateTimeFormatter).orElse(null))
+                .declaredDate(StringParserUtil.parseLocalDateIfPresent(squares.get(1).text(), DATE_TIME_FORMATTER).orElse(null))
+                .exDiv(StringParserUtil.parseLocalDateIfPresent(squares.get(3).text(), DATE_TIME_FORMATTER).orElse(null))
+                .paid(StringParserUtil.parseLocalDateIfPresent(squares.get(5).text(), DATE_TIME_FORMATTER).orElse(null))
                 .amount(StringParserUtil.parseDoubleIfPresent(squares.get(7).text()).orElse(null))
                 .build(),
             Dividend.builder()
-                .declaredDate(StringParserUtil.parseLocalDateIfPresent(squares.get(2).text(), dateTimeFormatter).orElse(null))
-                .exDiv(StringParserUtil.parseLocalDateIfPresent(squares.get(4).text(), dateTimeFormatter).orElse(null))
-                .paid(StringParserUtil.parseLocalDateIfPresent(squares.get(6).text(), dateTimeFormatter).orElse(null))
+                .declaredDate(StringParserUtil.parseLocalDateIfPresent(squares.get(2).text(), DATE_TIME_FORMATTER).orElse(null))
+                .exDiv(StringParserUtil.parseLocalDateIfPresent(squares.get(4).text(), DATE_TIME_FORMATTER).orElse(null))
+                .paid(StringParserUtil.parseLocalDateIfPresent(squares.get(6).text(), DATE_TIME_FORMATTER).orElse(null))
                 .amount(StringParserUtil.parseDoubleIfPresent(squares.get(8).text()).orElse(null))
                 .build()
         );

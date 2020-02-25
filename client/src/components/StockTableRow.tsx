@@ -1,6 +1,6 @@
 import React from "react";
-import "../style/StockTableRow.css"
-import {Stock} from "../types/Stock";
+import "../style/StockTableRow.css";
+import { Stock } from "../types/Stock";
 
 interface StockTableRowProps {
     stockDisplayValue: Stock,
@@ -8,13 +8,17 @@ interface StockTableRowProps {
 }
 
 export class StockTableRow extends React.Component<StockTableRowProps, object> {
-
     getRowCells = () : JSX.Element[] => {
-        const stockDisplayValue = this.props.stockDisplayValue;
+        const { stockDisplayValue } = this.props;
         return Object.entries(stockDisplayValue)
             .filter(e => e[0] !== "id") // don't display id column's value
-            .map(e => <td className={"tableCell " + (Number.isFinite(e[1]) || e[1] === null ? "right-align" : "left-align")} // right-align numbers and nulls
-                          key={stockDisplayValue.id + "_" + e[0]}>{this.getCellDisplayValue(e[1])}</td>)
+            .map(e => (
+              <td
+                  className={`tableCell ${Number.isFinite(e[1]) || e[1] === null ? "right-align" : "left-align"}`} // right-align numbers and nulls
+                    key={`${stockDisplayValue.id}_${e[0]}`}
+                >{this.getCellDisplayValue(e[1])}
+                </td>
+            ));
     };
 
     getCellDisplayValue = (initalValue) : string => {
@@ -27,7 +31,7 @@ export class StockTableRow extends React.Component<StockTableRowProps, object> {
         return (
             <tr className={this.props.alternateRow ? "alternateRow" : ""}>
                 {cells}
-            </tr>
+          </tr>
         );
     }
 }

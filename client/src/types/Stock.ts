@@ -1,6 +1,6 @@
-import {FinancialData} from "./FinancialData";
-import {KeyStats} from "./KeyStats";
-import {Dividend} from "./Dividend";
+import { FinancialData } from "./FinancialData";
+import { KeyStats } from "./KeyStats";
+import { Dividend } from "./Dividend";
 
 export interface Stock {
     id: string,

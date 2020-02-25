@@ -1,11 +1,11 @@
 import React from "react";
-import "../../style/FiltersContainer.css"
-import {Column} from "../../types/Column";
-import {ColumnFilter} from "./ColumnFilter";
-import {Stock} from "../../types/Stock";
-import {StockFilter} from "./StockFilter";
-import {CountryFilter} from "./CountryFilter";
-import {YearFilter} from "./YearFilter";
+import "../../style/FiltersContainer.css";
+import { Column } from "../../types/Column";
+import { ColumnFilter } from "./ColumnFilter";
+import { Stock } from "../../types/Stock";
+import { StockFilter } from "./StockFilter";
+import { CountryFilter } from "./CountryFilter";
+import { YearFilter } from "./YearFilter";
 
 interface FilterersContainerProps {
     columns: Column[],
@@ -20,35 +20,28 @@ interface FilterersContainerProps {
 }
 
 export class FiltersContainer extends React.Component<FilterersContainerProps, object> {
+    getKeyStatsFilters = () : JSX.Element[] => this.props.columns
+        .filter(col => col.title !== "id")
+        .filter(col => !this.props.financialDataColumnTitles.includes(col.title))
+        .map(col => <ColumnFilter column={col} key={col.title} onChange={this.props.onColumnChange} />);
 
-    getKeyStatsFilters = () : JSX.Element[] => {
-        return this.props.columns
-            .filter(col => col.title !== "id")
-            .filter(col => !this.props.financialDataColumnTitles.includes(col.title))
-            .map(col => <ColumnFilter column={col} key={col.title} onChange={this.props.onColumnChange}/>)
-    };
+    getFinancialDataFilters = () : JSX.Element[] => this.props.columns
+        .filter(col => col.title !== "id")
+        .filter(col => this.props.financialDataColumnTitles.includes(col.title))
+        .map(col => <ColumnFilter column={col} key={col.title} onChange={this.props.onColumnChange} />);
 
-    getFinancialDataFilters = () : JSX.Element[] => {
-        return this.props.columns
-            .filter(col => col.title !== "id")
-            .filter(col => this.props.financialDataColumnTitles.includes(col.title))
-            .map(col => <ColumnFilter column={col} key={col.title} onChange={this.props.onColumnChange}/>)
-    };
-
-    getCountryFilters = () : JSX.Element[] => {
-        return ["EE", "LV", "LT"]
-            .map(country => <CountryFilter stocks={this.props.stocks} key={country} onChange={this.props.onCountryChange} country={country}/>)
-    };
+    getCountryFilters = () : JSX.Element[] => ["EE", "LV", "LT"]
+        .map(country => <CountryFilter stocks={this.props.stocks} key={country} onChange={this.props.onCountryChange} country={country} />);
 
     getStockFilters = () : JSX.Element[] => {
-        return this.props.stocks
-            .map(stock => <StockFilter stock={stock} key={stock.name} onChange={this.props.onStockChange}/>)
+        const sortedStocks = this.props.stocks.slice()
+            .sort((a, b) => a.name.localeCompare(b.name));
+        return sortedStocks
+            .map(stock => <StockFilter stock={stock} key={stock.name} onChange={this.props.onStockChange} />);
     };
 
-    getYearFilters = () : JSX.Element[] => {
-        return this.props.years
-            .map(year => <YearFilter year={year} key={year} selected={year === this.props.selectedYear} onChange={this.props.onYearChange}/>);
-    };
+    getYearFilters = () : JSX.Element[] => this.props.years
+        .map(year => <YearFilter year={year} key={year} selected={year === this.props.selectedYear} onChange={this.props.onYearChange} />);
 
     render() {
         const keyStatsFilters = this.getKeyStatsFilters();
@@ -57,30 +50,30 @@ export class FiltersContainer extends React.Component<FilterersContainerProps, o
         const stockFilters = this.getStockFilters();
         const yearFilters = this.getYearFilters();
         return (
-            <div className={"filtersContainer"}>
+            <div className="filtersContainer">
                 <div className="filter">
-                    <h2>Üldnäitajad</h2>
-                    <ul className={"keyStatsFilter"}>
-                        {keyStatsFilters}
-                    </ul>
+                <h2>Üldnäitajad</h2>
+                <ul className="keyStatsFilter">
+                    {keyStatsFilters}
+                  </ul>
                     <h2>Finantsnäitajad</h2>
-                    <ul className={"yearFilter"}>
-                        {yearFilters}
-                    </ul>
-                    <ul className={"financialDataFilter"}>
-                        {financialDataFilters}
-                    </ul>
-                </div>
+                    <ul className={`yearFilter columns-${yearFilters.length}`}>
+                    {yearFilters}
+                  </ul>
+                    <ul className="financialDataFilter">
+                    {financialDataFilters}
+                  </ul>
+              </div>
                 <div className="filter">
                     <h2>Aktsiad</h2>
-                    <ul className={"countryFilter"}>
+                    <ul className={`countryFilter columns-${countryFilters.length}`}>
                         {countryFilters}
-                    </ul>
+                  </ul>
                     <ul className="stockFilter">
                         {stockFilters}
-                    </ul>
-                </div>
-            </div>
+                  </ul>
+              </div>
+          </div>
         );
     }
 }

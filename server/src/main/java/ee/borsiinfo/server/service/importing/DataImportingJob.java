@@ -24,14 +24,14 @@ public class DataImportingJob {
         "EE3100026436", "LT0000127508");
 
     private final StockRepository stockRepository;
-    private final DataImportingService dataImportingService;
+    private final StockDataImportingService stockDataImportingService;
     private final CacheManager cacheManager;
 
     @Scheduled(cron = "0 0 8 * * *") // 8:00:00 every day
     public void updateAllStocks() {
         log.info("Importing new stock data");
         stockRepository.saveAll(BALTIC_MAIN_LIST_ISINS.stream()
-            .map(dataImportingService::fetchData)
+            .map(stockDataImportingService::fetchData)
             .peek(stock -> log.info("Imported {}", stock))
             .collect(toList()));
         cacheManager.getCache("stocks").clear();
