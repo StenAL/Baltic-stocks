@@ -1,5 +1,6 @@
 package ee.borsiinfo.server.service.importing;
 
+import ee.borsiinfo.server.repository.IndexRepository;
 import ee.borsiinfo.server.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 public class DataImportingJob {
     public static final int FETCH_FREQUENCY_DAYS = 1;
+    private static final String BALTIC_GENERAL_INDEX_TICKER = "";
     private static final List<String> BALTIC_MAIN_LIST_ISINS = List.of("LT0000102337", "EE3100034653", "LT0000127466", "EE3100145616",
         "EE3100007857", "EE3100016965", "EE3100127242", "LT0000130023", "LV0000100659", "LT0000102030", "EE3100004250",
         "LV0000101590", "LT0000111650", "EE3100073644", "LT0000128092", "LT0000128571", "EE3100098328", "EE3100039496",
@@ -24,7 +26,9 @@ public class DataImportingJob {
         "EE3100026436", "LT0000127508");
 
     private final StockRepository stockRepository;
+    private final IndexRepository indexRepository;
     private final StockDataImportingService stockDataImportingService;
+    private final IndexDataImportingService indexDataImportingService;
     private final CacheManager cacheManager;
 
     @Scheduled(cron = "0 0 8 * * *") // 8:00:00 every day
@@ -34,7 +38,8 @@ public class DataImportingJob {
             .map(stockDataImportingService::fetchData)
             .peek(stock -> log.info("Imported {}", stock))
             .collect(toList()));
-        cacheManager.getCache("stocks").clear();
+        indexRepository.save(indexDataImportingService.fetchData(BALTIC_GENERAL_INDEX_TICKER));
+        cacheManager.getCache("data").clear();
     }
 
 }

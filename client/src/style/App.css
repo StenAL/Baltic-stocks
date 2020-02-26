@@ -3,7 +3,13 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Roboto, sans-serif;
-    max-width: 1400px;
+    font-size: 16px;
+    max-height: 1000000px;
+}
+
+html {
+    width: 1400px;
+    max-width: 90%;
 }
 
 .App {
@@ -12,4 +18,8 @@
 
 h1, h2, h3, h4, h5, h6 {
     font-family: Montserrat, sans-serif;
+}
+
+p {
+    font-size: 1em;
 }

@@ -10,7 +10,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class IndexDTO {
-    private Long id;
     private IndexData data;
 
     @Data
@@ -27,7 +26,8 @@ public class IndexDTO {
             private String shortName;
             @JsonProperty("fullname")
             private String fullName;
-            private double change;
+            @JsonProperty("change")
+            private double changePercent;
         }
     }
 }

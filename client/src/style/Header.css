@@ -3,12 +3,12 @@ header {
 }
 
 header .logo {
-    height: 36px;
+    height: 44px;
     display: inline;
 }
 
 header h1 {
-    font-size: 44px;
+    font-size: 52px;
     padding-left: 10px;
     display: inline;
 }

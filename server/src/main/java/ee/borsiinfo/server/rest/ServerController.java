@@ -1,8 +1,9 @@
 package ee.borsiinfo.server.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import ee.borsiinfo.server.domain.Index;
 import ee.borsiinfo.server.domain.Stock;
-import ee.borsiinfo.server.dto.StockResponse;
+import ee.borsiinfo.server.dto.DataResponse;
+import ee.borsiinfo.server.repository.IndexRepository;
 import ee.borsiinfo.server.repository.StockRepository;
 import ee.borsiinfo.server.service.importing.DataImportingJob;
 import lombok.RequiredArgsConstructor;
@@ -18,22 +19,24 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/stocks")
 @CrossOrigin(origins = "http://localhost:3000")
-public class StockController {
+public class ServerController {
 
     private final StockRepository stockRepository;
+    private final IndexRepository indexRepository;
     private final CacheManager cacheManager;
 
     @GetMapping("")
-    @Cacheable("stocks")
-    public StockResponse getAllStocks() {
+    @Cacheable("data")
+    public DataResponse getAllData() {
         LocalDateTime fetchAfter = LocalDateTime.now().minusDays(DataImportingJob.FETCH_FREQUENCY_DAYS);
         List<Stock> stocks = stockRepository.findAllByTimeFetchedAfter(fetchAfter);
+        Index index = indexRepository.findAllByTimeFetchedAfter(fetchAfter).get(0);
         LocalDateTime timeFetched = stocks.get(0).getTimeFetched().truncatedTo(ChronoUnit.HOURS);
-        return new StockResponse(stocks, timeFetched);
+        return new DataResponse(stocks, timeFetched, index);
     }
 
     @PostMapping("/clearCache")
     public void clearStocksCache() {
-        cacheManager.getCache("stocks").clear();
+        cacheManager.getCache("data").clear();
     }
 }

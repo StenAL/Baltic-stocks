@@ -1,5 +1,6 @@
 package ee.borsiinfo.server.service.importing;
 
+import ee.borsiinfo.server.domain.Index;
 import ee.borsiinfo.server.dto.IndexDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Service
@@ -18,9 +20,21 @@ public class IndexDataImportingService {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final RestTemplate restTemplate;
 
-    public IndexDTO fetchData(String ticker) {
+    public Index fetchData(String ticker) {
         URI uri = UriComponentsBuilder.fromUriString(generateApiUrl(ticker)).build(true).toUri();
-        return restTemplate.getForObject(uri, IndexDTO.class);
+        return convertDtoToIndex(restTemplate.getForObject(uri, IndexDTO.class));
+    }
+
+    private Index convertDtoToIndex(IndexDTO dto) {
+        IndexDTO.IndexData.Chart chart = dto.getData().getCharts().get(0);
+        return Index.builder()
+            .start(dto.getData().getStart())
+            .end(dto.getData().getEnd())
+            .ticker(chart.getTicker())
+            .name(chart.getFullName())
+            .changePercent(chart.getChangePercent())
+            .timeFetched(LocalDateTime.now())
+            .build();
     }
 
     private String generateApiUrl(String ticker) {

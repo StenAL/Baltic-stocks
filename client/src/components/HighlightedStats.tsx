@@ -1,14 +1,16 @@
 import React from "react";
 import "../style/HighlightedStats.css";
-import { Stock } from "../types/Stock";
+import {Stock} from "../types/Stock";
+import {Index} from "../types";
 
 interface HighlightedStatsProps {
     stocks: Stock[],
+    index: Index,
 }
 
 export class HighlightedStats extends React.Component<HighlightedStatsProps, object> {
-    getTotalProfitString = () : string => {
-        const { stocks } = this.props;
+    getTotalProfitString = (): string => {
+        const {stocks} = this.props;
         let profit = stocks.map(s => s.financialData.slice(-1).pop())
             .flat()
             .filter(f => f.year === 2018)
@@ -20,26 +22,27 @@ export class HighlightedStats extends React.Component<HighlightedStatsProps, obj
         return profitString.join(" ");
     };
 
+    getIndexInvestmentChange = (base: number): string => (((this.props.index.changePercent) / 100 + 1) * base)
+        .toFixed(2).toString();
+
     render() {
         return (
             <div className="highlightContainer">
                 <div className="highlightedStat">
-                <h2>
-                    {this.getTotalProfitString()}
-                    {' '}
-                    €
-</h2>
-                <p>Balti põhinimekirja ettevõtete viimase 12 kuu kasum</p>
-              </div>
+                    <h2>
+                        {this.getTotalProfitString() + " "}
+                        €
+                    </h2>
+                    <p>Balti põhinimekirja ettevõtete viimase 12 kuu kasum</p>
+                </div>
                 <div className="highlightedStat">
                     <h2>
-                        {"1300"}
-                        {' '}
-                    €
-</h2>
-                    <p>mingi lahe näitaja läheb siia</p>
-              </div>
-          </div>
+                        {this.getIndexInvestmentChange(1000) + " "}
+                        €
+                    </h2>
+                    <p>portfelli väärtus täna, kui oleksid ostnud aasta tagasi 1000 € eest Balti põhinimekirja aktsiaid</p>
+                </div>
+            </div>
         );
     }
 }
