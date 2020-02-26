@@ -8,7 +8,7 @@ export class Header extends React.Component<object, object> {
         return (
             <header>
                 <img src={logo} className="logo" alt="Logo" />
-                <h1>Pealkiri</h1>
+                <h1>Balti Aktsiad</h1>
           </header>
         );
     }

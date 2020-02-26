@@ -3,6 +3,7 @@
     justify-content: space-between;
     margin-bottom: 50px;
     background-color: #e8e8e8;
+    border-radius: 7px;
 }
 
 
@@ -19,6 +20,11 @@
 
 .filtersContainer .filter ul {
     list-style: none;
+    text-align: left;
+}
+
+p.financialDataDisclaimer {
+    padding-top: 2px;
     text-align: left;
 }
 
