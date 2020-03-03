@@ -1,4 +1,4 @@
-export interface Index {
+export interface IndexType {
     id: number,
     start: string,
     end: string,

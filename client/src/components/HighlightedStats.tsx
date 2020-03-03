@@ -1,11 +1,11 @@
 import React from "react";
 import "../style/HighlightedStats.css";
 import {Stock} from "../types/Stock";
-import {Index} from "../types";
+import {IndexType} from "../types/IndexType";
 
 interface HighlightedStatsProps {
     stocks: Stock[],
-    index: Index,
+    index: IndexType,
 }
 
 export class HighlightedStats extends React.Component<HighlightedStatsProps, object> {

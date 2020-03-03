@@ -8,7 +8,7 @@ import {FiltersContainer} from "./components/filtering/FiltersContainer";
 import {HighlightedStats} from "./components/HighlightedStats";
 import {Footer} from "./components/Footer";
 import {FinancialData} from "./types/FinancialData";
-import {Index} from "./types/Index";
+import {IndexType} from "./types/IndexType";
 
 interface AppState {
     stocks: Stock[],
@@ -17,8 +17,10 @@ interface AppState {
     sortingOrder: ("asc" | "desc"),
     selectedYear: number,
     timeFetched: string,
-    index: Index,
+    index: IndexType,
 }
+
+const API_URL = "http://localhost:12345";
 
 export default class App extends Component<object, AppState> {
     titles: object;
@@ -80,7 +82,7 @@ export default class App extends Component<object, AppState> {
     }
 
     componentDidMount(): void {
-        fetch("http://localhost:12345/stocks")
+        fetch(API_URL + "/stocks")
             .then(res => res.json())
             .then((data) => {
                 const stocks: Stock[] = data.stocks.map((d: Stock) => ({...d, visible: true}));
