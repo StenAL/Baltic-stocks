@@ -16,7 +16,7 @@ export class CountryFilter extends React.Component<CountryFilterProps, object> {
     };
 
     allCountryStocksVisible = () : boolean => this.props.stocks.filter(s => s.isin.startsWith(this.props.country))
-        .every(s => s.visible);
+        .some(s => s.visible);
 
     render() {
         return (

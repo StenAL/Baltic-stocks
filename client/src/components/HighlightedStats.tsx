@@ -11,7 +11,8 @@ interface HighlightedStatsProps {
 export class HighlightedStats extends React.Component<HighlightedStatsProps, object> {
     getTotalProfitString = (): string => {
         const {stocks} = this.props;
-        let profit = stocks.map(s => s.financialData.slice(-1).pop())
+        let profit = stocks
+            .map(s => s.financialData.slice(-1).pop())
             .flat()
             .filter(f => f.year === 2018)
             .map(data => data.netIncome)

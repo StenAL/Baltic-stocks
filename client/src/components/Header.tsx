@@ -9,6 +9,7 @@ export class Header extends React.Component<object, object> {
             <header>
                 <img src={logo} className="logo" alt="Logo" />
                 <h1>Balti Aktsiad</h1>
+                <h2>Siia läheb mingi loosung</h2>
           </header>
         );
     }
