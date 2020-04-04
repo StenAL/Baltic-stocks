@@ -21,9 +21,9 @@ export class StockTableRow extends React.Component<StockTableRowProps, object> {
             ));
     };
 
-    getCellDisplayValue = (initalValue) : string => {
-        if (initalValue === null) return "-";
-        return Number.isFinite(initalValue) ? initalValue.toFixed(2).toString() : initalValue;
+    getCellDisplayValue = (initialValue) : string => {
+        if (initialValue === null) return "-";
+        return Number.isFinite(initialValue) ? initialValue.toFixed(2).toString() : initialValue;
     };
 
     render() {

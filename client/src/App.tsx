@@ -1,11 +1,11 @@
 import "./style/App.css";
 import React, {Component} from 'react';
 import {Stock} from "./types/Stock";
-import {Header} from "./components/Header";
-import {StockTable} from "./components/StockTable";
+import Header from "./components/Header";
+import StockTable from "./components/StockTable";
 import {Column} from "./types/Column";
-import {FiltersContainer} from "./components/filtering/FiltersContainer";
-import {HighlightedStats} from "./components/HighlightedStats";
+import FiltersContainer from "./components/filtering/FiltersContainer";
+import HighlightedStats from "./components/HighlightedStats";
 import {Footer} from "./components/Footer";
 import {FinancialData} from "./types/FinancialData";
 import {IndexType} from "./types/IndexType";
@@ -23,40 +23,39 @@ interface AppState {
 const API_URL = process.env.REACT_APP_API_URL;
 
 export default class App extends Component<object, AppState> {
-    titles: object;
-
+    titles: string[];
     yearlyFinancialData: string[];
 
     constructor(props: object) {
         super(props);
-        this.titles = {
-            id: "id -- this should never be seen",
-            ticker: "Tiksuja",
-            name: "Nimi",
-            isin: "ISIN",
-            priceEarningTtm: "12 kuu P/E",
-            priceBook: "P/B",
-            priceSalesTtm: "12 kuu P/S",
-            revenueGrowthThreeYearAvg: "3 aasta keskmise tulu kasv",
-            operatingMarginTtm: "12 kuu operating margin",
-            netMarginTtm: "12 kuu net margin",
-            roeTtm: "12 kuu ROE",
-            debtEquity: "Debt/Equity",
-            revenue: "Tulu",
-            operatingIncome: "Operating income",
-            netIncome: "Kasum",
-            earningsPerShare: "EPS",
-            dilutedSharesOutstanding: "dilutedSharesOutstanding",
-            currentAssets: "Käibevarad",
-            nonCurrentAssets: "Põhivarad",
-            totalAssets: "Koguvarad",
-            currentLiabilities: "Lühiajalised kohustised",
-            totalLiabilities: "Kogukohustised",
-            totalEquity: "Omakapital",
-            operatingCashFlow: "Äritegevuse rahavood",
-            capitalExpenditure: "CapEx",
-            freeCashFlow: "freeCashFlow",
-        };
+        this.titles = [
+            "id",
+            "ticker",
+            "name",
+            "isin",
+            "priceEarningTtm",
+            "priceBook",
+            "priceSalesTtm",
+            "revenueGrowthThreeYearAvg",
+            "operatingMarginTtm",
+            "netMarginTtm",
+            "roeTtm",
+            "debtEquity",
+            "revenue",
+            "operatingIncome",
+            "netIncome",
+            "earningsPerShare",
+            "dilutedSharesOutstanding",
+            "currentAssets",
+            "nonCurrentAssets",
+            "totalAssets",
+            "currentLiabilities",
+            "totalLiabilities",
+            "totalEquity",
+            "operatingCashFlow",
+            "capitalExpenditure",
+            "freeCashFlow",
+        ];
 
         this.yearlyFinancialData = [
             "revenue", "operatingIncome", "netIncome", "earningsPerShare", "dilutedSharesOutstanding", "currentAssets",
@@ -71,14 +70,13 @@ export default class App extends Component<object, AppState> {
             "debtEquity", "revenue", "netIncome", "capitalExpenditure", "freeCashFlow"];
 
 
-        const columns: Column[] = Object.entries(this.titles)
-            .map(title => ({title: title[0], visible: defaultDisplayedStats.includes(title[0]), name: title[1]}));
+        const columns: Column[] = this.titles
+            .map(title => ({title: title, visible: defaultDisplayedStats.includes(title)}));
 
         this.state = {
             stocks: [], columns, sortingStocksBy: "invalid", sortingOrder: "desc", selectedYear: 2019,
             timeFetched: "", index: {id: -1, start: "", end: "", name: "", ticker: "", changePercent: 0}
-        }
-        ;
+        };
     }
 
     componentDidMount(): void {
@@ -97,7 +95,7 @@ export default class App extends Component<object, AppState> {
 
     getStockDisplayedData = (stock: Stock): object => {
         const copy = {...stock, ...stock.keyStats, ...this.getDisplayedFinancialData(stock)};
-        Object.keys(copy).filter(k => !(k in this.titles)).forEach(k => delete copy[k]); // delete attributes that are never displayed in table
+        Object.keys(copy).filter(k => !(this.titles.includes(k))).forEach(k => delete copy[k]); // delete attributes that are never displayed in table
 
         this.state.columns.filter(c => !c.visible && c.title !== "id") // delete attributes that are currently not visible except id
             .map(c => c.title)
@@ -111,7 +109,7 @@ export default class App extends Component<object, AppState> {
     };
 
     invertColumnVisibility = (event): void => {
-        const columns: Column[] = this.state.columns.map(col => (`checkbox-${col.name}` === event.target.id ? {
+        const columns: Column[] = this.state.columns.map(col => (`checkbox-${col.title}` === event.target.id ? {
             ...col,
             visible: !col.visible
         } : col));
@@ -138,18 +136,16 @@ export default class App extends Component<object, AppState> {
 
     sortStocksByAttribute = (columnTitle: string): void => {
         const stocks: Stock[] = this.state.stocks.slice();
-        const attribute: string = Object.entries(this.titles).filter(e => e[1] === columnTitle)
-            .map(e => e[0])[0];
-        if (attribute === this.state.sortingStocksBy) { // already sorting table by this attribute, reverse the order
+        if (columnTitle === this.state.sortingStocksBy) { // already sorting table by this attribute, reverse the order
             stocks.reverse();
             this.setState({stocks, sortingOrder: this.state.sortingOrder === "desc" ? "asc" : "desc"});
         } else {
             let sortedStocks: Stock[] = stocks
-                .filter(s => s[attribute] || s.keyStats[attribute] || this.getDisplayedFinancialData(s)?.[attribute]) // don't sort stocks where sorting attribute is not available
-                .sort((a, b) => this.compareStocksByAttribute(a, b, attribute));
-            sortedStocks = [...stocks.filter(s => !s[attribute] && !s.keyStats[attribute] && !this.getDisplayedFinancialData(s)?.[attribute]),
+                .filter(s => s[columnTitle] || s.keyStats[columnTitle] || this.getDisplayedFinancialData(s)?.[columnTitle]) // don't sort stocks where sorting attribute is not available
+                .sort((a, b) => this.compareStocksByAttribute(a, b, columnTitle));
+            sortedStocks = [...stocks.filter(s => !s[columnTitle] && !s.keyStats[columnTitle] && !this.getDisplayedFinancialData(s)?.[columnTitle]),
                 ...sortedStocks]; // add null/undefined to beginning of sorted sequence
-            this.setState({stocks: sortedStocks, sortingStocksBy: attribute, sortingOrder: "desc"});
+            this.setState({stocks: sortedStocks, sortingStocksBy: columnTitle, sortingOrder: "desc"});
         }
     };
 
@@ -187,7 +183,7 @@ export default class App extends Component<object, AppState> {
         const visibleStocksData = this.state.stocks
             .filter(s => s.visible)
             .map(s => this.getStockDisplayedData(s));
-        const visibleColumnNames = this.state.columns.filter(c => c.visible).map(c => c.name);
+        const visibleColumns = this.state.columns.filter(c => c.visible).map(c => c.title);
         const tickerSortedStocks = this.state.stocks.slice().sort((a, b) => a.ticker.localeCompare(b.ticker));
         return (
             <div className="App">
@@ -204,8 +200,8 @@ export default class App extends Component<object, AppState> {
                 />
                 <StockTable
                     onHeaderClick={this.sortStocksByAttribute} stockDisplayValues={visibleStocksData}
-                    sortingBy={this.titles[this.state.sortingStocksBy]} sortingOrder={this.state.sortingOrder}
-                    columnTitles={visibleColumnNames} timeFetched={this.state.timeFetched}
+                    sortingBy={this.state.sortingStocksBy} sortingOrder={this.state.sortingOrder}
+                    columnTitles={visibleColumns} timeFetched={this.state.timeFetched}
                 />
                 <Footer/>
             </div>

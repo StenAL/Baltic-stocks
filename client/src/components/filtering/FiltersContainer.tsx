@@ -1,13 +1,14 @@
 import React from "react";
 import "../../style/FiltersContainer.css";
+import {WithTranslation, withTranslation} from "react-i18next";
 import {Column} from "../../types/Column";
-import {ColumnFilter} from "./ColumnFilter";
+import ColumnFilter from "./ColumnFilter";
 import {Stock} from "../../types/Stock";
 import {StockFilter} from "./StockFilter";
-import {CountryFilter} from "./CountryFilter";
+import CountryFilter from "./CountryFilter";
 import {YearFilter} from "./YearFilter";
 
-interface FilterersContainerProps {
+interface FilterersContainerProps extends WithTranslation {
     columns: Column[],
     financialDataColumnTitles: string[],
     stocks: Stock[],
@@ -19,7 +20,7 @@ interface FilterersContainerProps {
     onYearChange: (event) => void,
 }
 
-export class FiltersContainer extends React.Component<FilterersContainerProps, object> {
+class FiltersContainer extends React.Component<FilterersContainerProps, object> {
     getKeyStatsFilters = (): JSX.Element[] => this.props.columns
         .filter(col => col.title !== "id")
         .filter(col => !this.props.financialDataColumnTitles.includes(col.title))
@@ -46,6 +47,7 @@ export class FiltersContainer extends React.Component<FilterersContainerProps, o
                                  onChange={this.props.onYearChange}/>);
 
     render() {
+        const {t} = this.props;
         const keyStatsFilters = this.getKeyStatsFilters();
         const financialDataFilters = this.getFinancialDataFilters();
         const countryFilters = this.getCountryFilters();
@@ -54,21 +56,21 @@ export class FiltersContainer extends React.Component<FilterersContainerProps, o
         return (
             <div className="filtersContainer">
                 <div className="filter">
-                    <h2>Üldnäitajad</h2>
+                    <h2>{t("keyStats")}</h2>
                     <ul className="keyStatsFilter">
                         {keyStatsFilters}
                     </ul>
-                    <h2>Finantsnäitajad</h2>
+                    <h2>{t("financials")}</h2>
                     <ul className={`yearFilter columns-${yearFilters.length}`}>
                         {yearFilters}
                     </ul>
                     <ul className="financialDataFilter">
                         {financialDataFilters}
                     </ul>
-                    <p className={"financialDataDisclaimer"}><em>Kõik finantsnäitajad v.a EPS mln eurodes</em></p>
+                    <p className={"financialDataDisclaimer"}><em>{t("financial data disclaimer")}</em></p>
                 </div>
                 <div className="filter">
-                    <h2>Aktsiad</h2>
+                    <h2>{t("stocks")}</h2>
                     <ul className={`countryFilter columns-${countryFilters.length}`}>
                         {countryFilters}
                     </ul>
@@ -80,3 +82,5 @@ export class FiltersContainer extends React.Component<FilterersContainerProps, o
         );
     }
 }
+
+export default withTranslation()(FiltersContainer);

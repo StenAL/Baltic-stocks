@@ -1,14 +1,11 @@
 import React from "react";
 import "../style/Footer.css";
 
-// @ts-ignore
-import footer from "../assets/footer.png";
-
 export class Footer extends React.Component<object, object> {
     render() {
         return (
             <footer>
-                <img src={footer} className="footer" alt="text" />
+                <img src={process.env.PUBLIC_URL + "/footer.png"} className="footer" alt="text" />
           </footer>
         );
     }

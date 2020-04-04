@@ -1,9 +1,10 @@
 import React from "react";
-import {StockTableHead} from "./StockTableHead";
+import StockTableHead from "./StockTableHead";
 import {StockTableRow} from "./StockTableRow";
 import "../style/StockTable.css";
+import {WithTranslation, withTranslation} from "react-i18next";
 
-interface StockTableProps {
+interface StockTableProps extends WithTranslation {
     stockDisplayValues: object[],
     sortingBy: string,
     sortingOrder: ("asc" | "desc"),
@@ -12,13 +13,14 @@ interface StockTableProps {
     onHeaderClick: (event) => void,
 }
 
-export class StockTable extends React.Component<StockTableProps, object> {
+class StockTable extends React.Component<StockTableProps, object> {
     getTableRows = (stocks): JSX.Element[] => stocks.map((s, i) => <StockTableRow alternateRow={i % 2 === 1}
                                                                                   stockDisplayValue={s}
                                                                                   key={`stock_${s.id}`}/>);
 
     render() {
         const tableRows = this.getTableRows(this.props.stockDisplayValues);
+        const {t} = this.props;
         return (
             <div>
                 <table className="stockTable">
@@ -33,9 +35,11 @@ export class StockTable extends React.Component<StockTableProps, object> {
                     </tbody>
                 </table>
                 <p>
-                    Andmed seisuga <span className="refreshDate">{this.props.timeFetched}</span>
+                    {t('data as of')} <span className="refreshDate">{this.props.timeFetched}</span>
                 </p>
             </div>
         );
     }
 }
+
+export default withTranslation()(StockTable);
