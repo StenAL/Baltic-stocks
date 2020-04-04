@@ -1,16 +1,24 @@
+import i18next from "i18next";
 import React from "react";
-// @ts-ignore
-import logo from "../assets/logo.png";
 import "../style/Header.css";
+import { withTranslation } from 'react-i18next';
+import {LanguageSelector} from "./LanguageSelector";
 
-export class Header extends React.Component<object, object> {
+class Header extends React.Component<any, object> {
     render() {
+        const { t } = this.props;
         return (
             <header>
-                <img src={logo} className="logo" alt="Logo" />
-                <h1>Balti Aktsiad</h1>
-                <h2>Siia läheb mingi loosung</h2>
+                { i18next.language !== "en" ?
+                <LanguageSelector languageCode={"en"} countryCode={"gb"}/> :
+                < LanguageSelector languageCode={"et"} countryCode={"ee"}/>
+                }
+                <img src={process.env.PUBLIC_URL + "/logo.png"} className="logo" alt="Logo" />
+                <h1>{t('title')}</h1>
+                <h2>{t('tagline')}</h2>
           </header>
         );
     }
 }
+
+export default withTranslation()(Header);

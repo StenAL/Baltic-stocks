@@ -2,13 +2,14 @@ import React from "react";
 import "../style/HighlightedStats.css";
 import {Stock} from "../types/Stock";
 import {IndexType} from "../types/IndexType";
+import {WithTranslation, withTranslation} from 'react-i18next';
 
-interface HighlightedStatsProps {
+interface HighlightedStatsProps extends WithTranslation {
     stocks: Stock[],
     index: IndexType,
 }
 
-export class HighlightedStats extends React.Component<HighlightedStatsProps, object> {
+class HighlightedStats extends React.Component<HighlightedStatsProps, object> {
     getTotalProfitString = (): string => {
         const {stocks} = this.props;
         let profit = stocks
@@ -27,6 +28,7 @@ export class HighlightedStats extends React.Component<HighlightedStatsProps, obj
         .toFixed(2).toString();
 
     render() {
+        const { t } = this.props;
         return (
             <div className="highlightContainer">
                 <div className="highlightedStat">
@@ -34,16 +36,18 @@ export class HighlightedStats extends React.Component<HighlightedStatsProps, obj
                         {this.getTotalProfitString() + " "}
                         €
                     </h2>
-                    <p>Balti põhinimekirja ettevõtete viimase 12 kuu kasum</p>
+                    <p>{t('12 month profit')}</p>
                 </div>
                 <div className="highlightedStat">
                     <h2>
                         {this.getIndexInvestmentChange(1000) + " "}
                         €
                     </h2>
-                    <p>portfelli väärtus täna, kui oleksid ostnud aasta tagasi 1000 € eest Balti põhinimekirja aktsiaid</p>
+                    <p>{t('12 month index change')}</p>
                 </div>
             </div>
         );
     }
 }
+
+export default withTranslation()(HighlightedStats);
