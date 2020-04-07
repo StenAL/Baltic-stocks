@@ -5,6 +5,7 @@ import ee.borsiinfo.server.domain.Stock;
 import ee.borsiinfo.server.dto.DataResponse;
 import ee.borsiinfo.server.repository.IndexRepository;
 import ee.borsiinfo.server.repository.StockRepository;
+import ee.borsiinfo.server.service.importing.DataImportingJob;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
@@ -16,18 +17,18 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/stocks")
+@RequestMapping("/api")
 public class ServerController {
 
     private final StockRepository stockRepository;
     private final IndexRepository indexRepository;
     private final CacheManager cacheManager;
 
-    @GetMapping("")
+    @GetMapping("/stocks")
     @Cacheable("data")
     @CrossOrigin("*")
     public DataResponse getAllData() {
-        LocalDateTime fetchAfter = LocalDateTime.now().minusDays(2);
+        LocalDateTime fetchAfter = LocalDateTime.now().minusDays(DataImportingJob.FETCH_FREQUENCY_DAYS);
         List<Stock> stocks = stockRepository.findAllByTimeFetchedAfter(fetchAfter);
         Index index = indexRepository.findAllByTimeFetchedAfter(fetchAfter).get(0);
         LocalDateTime timeFetched = stocks.get(0).getTimeFetched().truncatedTo(ChronoUnit.HOURS);
