@@ -6,7 +6,7 @@ const resources = {
     en: {
         translation: {
             "title": "Baltic Stocks",
-            "tagline": "Tagline goes here",
+            "tagline": "More than 30 different shares, updated daily",
             "12 month profit": "cumulative profits of Baltic Main List companies in the last 12 months",
             "12 month index change": "portfolio value today if you had bought 1000 € of Baltic Main List stocks one year ago",
             "keyStats": "Key Stats",
@@ -42,12 +42,13 @@ const resources = {
             "LV": "Latvia",
             "LT": "Lithuania",
             "data as of": "Data as of",
+            "open-source": "This application is <a href=\"https://github.com/StenAL/baltic-stocks\">open-source</a>",
         }
     },
     et: {
         translation: {
             "title": "Balti Aktsiad",
-            "tagline": "Siia läheb mingi loosung",
+            "tagline": "Enam kui 30 erineva väärtpaberi alati värsked andmed",
             "12 month profit": "Balti põhinimekirja ettevõtete viimase 12 kuu kasum",
             "12 month index change": "portfelli väärtus täna, kui oleksid ostnud aasta tagasi 1000 € eest Balti põhinimekirja aktsiaid",
             "keyStats": "Üldnäitajad",
@@ -83,6 +84,7 @@ const resources = {
             "LV": "Läti",
             "LT": "Leedu",
             "data as of": "Andmed seisuga",
+            "open-source": "See rakendus on <a href=\"https://github.com/StenAL/baltic-stocks\">avatud lähtekoodiga</a>",
         }
     }
 };

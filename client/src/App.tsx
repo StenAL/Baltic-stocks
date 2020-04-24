@@ -6,7 +6,7 @@ import StockTable from "./components/StockTable";
 import {Column} from "./types/Column";
 import FiltersContainer from "./components/filtering/FiltersContainer";
 import HighlightedStats from "./components/HighlightedStats";
-import {Footer} from "./components/Footer";
+import Footer from "./components/Footer";
 import {FinancialData} from "./types/FinancialData";
 import {IndexType} from "./types/IndexType";
 
