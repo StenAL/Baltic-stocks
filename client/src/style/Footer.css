@@ -1,7 +1,16 @@
 footer {
-    margin-top: 45px;
+    margin: 45px 0 50px 0;
 }
 
 footer img.footer {
     width: 100%;
+}
+
+footer p {
+    margin-top: 20px;
+    color: #979797;
+}
+
+footer p a {
+    text-decoration: none;
 }
