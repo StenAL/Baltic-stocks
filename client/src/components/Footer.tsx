@@ -1,4 +1,5 @@
 import React from "react";
+import i18next from "i18next";
 import "../style/Footer.css";
 import {withTranslation} from "react-i18next";
 
@@ -7,8 +8,7 @@ class Footer extends React.Component<any, object> {
         const { t } = this.props;
         return (
             <footer>
-                {/*TODO: Use language-localized footer image*/}
-                <img src={process.env.PUBLIC_URL + "/footer.png"} className="footer" alt="text" />
+                <img src={`${process.env.PUBLIC_URL}/footer-${i18next.language.substring(0, 2)}.png`} className="footer" alt="Skyline view of Tallinn" />
                 <p dangerouslySetInnerHTML={{__html: t('open-source', {interpolation: {escapeValue: false}})}}/>
           </footer>
         );
