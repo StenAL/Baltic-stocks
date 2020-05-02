@@ -64,7 +64,7 @@ const resources = {
             "revenueGrowthThreeYearAvg": "3 aasta keskmise tulu kasv",
             "operatingMarginTtm": "12 kuu tegevusmarginaal",
             "netMarginTtm": "12 kuu puhasmarginaal",
-            "roeTtm": "12 month ROE",
+            "roeTtm": "12 kuu ROE",
             "debtEquity": "D/E",
             "revenue": "Tulu",
             "operatingIncome": "Põhitegevustulu",
@@ -98,9 +98,9 @@ i18n
         debug: false,
 
         interpolation: {
-            escapeValue: false, // not needed for react as it escapes by default
+            escapeValue: false, // not needed for React as it escapes by default
         }
-    });
+    }).catch(console.log);
 
 
 export default i18n;
