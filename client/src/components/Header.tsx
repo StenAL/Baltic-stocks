@@ -9,9 +9,9 @@ class Header extends React.Component<any, object> {
         const { t } = this.props;
         return (
             <header>
-                { i18next.language !== "en" ?
+                { i18next.language.substring(0, 2) !== "en" ?
                 <LanguageSelector languageCode={"en"} countryCode={"gb"}/> :
-                < LanguageSelector languageCode={"et"} countryCode={"ee"}/>
+                <LanguageSelector languageCode={"et"} countryCode={"ee"}/>
                 }
                 <img src={process.env.PUBLIC_URL + "/logo.png"} className="logo" alt="Logo" />
                 <h1>{t('title')}</h1>
