@@ -52,6 +52,7 @@ jobs:
       - name: build static assets
         env:
           REACT_APP_API_URL: https://laane.xyz/stonks/api
+          REACT_APP_GOOGLE_ANALYTICS_CODE: UA-162143380-1
         working-directory: ./client
         run: npm run build
 
