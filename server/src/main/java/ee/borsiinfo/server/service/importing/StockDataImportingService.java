@@ -3,6 +3,7 @@ package ee.borsiinfo.server.service.importing;
 import ee.borsiinfo.server.domain.*;
 import ee.borsiinfo.server.util.StringParserUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class StockDataImportingService {
 
@@ -52,6 +54,7 @@ public class StockDataImportingService {
             .build();
         stock.getFinancialData().forEach(f -> f.setStock(stock));
         stock.getDividends().forEach(d -> d.setStock(stock));
+        log.info("Imported {}", stock);
         return stock;
     }
 

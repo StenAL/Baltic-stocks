@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.stream.Collectors.toList;
 
@@ -36,10 +37,10 @@ public class DataImportingJob {
         log.info("Importing new stock data");
         stockRepository.saveAll(BALTIC_MAIN_LIST_ISINS.stream()
             .map(stockDataImportingService::fetchData)
-            .peek(stock -> log.info("Imported {}", stock))
             .collect(toList()));
+
         indexRepository.save(indexDataImportingService.fetchData(BALTIC_GENERAL_INDEX_TICKER));
-        cacheManager.getCache("data").clear();
+        Objects.requireNonNull(cacheManager.getCache("data")).clear();
     }
 
 }

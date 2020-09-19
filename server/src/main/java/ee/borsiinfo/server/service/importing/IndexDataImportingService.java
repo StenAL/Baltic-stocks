@@ -3,6 +3,7 @@ package ee.borsiinfo.server.service.importing;
 import ee.borsiinfo.server.domain.Index;
 import ee.borsiinfo.server.dto.IndexDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class IndexDataImportingService {
@@ -27,7 +29,7 @@ public class IndexDataImportingService {
 
     private Index convertDtoToIndex(IndexDTO dto) {
         IndexDTO.IndexData.Chart chart = dto.getData().getCharts().get(0);
-        return Index.builder()
+        Index index = Index.builder()
             .start(dto.getData().getStart())
             .end(dto.getData().getEnd())
             .ticker(chart.getTicker())
@@ -35,6 +37,8 @@ public class IndexDataImportingService {
             .changePercent(chart.getChangePercent())
             .timeFetched(LocalDateTime.now())
             .build();
+        log.info("Imported {}", index);
+        return index;
     }
 
     private String generateApiUrl(String ticker) {
