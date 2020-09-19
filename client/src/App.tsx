@@ -26,7 +26,7 @@ interface AppState {
     index: IndexType,
 }
 
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:12345/api";
 
 export default class App extends Component<object, AppState> {
     titles: string[];
