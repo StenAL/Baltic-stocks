@@ -22,6 +22,7 @@ public class ServerController {
 
     private final StockRepository stockRepository;
     private final IndexRepository indexRepository;
+    private final DataImportingJob dataImportingJob;
     private final CacheManager cacheManager;
 
     @GetMapping("/stocks")
@@ -33,6 +34,11 @@ public class ServerController {
         Index index = indexRepository.findAllByTimeFetchedAfter(fetchAfter).get(0);
         LocalDateTime timeFetched = stocks.get(0).getTimeFetched().truncatedTo(ChronoUnit.HOURS);
         return new DataResponse(stocks, timeFetched, index);
+    }
+
+    @PostMapping("/importAll")
+    public void importAllData() {
+        dataImportingJob.updateAllStocks();
     }
 
     @PostMapping("/clearCache")
