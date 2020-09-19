@@ -13,9 +13,9 @@ class HighlightedStats extends React.Component<HighlightedStatsProps, object> {
     getTotalProfitString = (): string => {
         const {stocks} = this.props;
         let profit = stocks
-            .map(s => s.financialData.slice(-1).pop())
+            .map(s => s.financialData)
             .flat()
-            .filter(f => f.year === 2018)
+            .filter(f => f.year === 2019)
             .map(data => data.netIncome)
             .reduce((acc, curr) => acc + curr, 0);
         profit = Math.round(profit) * 1000000;
@@ -36,7 +36,7 @@ class HighlightedStats extends React.Component<HighlightedStatsProps, object> {
                         {this.getTotalProfitString() + " "}
                         €
                     </h2>
-                    <p>{t('12 month profit')}</p>
+                    <p>{t('2019 profit')}</p>
                 </div>
                 <div className="highlightedStat">
                     <h2>
