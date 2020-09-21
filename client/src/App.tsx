@@ -28,11 +28,11 @@ interface AppState {
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:12345/api";
 
-export default class App extends Component<object, AppState> {
+export default class App extends Component<any, AppState> {
     titles: string[];
     yearlyFinancialData: string[];
 
-    constructor(props: object) {
+    constructor(props: any) {
         super(props);
         this.titles = [
             "id",

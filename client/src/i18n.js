@@ -11,7 +11,7 @@ const resources = {
             "12 month index change": "portfolio value today if you had bought 1000 € of Baltic Main List stocks one year ago",
             "keyStats": "Key Stats",
             "financials": "Financials",
-            "financial data disclaimer": "All financial data excepts EPS in millions EUR",
+            "financial data disclaimer": "All financial data except EPS in millions EUR",
             "stocks": "Stocks",
             "ticker": "Ticker",
             "name": "Name",
