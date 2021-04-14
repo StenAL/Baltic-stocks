@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -62,6 +63,7 @@ public class DataImportingJob {
         log.info("Importing new stock data");
         stockRepository.saveAll(BALTIC_MAIN_LIST_ISINS.stream()
             .map(stockDataImportingService::fetchData)
+            .flatMap(Optional::stream)
             .collect(toList()));
 
         indexRepository.save(indexDataImportingService.fetchData(BALTIC_GENERAL_INDEX_TICKER));
