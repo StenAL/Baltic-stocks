@@ -7,7 +7,7 @@ import ee.borsiinfo.server.repository.IndexRepository;
 import ee.borsiinfo.server.repository.StockRepository;
 import ee.borsiinfo.server.service.importing.DataImportingJob;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-@Log4j2
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -37,20 +37,27 @@ public class ServerController {
             Index index = indexRepository.findAllByTimeFetchedAfter(fetchAfter).get(0);
             LocalDateTime timeFetched = stocks.get(0).getTimeFetched().truncatedTo(ChronoUnit.HOURS);
             return new DataResponse(stocks, timeFetched, index);
-        } catch (IndexOutOfBoundsException e) {
-            log.error("Fail to fetch stocks: " + e.getMessage());
-            log.error(e);
+        } catch (Exception e) {
+            log.error("Failed to fetch stocks", e);
             return new DataResponse(null, LocalDateTime.now(), null);
         }
     }
 
     @PostMapping("/importAll")
     public void importAllData() {
-        dataImportingJob.updateAllStocks();
+        try {
+            dataImportingJob.updateAllStocks();
+        } catch (Exception e) {
+            log.error("Failed to import data", e);
+        }
     }
 
     @PostMapping("/clearCache")
     public void clearStocksCache() {
-        cacheManager.getCache("data").clear();
+        try {
+            cacheManager.getCache("data").clear();
+        } catch (Exception e) {
+            log.error("Failed to clear cache", e);
+        }
     }
 }
