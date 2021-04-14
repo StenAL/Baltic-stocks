@@ -5,7 +5,7 @@ services:
     image: mariadb:10.5
     volumes:
       - db-data:/var/lib/mysql
-    container_name: baltic-stock-db
+    container_name: baltic-stock-mariadb
     environment:
       MYSQL_DATABASE: baltic-stock
       MYSQL_ROOT_PASSWORD: root
