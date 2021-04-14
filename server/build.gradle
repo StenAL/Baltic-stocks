@@ -33,6 +33,8 @@ dependencies {
 
     implementation "org.jsoup:jsoup:1.12.1"
 
+    implementation 'io.sentry:sentry-spring-boot-starter:4.3.0'
+    implementation 'io.sentry:sentry-logback:4.3.0'
 }
 
 test {
