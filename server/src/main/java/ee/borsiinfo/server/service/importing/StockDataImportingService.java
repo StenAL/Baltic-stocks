@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -24,38 +25,44 @@ public class StockDataImportingService {
     private static final int ISIN_PREFIX_LENGTH = 2;
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yy");
 
-    public Stock fetchData(String isin) {
+    public Optional<Stock> fetchData(String isin) {
         String url = generateApiUrl(isin);
         Document doc;
         try {
             doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36")
                 .timeout(120 * 1000).get();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error("Failed to connect to data API for ISIN {}", isin, e);
+            return Optional.empty();
         }
 
-        Element financialDataTable = doc.selectFirst("#OverviewFinancials table");
-        List<FinancialData> financialData = convertHtmlToFinancialData(financialDataTable);
+        try {
+            Element financialDataTable = doc.selectFirst("#OverviewFinancials table");
+            List<FinancialData> financialData = convertHtmlToFinancialData(financialDataTable);
 
-        Element keyStatsTable = doc.selectFirst("#OverviewRatios table");
-        KeyStats keyStats = convertHtmlToKeyStats(keyStatsTable);
+            Element keyStatsTable = doc.selectFirst("#OverviewRatios table");
+            KeyStats keyStats = convertHtmlToKeyStats(keyStatsTable);
 
-        Element dividendsTable = doc.selectFirst("#OverviewDividends table");
-        List<Dividend> dividends = convertHtmlToDividends(dividendsTable);
+            Element dividendsTable = doc.selectFirst("#OverviewDividends table");
+            List<Dividend> dividends = convertHtmlToDividends(dividendsTable);
 
-        Stock stock = Stock.builder()
-            .name(doc.selectFirst(".securityName").text())
-            .ticker(doc.selectFirst(".securitySymbol").text())
-            .isin(isin)
-            .financialData(financialData)
-            .keyStats(keyStats)
-            .dividends(dividends)
-            .timeFetched(LocalDateTime.now())
-            .build();
-        stock.getFinancialData().forEach(f -> f.setStock(stock));
-        stock.getDividends().forEach(d -> d.setStock(stock));
-        log.info("Imported {}", stock);
-        return stock;
+            Stock stock = Stock.builder()
+                .name(doc.selectFirst(".securityName").text())
+                .ticker(doc.selectFirst(".securitySymbol").text())
+                .isin(isin)
+                .financialData(financialData)
+                .keyStats(keyStats)
+                .dividends(dividends)
+                .timeFetched(LocalDateTime.now())
+                .build();
+            stock.getFinancialData().forEach(f -> f.setStock(stock));
+            stock.getDividends().forEach(d -> d.setStock(stock));
+            log.info("Imported {}", stock);
+            return Optional.of(stock);
+        } catch (Exception e) {
+            log.error("Failed fetching stock data for ISIN {}", isin, e);
+        }
+        return Optional.empty();
     }
 
     private String generateApiUrl(String isin) {
