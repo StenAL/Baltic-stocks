@@ -17,15 +17,13 @@ services:
   server:
     image: stenal/baltic-stock-server
     container_name: baltic-stock-server
-    build:
-      context: ../..
-      dockerfile: docker/Dockerfile
     environment:
       DB_DATABASE: ${DB_DATABASE}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_PORT: 3306
       DB_HOST: db
+      SENTRY_DSN: ${SENTRY_DSN}
     ports:
       - 12345:12345
     depends_on:
