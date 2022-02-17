@@ -74,7 +74,7 @@ export default class App extends Component<any, AppState> {
             .map(title => ({title: title, visible: defaultDisplayedStats.includes(title)}));
 
         this.state = {
-            stocks: [], columns, sortingStocksBy: "invalid", sortingOrder: "desc", selectedYear: 2019,
+            stocks: [], columns, sortingStocksBy: "invalid", sortingOrder: "desc", selectedYear: 2020,
             timeFetched: "", index: {id: -1, start: "", end: "", name: "", ticker: "", changePercent: 0}
         };
     }
