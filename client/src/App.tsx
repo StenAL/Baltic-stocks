@@ -9,12 +9,6 @@ import HighlightedStats from "./components/HighlightedStats";
 import Footer from "./components/Footer";
 import {FinancialData} from "./types/FinancialData";
 import {IndexType} from "./types/IndexType";
-import ReactGA from 'react-ga';
-
-if (process.env.NODE_ENV === 'production') {
-    ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_CODE || "");
-    ReactGA.pageview(window.location.pathname + window.location.search);
-}
 
 interface AppState {
     stocks: Stock[],
