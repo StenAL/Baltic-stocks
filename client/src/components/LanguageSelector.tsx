@@ -1,6 +1,6 @@
 import React from "react";
 import i18n from 'i18next';
-import 'flag-icon-css/css/flag-icon.css'
+import 'flag-icons/css/flag-icons.min.css'
 interface LanguageSelectorProps {
     languageCode: string,
     countryCode: string,
@@ -13,7 +13,7 @@ export class LanguageSelector extends React.Component<LanguageSelectorProps, obj
 
     render() {
         return (
-            <span className={`language-select flag-icon flag-icon-${this.props.countryCode}`} onClick={() => this.onChange(this.props.languageCode)}/>
+            <span className={`language-select fi fi-${this.props.countryCode}`} onClick={() => this.onChange(this.props.languageCode)}/>
         );
     }
 }
