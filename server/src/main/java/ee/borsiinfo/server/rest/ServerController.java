@@ -31,6 +31,7 @@ public class ServerController {
     @Cacheable("data")
     @CrossOrigin("*")
     public DataResponse getAllData() {
+        log.debug("Fetching data");
         LocalDateTime fetchAfter = LocalDateTime.now().minusDays(DataImportingJob.FETCH_FREQUENCY_DAYS);
         try {
             List<Stock> stocks = stockRepository.findAllByTimeFetchedAfter(fetchAfter);
@@ -45,6 +46,7 @@ public class ServerController {
 
     @PostMapping("/importAll")
     public void importAllData() {
+        log.debug("Importing stocks data");
         try {
             dataImportingJob.updateAllStocks();
         } catch (Exception e) {
@@ -54,6 +56,7 @@ public class ServerController {
 
     @PostMapping("/clearCache")
     public void clearStocksCache() {
+        log.debug("Clearing stocks cache");
         try {
             cacheManager.getCache("data").clear();
         } catch (Exception e) {
