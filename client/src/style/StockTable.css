@@ -5,7 +5,7 @@
     width: 100%;
 }
 
-.stockTable+p {
+.stockTable + p {
     text-align: left;
 }
 
