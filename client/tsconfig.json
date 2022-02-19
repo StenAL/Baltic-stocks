@@ -21,7 +21,6 @@
     "noImplicitAny": false
   },
   "include": [
-    "src"
+    "src/**"
   ],
-  "exclude": ["src/serviceWorker.ts"]
 }

@@ -1,14 +1,14 @@
 import "./style/App.css";
 import React, {Component} from 'react';
-import {Stock} from "./types/Stock";
+import {Stock} from "./types";
 import Header from "./components/Header";
 import StockTable from "./components/StockTable";
-import {Column} from "./types/Column";
+import {Column} from "./types";
 import FiltersContainer from "./components/filtering/FiltersContainer";
 import HighlightedStats from "./components/HighlightedStats";
 import Footer from "./components/Footer";
-import {FinancialData} from "./types/FinancialData";
-import {IndexType} from "./types/IndexType";
+import {FinancialData} from "./types";
+import {IndexType} from "./types";
 
 interface AppState {
     stocks: Stock[],
