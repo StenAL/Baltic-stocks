@@ -1,18 +1,16 @@
 plugins {
-    id 'org.springframework.boot' version '2.2.6.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-    id "com.gorylenko.gradle-git-properties" version "2.2.4"
+    id 'org.springframework.boot' version '2.6.3'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id "com.gorylenko.gradle-git-properties" version "2.4.0"  // Used by Sentry to match errors to specific git commit
+    id "io.freefair.lombok" version "6.4.1"
     id 'java'
 }
 
-group = 'ee.borsiinfo'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+group = 'xyz.laane'
+version = '1.0.0'
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
@@ -22,28 +20,19 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.mariadb.jdbc:mariadb-java-client:2.5.1'
-    implementation "org.flywaydb:flyway-core:6.0.8"
 
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
+    implementation 'org.mariadb.jdbc:mariadb-java-client:3.0.3'
+    implementation "org.flywaydb:flyway-core:8.5.0"
+    implementation "org.flywaydb:flyway-mysql:8.5.0"
 
-    implementation "org.jsoup:jsoup:1.12.1"
+    implementation "org.jsoup:jsoup:1.14.3"
 
-    implementation 'io.sentry:sentry-spring-boot-starter:4.3.0'
-    implementation 'io.sentry:sentry-logback:4.3.0'
+    implementation 'io.sentry:sentry-spring-boot-starter:5.6.1'
+    implementation 'io.sentry:sentry-logback:5.6.1'
 }
 
-test {
-    useJUnitPlatform()
-}
-
-def profiles = 'default'
+def springProfile = 'default'
 
 bootRun {
-    args = ["--spring.profiles.active=" + profiles]
+    args = ["--spring.profiles.active=" + springProfile]
 }
