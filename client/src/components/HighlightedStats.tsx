@@ -1,7 +1,7 @@
 import React from "react";
 import "../style/HighlightedStats.css";
-import {Stock} from "../types/Stock";
-import {IndexType} from "../types/IndexType";
+import {Stock} from "../types";
+import {IndexType} from "../types";
 import {WithTranslation, withTranslation} from 'react-i18next';
 
 interface HighlightedStatsProps extends WithTranslation {
@@ -30,7 +30,7 @@ class HighlightedStats extends React.Component<HighlightedStatsProps, object> {
         .toFixed(2).toString();
 
     render() {
-        const { t } = this.props;
+        const {t} = this.props;
         return (
             <div className="highlightContainer">
                 <div className="highlightedStat">
