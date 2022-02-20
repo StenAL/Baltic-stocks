@@ -1,5 +1,5 @@
 name: Frontend - build and deploy
-# Trigger on push or pull request
+
 on:
   push:
     branches:
@@ -12,6 +12,10 @@ on:
     paths:
       - "client/**"
 
+defaults:
+  run:
+    working-directory: ./client
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,17 +23,18 @@ jobs:
       - name: checkout current repository
         uses: actions/checkout@v2
 
-      - name: set up Node.js 12.x
-        uses: actions/setup-node@v1
+      - name: set up Node.js 16.x
+        uses: actions/setup-node@v2
         with:
-          node-version: '12.x'
+          node-version: '16'
 
       - name: npm install
-        working-directory: ./client
         run: npm ci
 
+      - name: check formatting with Prettier
+        run: npm run format
+
       - name: compile TypeScript
-        working-directory: ./client
         run: npm run compile
 
   publish:
