@@ -62,7 +62,6 @@ export interface RenderedData {
     name?: string;
     ticker?: string;
     isin?: string;
-    visible?: boolean;
     priceEarningTtm?: number;
     priceBook?: number;
     priceSalesTtm?: number;

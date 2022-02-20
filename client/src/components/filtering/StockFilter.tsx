@@ -1,13 +1,13 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import "../../style/FiltersContainer.css";
 import { Stock } from "../../types";
 
 interface StockFilterProps {
     stock: Stock;
-    onChange: (event) => void;
+    onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export class StockFilter extends React.Component<StockFilterProps, object> {
+export class StockFilter extends React.Component<StockFilterProps> {
     render() {
         return (
             <li>

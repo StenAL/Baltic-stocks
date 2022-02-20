@@ -10,7 +10,7 @@ interface StockTableHeadProps extends WithTranslation {
     sortingOrder: "asc" | "desc";
 }
 
-class StockTableHead extends React.Component<StockTableHeadProps, object> {
+class StockTableHead extends React.Component<StockTableHeadProps> {
     getHeaderClassName = (title: string): string => {
         let className = "tableHeader";
         if (this.props.sortingBy === title) {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import "../../style/FiltersContainer.css";
 import { WithTranslation, withTranslation } from "react-i18next";
 import App from "../../App";
@@ -14,23 +14,17 @@ interface FilterersContainerProps extends WithTranslation {
     stocks: Stock[];
     years: number[];
     selectedYear: number;
-    onColumnChange: (event) => void;
-    onStockChange: (event) => void;
-    onCountryChange: (event) => void;
-    onYearChange: (event) => void;
+    onColumnChange: (event: ChangeEvent<HTMLInputElement>) => void;
+    onStockChange: (event: ChangeEvent<HTMLInputElement>) => void;
+    onCountryChange: (event: ChangeEvent<HTMLInputElement>) => void;
+    onYearChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-class FiltersContainer extends React.Component<
-    FilterersContainerProps,
-    object
-> {
+class FiltersContainer extends React.Component<FilterersContainerProps> {
     getKeyStatsFilters = (): JSX.Element[] =>
         this.props.columns
             .filter((col) => col.title !== "id")
-            .filter(
-                (col) =>
-                    !App.YEARLY_FINANCIAL_DATA_IDS.includes(col.title)
-            )
+            .filter((col) => !App.YEARLY_FINANCIAL_DATA_IDS.includes(col.title))
             .map((col) => (
                 <ColumnFilter
                     column={col}
@@ -42,9 +36,7 @@ class FiltersContainer extends React.Component<
     getFinancialDataFilters = (): JSX.Element[] =>
         this.props.columns
             .filter((col) => col.title !== "id")
-            .filter((col) =>
-                App.YEARLY_FINANCIAL_DATA_IDS.includes(col.title)
-            )
+            .filter((col) => App.YEARLY_FINANCIAL_DATA_IDS.includes(col.title))
             .map((col) => (
                 <ColumnFilter
                     column={col}

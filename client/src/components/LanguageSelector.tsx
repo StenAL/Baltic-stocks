@@ -1,16 +1,14 @@
 import React from "react";
 import i18n from "i18next";
 import "flag-icons/css/flag-icons.min.css";
+
 interface LanguageSelectorProps {
     languageCode: string;
     countryCode: string;
 }
 
-export class LanguageSelector extends React.Component<
-    LanguageSelectorProps,
-    object
-> {
-    onChange = (languageCode) => {
+export class LanguageSelector extends React.Component<LanguageSelectorProps> {
+    onChange = (languageCode: string) => {
         i18n.changeLanguage(languageCode);
     };
 

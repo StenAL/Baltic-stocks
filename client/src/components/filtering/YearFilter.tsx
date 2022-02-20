@@ -1,13 +1,13 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import "../../style/FiltersContainer.css";
 
 interface YearFilterProps {
     year: number;
     selected: boolean;
-    onChange: (event) => void;
+    onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export class YearFilter extends React.Component<YearFilterProps, object> {
+export class YearFilter extends React.Component<YearFilterProps> {
     render() {
         return (
             <li>

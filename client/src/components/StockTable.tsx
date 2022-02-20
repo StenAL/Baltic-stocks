@@ -14,7 +14,7 @@ interface StockTableProps extends WithTranslation {
     onHeaderClick: (columnId: ColumnId) => void;
 }
 
-class StockTable extends React.Component<StockTableProps, object> {
+class StockTable extends React.Component<StockTableProps> {
     getTableRows = (stocks: RenderedData[]): JSX.Element[] =>
         stocks.map((s, i) => (
             <StockTableRow

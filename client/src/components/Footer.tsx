@@ -1,9 +1,11 @@
 import React from "react";
 import i18next from "i18next";
 import "../style/Footer.css";
-import { withTranslation } from "react-i18next";
+import { WithTranslation, withTranslation } from "react-i18next";
 
-class Footer extends React.Component<any, object> {
+type FooterProps = WithTranslation;
+
+class Footer extends React.Component<FooterProps> {
     render() {
         const { t } = this.props;
         return (
