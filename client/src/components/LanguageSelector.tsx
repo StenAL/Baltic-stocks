@@ -9,7 +9,7 @@ interface LanguageSelectorProps {
 
 export class LanguageSelector extends React.Component<LanguageSelectorProps> {
     onChange = (languageCode: string) => {
-        i18n.changeLanguage(languageCode);
+        i18n.changeLanguage(languageCode).catch((e) => console.error(`Error while changing language: ${e}`));
     };
 
     render() {
