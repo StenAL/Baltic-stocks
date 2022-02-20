@@ -2,7 +2,48 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 
-const resources = {
+interface Translation {
+    title: string;
+    tagline: string;
+    "2019 profit": string;
+    "12 month index change": string;
+    keyStats: string;
+    financials: string;
+    "financial data disclaimer": string;
+    stocks: string;
+    ticker: string;
+    name: string;
+    isin: string;
+    priceEarningTtm: string;
+    priceBook: string;
+    priceSalesTtm: string;
+    revenueGrowthThreeYearAvg: string;
+    operatingMarginTtm: string;
+    netMarginTtm: string;
+    roeTtm: string;
+    debtEquity: string;
+    revenue: string;
+    operatingIncome: string;
+    netIncome: string;
+    earningsPerShare: string;
+    dilutedSharesOutstanding: string;
+    currentAssets: string;
+    nonCurrentAssets: string;
+    totalAssets: string;
+    currentLiabilities: string;
+    totalLiabilities: string;
+    totalEquity: string;
+    operatingCashFlow: string;
+    capitalExpenditure: string;
+    freeCashFlow: string;
+    EE: string;
+    LV: string;
+    LT: string;
+    "data as of": string;
+    "open-source": string;
+}
+
+const resources: Record<string, { translation: Translation }> = {
     en: {
         translation: {
             title: "Baltic Stocks",
@@ -91,6 +132,7 @@ const resources = {
     },
 };
 
+// https://github.com/i18next/react-i18next/blob/master/example/react/src/i18n.js
 i18n.use(LanguageDetector)
     .use(initReactI18next)
     .init({
