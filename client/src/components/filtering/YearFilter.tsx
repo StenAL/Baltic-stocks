@@ -18,9 +18,7 @@ export class YearFilter extends React.Component<YearFilterProps> {
                     checked={this.props.selected}
                     onChange={this.props.onChange}
                 />
-                <label htmlFor={`radio-${this.props.year}`}>
-                    {this.props.year}
-                </label>
+                <label htmlFor={`radio-${this.props.year}`}>{this.props.year}</label>
             </li>
         );
     }

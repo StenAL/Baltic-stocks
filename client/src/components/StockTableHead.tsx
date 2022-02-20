@@ -22,11 +22,7 @@ class StockTableHead extends React.Component<StockTableHeadProps> {
     generateTableHeaders = (): JSX.Element[] => {
         const { t } = this.props;
         return this.props.titles.map((title) => (
-            <th
-                className={this.getHeaderClassName(title)}
-                key={title}
-                onClick={() => this.props.onHeaderClick(title)}
-            >
+            <th className={this.getHeaderClassName(title)} key={title} onClick={() => this.props.onHeaderClick(title)}>
                 {t(title)}
             </th>
         ));

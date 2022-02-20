@@ -20,9 +20,7 @@ class ColumnFilter extends React.Component<ColumnFilterProps> {
                     checked={this.props.column.visible}
                     onChange={this.props.onChange}
                 />
-                <label htmlFor={`checkbox-${this.props.column.title}`}>
-                    {t(this.props.column.title)}
-                </label>
+                <label htmlFor={`checkbox-${this.props.column.title}`}>{t(this.props.column.title)}</label>
             </li>
         );
     }

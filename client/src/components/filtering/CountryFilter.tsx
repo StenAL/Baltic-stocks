@@ -11,9 +11,7 @@ interface CountryFilterProps extends WithTranslation {
 
 class CountryFilter extends React.Component<CountryFilterProps> {
     allCountryStocksVisible = (): boolean =>
-        this.props.stocks
-            .filter((s) => s.isin.startsWith(this.props.country))
-            .some((s) => s.visible);
+        this.props.stocks.filter((s) => s.isin.startsWith(this.props.country)).some((s) => s.visible);
 
     render() {
         const { t } = this.props;

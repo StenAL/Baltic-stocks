@@ -7,14 +7,12 @@ const resources = {
         translation: {
             title: "Baltic Stocks",
             tagline: "More than 30 different shares, updated daily",
-            "2019 profit":
-                "cumulative profits of Baltic Main List companies in 2019",
+            "2019 profit": "cumulative profits of Baltic Main List companies in 2019",
             "12 month index change":
                 "portfolio value today if you had bought 1000 € of Baltic Main List stocks one year ago",
             keyStats: "Key Stats",
             financials: "Financials",
-            "financial data disclaimer":
-                "All financial data except EPS in millions EUR",
+            "financial data disclaimer": "All financial data except EPS in millions EUR",
             stocks: "Stocks",
             ticker: "Ticker",
             name: "Name",
@@ -45,22 +43,19 @@ const resources = {
             LV: "Latvia",
             LT: "Lithuania",
             "data as of": "Data as of",
-            "open-source":
-                'This application is <a href="https://github.com/StenAL/baltic-stocks">open-source</a>',
+            "open-source": 'This application is <a href="https://github.com/StenAL/baltic-stocks">open-source</a>',
         },
     },
     et: {
         translation: {
             title: "Balti Aktsiad",
             tagline: "Enam kui 30 erineva väärtpaberi alati värsked andmed",
-            "2019 profit":
-                "Balti põhinimekirja ettevõtete viimase kasum 2019. aastal",
+            "2019 profit": "Balti põhinimekirja ettevõtete viimase kasum 2019. aastal",
             "12 month index change":
                 "portfelli väärtus täna, kui oleksid ostnud aasta tagasi 1000 € eest Balti põhinimekirja aktsiaid",
             keyStats: "Üldnäitajad",
             financials: "Finantsnäitajad",
-            "financial data disclaimer":
-                "Kõik finantsnäitajad v.a EPS mln eurodes",
+            "financial data disclaimer": "Kõik finantsnäitajad v.a EPS mln eurodes",
             stocks: "Aktsiad",
             ticker: "Tiksuja",
             name: "Nimi",
@@ -91,8 +86,7 @@ const resources = {
             LV: "Läti",
             LT: "Leedu",
             "data as of": "Andmed seisuga",
-            "open-source":
-                'See rakendus on <a href="https://github.com/StenAL/baltic-stocks">avatud lähtekoodiga</a>',
+            "open-source": 'See rakendus on <a href="https://github.com/StenAL/baltic-stocks">avatud lähtekoodiga</a>',
         },
     },
 };

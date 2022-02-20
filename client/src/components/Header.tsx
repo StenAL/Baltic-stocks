@@ -16,11 +16,7 @@ class Header extends React.Component<HeaderProps> {
                 ) : (
                     <LanguageSelector languageCode={"et"} countryCode={"ee"} />
                 )}
-                <img
-                    src={process.env.PUBLIC_URL + "/logo.png"}
-                    className="logo"
-                    alt="Logo"
-                />
+                <img src={process.env.PUBLIC_URL + "/logo.png"} className="logo" alt="Logo" />
                 <h1>{t("title")}</h1>
                 <h2>{t("tagline")}</h2>
             </header>
