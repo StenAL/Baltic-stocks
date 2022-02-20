@@ -19,9 +19,7 @@ class HighlightedStats extends React.Component<HighlightedStatsProps> {
             .map((data) => data.netIncome)
             .reduce((acc, curr) => acc + curr, 0);
         profit = Math.round(profit) * 1000000;
-        const profitString = profit
-            .toString()
-            .match(/(\d+?)(?=(\d{3})+(?!\d)|$)/g);
+        const profitString = profit.toString().match(/(\d+?)(?=(\d{3})+(?!\d)|$)/g);
         if (!profitString) {
             return "0";
         }
@@ -29,9 +27,7 @@ class HighlightedStats extends React.Component<HighlightedStatsProps> {
     };
 
     getIndexInvestmentChange = (base: number): string =>
-        ((this.props.index.changePercent / 100 + 1) * base)
-            .toFixed(2)
-            .toString();
+        ((this.props.index.changePercent / 100 + 1) * base).toFixed(2).toString();
 
     render() {
         const { t } = this.props;

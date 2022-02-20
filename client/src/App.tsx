@@ -5,14 +5,7 @@ import Header from "./components/Header";
 import HighlightedStats from "./components/HighlightedStats";
 import StockTable from "./components/StockTable";
 import "./style/App.css";
-import {
-    Column,
-    ColumnId,
-    FinancialData,
-    IndexType,
-    RenderedData,
-    Stock,
-} from "./types";
+import { Column, ColumnId, FinancialData, IndexType, RenderedData, Stock } from "./types";
 
 interface AppState {
     stocks: Stock[];
@@ -190,9 +183,7 @@ export default class App extends Component<any, AppState> {
     };
 
     getDisplayedFinancialData = (stock: Stock): FinancialData | undefined =>
-        stock.financialData
-            .filter((f) => f.year === this.state.selectedYear)
-            .pop();
+        stock.financialData.filter((f) => f.year === this.state.selectedYear).pop();
 
     sortStocksByAttribute = (columnTitle: ColumnId): void => {
         const stocks: Stock[] = this.state.stocks.slice();
@@ -201,26 +192,18 @@ export default class App extends Component<any, AppState> {
             stocks.reverse();
             this.setState({
                 stocks,
-                sortingOrder:
-                    this.state.sortingOrder === "desc" ? "asc" : "desc",
+                sortingOrder: this.state.sortingOrder === "desc" ? "asc" : "desc",
             });
         } else {
             let sortedStocks: Stock[] = stocks
                 .filter(
-                    (s) =>
-                        s[columnTitle] ||
-                        s.keyStats[columnTitle] ||
-                        this.getDisplayedFinancialData(s)?.[columnTitle]
+                    (s) => s[columnTitle] || s.keyStats[columnTitle] || this.getDisplayedFinancialData(s)?.[columnTitle]
                 ) // don't sort stocks where sorting attribute is not available
-                .sort((a, b) =>
-                    this.compareStocksByAttribute(a, b, columnTitle)
-                );
+                .sort((a, b) => this.compareStocksByAttribute(a, b, columnTitle));
             sortedStocks = [
                 ...stocks.filter(
                     (s) =>
-                        !s[columnTitle] &&
-                        !s.keyStats[columnTitle] &&
-                        !this.getDisplayedFinancialData(s)?.[columnTitle]
+                        !s[columnTitle] && !s.keyStats[columnTitle] && !this.getDisplayedFinancialData(s)?.[columnTitle]
                 ),
                 ...sortedStocks,
             ]; // add null/undefined to beginning of sorted sequence
@@ -232,18 +215,13 @@ export default class App extends Component<any, AppState> {
         }
     };
 
-    compareStocksByAttribute = (
-        a: Stock,
-        b: Stock,
-        attribute: ColumnId
-    ): number => {
+    compareStocksByAttribute = (a: Stock, b: Stock, attribute: ColumnId): number => {
         const aStockAttribute: string = a[attribute] ? a[attribute] : "";
         const bStockAttribute: string = b[attribute] ? b[attribute] : "";
 
         return (
             a.keyStats[attribute] - b.keyStats[attribute] ||
-            this.getDisplayedFinancialData(a)?.[attribute] -
-                this.getDisplayedFinancialData(b)?.[attribute] ||
+            this.getDisplayedFinancialData(a)?.[attribute] - this.getDisplayedFinancialData(b)?.[attribute] ||
             aStockAttribute.localeCompare(bStockAttribute)
         );
     };
@@ -258,9 +236,7 @@ export default class App extends Component<any, AppState> {
                     Object.values(f) // object has non-null values in more than column (year is always non-null)
                         .reduce(
                             (previousValue, currentValue) =>
-                                currentValue !== null
-                                    ? previousValue + 1
-                                    : previousValue,
+                                currentValue !== null ? previousValue + 1 : previousValue,
                             0
                         ) > 1
             )
@@ -271,29 +247,18 @@ export default class App extends Component<any, AppState> {
     };
 
     selectYear = (event: ChangeEvent<HTMLInputElement>): void => {
-        const year: number = Number.parseInt(
-            event.target.id.replace("radio-", "")
-        );
+        const year: number = Number.parseInt(event.target.id.replace("radio-", ""));
         this.setState({ selectedYear: year });
     };
 
     render() {
-        const visibleStocksData = this.state.stocks
-            .filter((s) => s.visible)
-            .map((s) => this.getStockDisplayedData(s));
-        const visibleColumns = this.state.columns
-            .filter((c) => c.visible)
-            .map((c) => c.title);
-        const tickerSortedStocks = this.state.stocks
-            .slice()
-            .sort((a, b) => a.ticker.localeCompare(b.ticker));
+        const visibleStocksData = this.state.stocks.filter((s) => s.visible).map((s) => this.getStockDisplayedData(s));
+        const visibleColumns = this.state.columns.filter((c) => c.visible).map((c) => c.title);
+        const tickerSortedStocks = this.state.stocks.slice().sort((a, b) => a.ticker.localeCompare(b.ticker));
         return (
             <div className="App">
                 <Header />
-                <HighlightedStats
-                    stocks={this.state.stocks}
-                    index={this.state.index}
-                />
+                <HighlightedStats stocks={this.state.stocks} index={this.state.index} />
                 <FiltersContainer
                     columns={this.state.columns}
                     stocks={tickerSortedStocks}

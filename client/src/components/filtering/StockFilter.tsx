@@ -18,9 +18,7 @@ export class StockFilter extends React.Component<StockFilterProps> {
                     checked={this.props.stock.visible}
                     onChange={this.props.onChange}
                 />
-                <label htmlFor={`checkbox-${this.props.stock.name}`}>
-                    {this.props.stock.name}
-                </label>
+                <label htmlFor={`checkbox-${this.props.stock.name}`}>{this.props.stock.name}</label>
             </li>
         );
     }

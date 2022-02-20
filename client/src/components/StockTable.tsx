@@ -42,10 +42,7 @@ class StockTable extends React.Component<StockTableProps> {
                     <tbody>{tableRows}</tbody>
                 </table>
                 <p>
-                    {t("data as of")}{" "}
-                    <span className="refreshDate">
-                        {this.props.timeFetched}
-                    </span>
+                    {t("data as of")} <span className="refreshDate">{this.props.timeFetched}</span>
                 </p>
             </div>
         );

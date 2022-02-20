@@ -11,9 +11,7 @@ class Footer extends React.Component<FooterProps> {
         return (
             <footer>
                 <img
-                    src={`${
-                        process.env.PUBLIC_URL
-                    }/footer-${i18next.language.substring(0, 2)}.png`}
+                    src={`${process.env.PUBLIC_URL}/footer-${i18next.language.substring(0, 2)}.png`}
                     className="footer"
                     alt="Skyline view of Tallinn"
                 />

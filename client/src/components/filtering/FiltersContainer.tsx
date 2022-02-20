@@ -25,25 +25,13 @@ class FiltersContainer extends React.Component<FilterersContainerProps> {
         this.props.columns
             .filter((col) => col.title !== "id")
             .filter((col) => !App.YEARLY_FINANCIAL_DATA_IDS.includes(col.title))
-            .map((col) => (
-                <ColumnFilter
-                    column={col}
-                    key={col.title}
-                    onChange={this.props.onColumnChange}
-                />
-            ));
+            .map((col) => <ColumnFilter column={col} key={col.title} onChange={this.props.onColumnChange} />);
 
     getFinancialDataFilters = (): JSX.Element[] =>
         this.props.columns
             .filter((col) => col.title !== "id")
             .filter((col) => App.YEARLY_FINANCIAL_DATA_IDS.includes(col.title))
-            .map((col) => (
-                <ColumnFilter
-                    column={col}
-                    key={col.title}
-                    onChange={this.props.onColumnChange}
-                />
-            ));
+            .map((col) => <ColumnFilter column={col} key={col.title} onChange={this.props.onColumnChange} />);
 
     getCountryFilters = (): JSX.Element[] =>
         ["EE", "LV", "LT"].map((country) => (
@@ -56,15 +44,9 @@ class FiltersContainer extends React.Component<FilterersContainerProps> {
         ));
 
     getStockFilters = (): JSX.Element[] => {
-        const sortedStocks = this.props.stocks
-            .slice()
-            .sort((a, b) => a.name.localeCompare(b.name));
+        const sortedStocks = this.props.stocks.slice().sort((a, b) => a.name.localeCompare(b.name));
         return sortedStocks.map((stock) => (
-            <StockFilter
-                stock={stock}
-                key={stock.name}
-                onChange={this.props.onStockChange}
-            />
+            <StockFilter stock={stock} key={stock.name} onChange={this.props.onStockChange} />
         ));
     };
 
@@ -91,23 +73,15 @@ class FiltersContainer extends React.Component<FilterersContainerProps> {
                     <h2>{t("keyStats")}</h2>
                     <ul className="keyStatsFilter">{keyStatsFilters}</ul>
                     <h2>{t("financials")}</h2>
-                    <ul className={`yearFilter columns-${yearFilters.length}`}>
-                        {yearFilters}
-                    </ul>
-                    <ul className="financialDataFilter">
-                        {financialDataFilters}
-                    </ul>
+                    <ul className={`yearFilter columns-${yearFilters.length}`}>{yearFilters}</ul>
+                    <ul className="financialDataFilter">{financialDataFilters}</ul>
                     <p className={"financialDataDisclaimer"}>
                         <em>{t("financial data disclaimer")}</em>
                     </p>
                 </div>
                 <div className="filter">
                     <h2>{t("stocks")}</h2>
-                    <ul
-                        className={`countryFilter columns-${countryFilters.length}`}
-                    >
-                        {countryFilters}
-                    </ul>
+                    <ul className={`countryFilter columns-${countryFilters.length}`}>{countryFilters}</ul>
                     <ul className="stockFilter">{stockFilters}</ul>
                 </div>
             </div>

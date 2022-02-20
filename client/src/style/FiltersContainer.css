@@ -98,8 +98,8 @@ ul.columns-4 {
     top: 9px;
     width: 2px;
     height: 2px;
-    box-shadow: 2px 0 0 white, 4px 0 0 #f4f4f4, 4px -2px 0 #f4f4f4,
-        4px -4px 0 #f4f4f4, 4px -6px 0 #f4f4f4, 4px -8px 0 #f4f4f4;
+    box-shadow: 2px 0 0 white, 4px 0 0 #f4f4f4, 4px -2px 0 #f4f4f4, 4px -4px 0 #f4f4f4, 4px -6px 0 #f4f4f4,
+        4px -8px 0 #f4f4f4;
     transform: rotate(45deg);
 }
 
