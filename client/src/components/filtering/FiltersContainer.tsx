@@ -1,6 +1,7 @@
 import React from "react";
 import "../../style/FiltersContainer.css";
 import { WithTranslation, withTranslation } from "react-i18next";
+import App from "../../App";
 import { Column } from "../../types";
 import ColumnFilter from "./ColumnFilter";
 import { Stock } from "../../types";
@@ -10,7 +11,6 @@ import { YearFilter } from "./YearFilter";
 
 interface FilterersContainerProps extends WithTranslation {
     columns: Column[];
-    financialDataColumnTitles: string[];
     stocks: Stock[];
     years: number[];
     selectedYear: number;
@@ -29,7 +29,7 @@ class FiltersContainer extends React.Component<
             .filter((col) => col.title !== "id")
             .filter(
                 (col) =>
-                    !this.props.financialDataColumnTitles.includes(col.title)
+                    !App.YEARLY_FINANCIAL_DATA_IDS.includes(col.title)
             )
             .map((col) => (
                 <ColumnFilter
@@ -43,7 +43,7 @@ class FiltersContainer extends React.Component<
         this.props.columns
             .filter((col) => col.title !== "id")
             .filter((col) =>
-                this.props.financialDataColumnTitles.includes(col.title)
+                App.YEARLY_FINANCIAL_DATA_IDS.includes(col.title)
             )
             .map((col) => (
                 <ColumnFilter

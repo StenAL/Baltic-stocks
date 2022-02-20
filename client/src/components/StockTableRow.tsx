@@ -1,17 +1,18 @@
 import React from "react";
 import "../style/StockTableRow.css";
-import { Stock } from "../types";
+import { ColumnId, RenderedData } from "../types";
 
 interface StockTableRowProps {
-    stockDisplayValue: Stock;
+    stockDisplayValue: RenderedData;
     alternateRow: boolean; // for styling every second row
+    renderedColumns: (ColumnId)[]
 }
 
 export class StockTableRow extends React.Component<StockTableRowProps, object> {
     getRowCells = (): JSX.Element[] => {
-        const { stockDisplayValue } = this.props;
-        return Object.entries(stockDisplayValue)
-            .filter((e) => e[0] !== "id") // don't display id column's value
+        const { stockDisplayValue, renderedColumns } = this.props;
+        return renderedColumns
+            .map(columnId => [columnId, stockDisplayValue[columnId]])
             .map((e) => (
                 <td
                     className={`tableCell ${

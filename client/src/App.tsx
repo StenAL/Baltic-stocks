@@ -1,19 +1,23 @@
-import "./style/App.css";
 import React, { Component } from "react";
-import { Stock } from "./types";
-import Header from "./components/Header";
-import StockTable from "./components/StockTable";
-import { Column } from "./types";
 import FiltersContainer from "./components/filtering/FiltersContainer";
-import HighlightedStats from "./components/HighlightedStats";
 import Footer from "./components/Footer";
-import { FinancialData } from "./types";
-import { IndexType } from "./types";
+import Header from "./components/Header";
+import HighlightedStats from "./components/HighlightedStats";
+import StockTable from "./components/StockTable";
+import "./style/App.css";
+import {
+    Column,
+    ColumnId,
+    FinancialData,
+    IndexType,
+    RenderedData,
+    Stock,
+} from "./types";
 
 interface AppState {
     stocks: Stock[];
     columns: Column[];
-    sortingStocksBy: string;
+    sortingStocksBy: ColumnId;
     sortingOrder: "asc" | "desc";
     selectedYear: number;
     timeFetched: string;
@@ -23,60 +27,56 @@ interface AppState {
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:12345/api";
 
 export default class App extends Component<any, AppState> {
-    titles: string[];
-    yearlyFinancialData: string[];
+    public static readonly COLUMN_IDS: ColumnId[] = [
+        "id",
+        "ticker",
+        "name",
+        "isin",
+        "priceEarningTtm",
+        "priceBook",
+        "priceSalesTtm",
+        "revenueGrowthThreeYearAvg",
+        "operatingMarginTtm",
+        "netMarginTtm",
+        "roeTtm",
+        "debtEquity",
+        "revenue",
+        "operatingIncome",
+        "netIncome",
+        "earningsPerShare",
+        "dilutedSharesOutstanding",
+        "currentAssets",
+        "nonCurrentAssets",
+        "totalAssets",
+        "currentLiabilities",
+        "totalLiabilities",
+        "totalEquity",
+        "operatingCashFlow",
+        "capitalExpenditure",
+        "freeCashFlow",
+    ];
+    public static readonly YEARLY_FINANCIAL_DATA_IDS: ColumnId[] = [
+        "revenue",
+        "operatingIncome",
+        "netIncome",
+        "earningsPerShare",
+        "dilutedSharesOutstanding",
+        "currentAssets",
+        "nonCurrentAssets",
+        "totalAssets",
+        "currentLiabilities",
+        "totalLiabilities",
+        "totalEquity",
+        "operatingCashFlow",
+        "capitalExpenditure",
+        "freeCashFlow",
+    ];
 
-    constructor(props: any) {
+    constructor(props: unknown) {
         super(props);
-        this.titles = [
-            "id",
-            "ticker",
-            "name",
-            "isin",
-            "priceEarningTtm",
-            "priceBook",
-            "priceSalesTtm",
-            "revenueGrowthThreeYearAvg",
-            "operatingMarginTtm",
-            "netMarginTtm",
-            "roeTtm",
-            "debtEquity",
-            "revenue",
-            "operatingIncome",
-            "netIncome",
-            "earningsPerShare",
-            "dilutedSharesOutstanding",
-            "currentAssets",
-            "nonCurrentAssets",
-            "totalAssets",
-            "currentLiabilities",
-            "totalLiabilities",
-            "totalEquity",
-            "operatingCashFlow",
-            "capitalExpenditure",
-            "freeCashFlow",
-        ];
+        const isNarrowView = window.matchMedia("(max-width: 1100px)").matches;
 
-        this.yearlyFinancialData = [
-            "revenue",
-            "operatingIncome",
-            "netIncome",
-            "earningsPerShare",
-            "dilutedSharesOutstanding",
-            "currentAssets",
-            "nonCurrentAssets",
-            "totalAssets",
-            "currentLiabilities",
-            "totalLiabilities",
-            "totalEquity",
-            "operatingCashFlow",
-            "capitalExpenditure",
-            "freeCashFlow",
-        ];
-
-        const narrowView = window.matchMedia("(max-width: 1100px)");
-
-        const defaultDisplayedStats = narrowView.matches
+        const defaultDisplayedStats: ColumnId[] = isNarrowView
             ? [
                   "name",
                   "priceBook",
@@ -101,15 +101,15 @@ export default class App extends Component<any, AppState> {
                   "freeCashFlow",
               ];
 
-        const columns: Column[] = this.titles.map((title) => ({
-            title: title,
-            visible: defaultDisplayedStats.includes(title),
+        const columns: Column[] = App.COLUMN_IDS.map((columnId) => ({
+            title: columnId,
+            visible: defaultDisplayedStats.includes(columnId),
         }));
 
         this.state = {
             stocks: [],
             columns,
-            sortingStocksBy: "invalid",
+            sortingStocksBy: "name",
             sortingOrder: "desc",
             selectedYear: 2020,
             timeFetched: "",
@@ -145,27 +145,12 @@ export default class App extends Component<any, AppState> {
             .catch((e) => console.log(e));
     }
 
-    getStockDisplayedData = (stock: Stock): object => {
-        const copy = {
+    getStockDisplayedData = (stock: Stock): RenderedData => {
+        return {
             ...stock,
             ...stock.keyStats,
             ...this.getDisplayedFinancialData(stock),
         };
-        Object.keys(copy)
-            .filter((k) => !this.titles.includes(k))
-            .forEach((k) => delete copy[k]); // delete attributes that are never displayed in table
-
-        this.state.columns
-            .filter((c) => !c.visible && c.title !== "id") // delete attributes that are currently not visible except id
-            .map((c) => c.title)
-            .forEach((k) => delete copy[k]);
-
-        this.state.columns
-            .filter((c) => c.visible) // add missing attributes as nulls
-            .map((c) => c.title)
-            .filter((k) => copy[k] === undefined)
-            .forEach((k) => (copy[k] = null));
-        return copy;
     };
 
     invertColumnVisibility = (event): void => {
@@ -209,7 +194,7 @@ export default class App extends Component<any, AppState> {
             .filter((f) => f.year === this.state.selectedYear)
             .pop();
 
-    sortStocksByAttribute = (columnTitle: string): void => {
+    sortStocksByAttribute = (columnTitle: ColumnId): void => {
         const stocks: Stock[] = this.state.stocks.slice();
         if (columnTitle === this.state.sortingStocksBy) {
             // already sorting table by this attribute, reverse the order
@@ -250,7 +235,7 @@ export default class App extends Component<any, AppState> {
     compareStocksByAttribute = (
         a: Stock,
         b: Stock,
-        attribute: string
+        attribute: ColumnId
     ): number => {
         const aStockAttribute: string = a[attribute] ? a[attribute] : "";
         const bStockAttribute: string = b[attribute] ? b[attribute] : "";
@@ -289,11 +274,7 @@ export default class App extends Component<any, AppState> {
         const year: number = Number.parseInt(
             event.target.id.replace("radio-", "")
         );
-        let sortingBy = this.state.sortingStocksBy;
-        if (this.yearlyFinancialData.includes(this.state.sortingStocksBy)) {
-            sortingBy = "invalid";
-        }
-        this.setState({ selectedYear: year, sortingStocksBy: sortingBy });
+        this.setState({ selectedYear: year });
     };
 
     render() {
@@ -321,7 +302,6 @@ export default class App extends Component<any, AppState> {
                     onColumnChange={this.invertColumnVisibility}
                     onStockChange={this.invertStockVisibility}
                     onYearChange={this.selectYear}
-                    financialDataColumnTitles={this.yearlyFinancialData}
                     onCountryChange={this.invertCountryVisibility}
                 />
                 <StockTable
@@ -329,7 +309,7 @@ export default class App extends Component<any, AppState> {
                     stockDisplayValues={visibleStocksData}
                     sortingBy={this.state.sortingStocksBy}
                     sortingOrder={this.state.sortingOrder}
-                    columnTitles={visibleColumns}
+                    renderedColumns={visibleColumns}
                     timeFetched={this.state.timeFetched}
                 />
                 <Footer />

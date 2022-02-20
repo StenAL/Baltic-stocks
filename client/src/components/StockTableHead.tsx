@@ -1,10 +1,11 @@
 import React from "react";
 import "../style/StockTableHead.css";
 import { WithTranslation, withTranslation } from "react-i18next";
+import { ColumnId } from "../types";
 
 interface StockTableHeadProps extends WithTranslation {
-    titles: string[];
-    onHeaderClick: (event) => void;
+    titles: ColumnId[];
+    onHeaderClick: (columnId: ColumnId) => void;
     sortingBy: string;
     sortingOrder: "asc" | "desc";
 }

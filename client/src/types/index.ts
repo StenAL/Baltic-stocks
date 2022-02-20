@@ -1,6 +1,6 @@
 export interface Column {
     visible: boolean;
-    title: string;
+    title: ColumnId;
 }
 
 export interface Dividend {
@@ -21,7 +21,7 @@ export interface FinancialData {
     totalAssets: number;
     currentLiabilities: number;
     totalLiabilities: number;
-    totalEqutiy: number;
+    totalEquity: number;
     operatingCashFlow: number;
     capitalExpenditure: number;
     freeCashFlow: number;
@@ -56,3 +56,37 @@ export interface Stock {
     dividends: Dividend[];
     visible: boolean;
 }
+
+export interface RenderedData {
+    id?: string;
+    name?: string;
+    ticker?: string;
+    isin?: string;
+    visible?: boolean;
+    priceEarningTtm?: number;
+    priceBook?: number;
+    priceSalesTtm?: number;
+    revenueGrowthThreeYearAvg?: number;
+    epsGrowthThreeYearAverage?: number;
+    operatingMarginTtm?: number;
+    netMarginTtm?: number;
+    roeTtm?: number;
+    debtEquity?: number;
+    year?: number;
+    revenue?: number;
+    operatingIncome?: number;
+    netIncome?: number;
+    earningsPerShare?: number;
+    dilutedSharesOutstanding?: number;
+    currentAssets?: number;
+    nonCurrentAssets?: number;
+    totalAssets?: number;
+    currentLiabilities?: number;
+    totalLiabilities?: number;
+    totalEquity?: number;
+    operatingCashFlow?: number;
+    capitalExpenditure?: number;
+    freeCashFlow?: number;
+}
+
+export type ColumnId = keyof RenderedData;
