@@ -1,22 +1,24 @@
 import React from "react";
+import { ColumnId, RenderedData } from "../types";
 import StockTableHead from "./StockTableHead";
 import { StockTableRow } from "./StockTableRow";
 import "../style/StockTable.css";
 import { WithTranslation, withTranslation } from "react-i18next";
 
 interface StockTableProps extends WithTranslation {
-    stockDisplayValues: object[];
+    stockDisplayValues: RenderedData[];
     sortingBy: string;
     sortingOrder: "asc" | "desc";
-    timeFetched;
-    columnTitles: string[];
-    onHeaderClick: (event) => void;
+    timeFetched: string;
+    renderedColumns: ColumnId[];
+    onHeaderClick: (columnId: ColumnId) => void;
 }
 
 class StockTable extends React.Component<StockTableProps, object> {
-    getTableRows = (stocks): JSX.Element[] =>
+    getTableRows = (stocks: RenderedData[]): JSX.Element[] =>
         stocks.map((s, i) => (
             <StockTableRow
+                renderedColumns={this.props.renderedColumns}
                 alternateRow={i % 2 === 1}
                 stockDisplayValue={s}
                 key={`stock_${s.id}`}
@@ -32,7 +34,7 @@ class StockTable extends React.Component<StockTableProps, object> {
                     <thead>
                         <StockTableHead
                             onHeaderClick={this.props.onHeaderClick}
-                            titles={this.props.columnTitles}
+                            titles={this.props.renderedColumns}
                             sortingOrder={this.props.sortingOrder}
                             sortingBy={this.props.sortingBy}
                         />
