@@ -9,7 +9,7 @@ interface HighlightedStatsProps extends WithTranslation {
     index: IndexType;
 }
 
-class HighlightedStats extends React.Component<HighlightedStatsProps, object> {
+class HighlightedStats extends React.Component<HighlightedStatsProps> {
     getTotalProfitString = (): string => {
         const { stocks } = this.props;
         let profit = stocks

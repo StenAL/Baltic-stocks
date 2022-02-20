@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { ChangeEvent, Component } from "react";
 import FiltersContainer from "./components/filtering/FiltersContainer";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
@@ -153,7 +153,7 @@ export default class App extends Component<any, AppState> {
         };
     };
 
-    invertColumnVisibility = (event): void => {
+    invertColumnVisibility = (event: ChangeEvent<HTMLInputElement>): void => {
         const columns: Column[] = this.state.columns.map((col) =>
             `checkbox-${col.title}` === event.target.id
                 ? {
@@ -165,7 +165,7 @@ export default class App extends Component<any, AppState> {
         this.setState({ columns });
     };
 
-    invertCountryVisibility = (event): void => {
+    invertCountryVisibility = (event: ChangeEvent<HTMLInputElement>): void => {
         const stocks: Stock[] = this.state.stocks.map((s) =>
             `checkbox-${s.isin}`.startsWith(event.target.id)
                 ? {
@@ -177,7 +177,7 @@ export default class App extends Component<any, AppState> {
         this.setState({ stocks });
     };
 
-    invertStockVisibility = (event): void => {
+    invertStockVisibility = (event: ChangeEvent<HTMLInputElement>): void => {
         const stocks: Stock[] = this.state.stocks.map((stock) =>
             `checkbox-${stock.name}` === event.target.id
                 ? {
@@ -270,7 +270,7 @@ export default class App extends Component<any, AppState> {
         return visibleYearsNoDuplicates;
     };
 
-    selectYear = (event): void => {
+    selectYear = (event: ChangeEvent<HTMLInputElement>): void => {
         const year: number = Number.parseInt(
             event.target.id.replace("radio-", "")
         );

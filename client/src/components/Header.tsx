@@ -1,10 +1,12 @@
 import i18next from "i18next";
 import React from "react";
 import "../style/Header.css";
-import { withTranslation } from "react-i18next";
+import { WithTranslation, withTranslation } from "react-i18next";
 import { LanguageSelector } from "./LanguageSelector";
 
-class Header extends React.Component<any, object> {
+type HeaderProps = WithTranslation;
+
+class Header extends React.Component<HeaderProps> {
     render() {
         const { t } = this.props;
         return (

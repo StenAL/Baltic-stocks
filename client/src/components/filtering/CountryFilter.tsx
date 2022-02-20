@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import "../../style/FiltersContainer.css";
 import { Stock } from "../../types";
 import { WithTranslation, withTranslation } from "react-i18next";
@@ -6,10 +6,10 @@ import { WithTranslation, withTranslation } from "react-i18next";
 interface CountryFilterProps extends WithTranslation {
     country: string;
     stocks: Stock[];
-    onChange: (event) => void;
+    onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-class CountryFilter extends React.Component<CountryFilterProps, object> {
+class CountryFilter extends React.Component<CountryFilterProps> {
     allCountryStocksVisible = (): boolean =>
         this.props.stocks
             .filter((s) => s.isin.startsWith(this.props.country))

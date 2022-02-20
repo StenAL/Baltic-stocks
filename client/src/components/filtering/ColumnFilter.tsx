@@ -1,16 +1,15 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import "../../style/FiltersContainer.css";
 import { WithTranslation, withTranslation } from "react-i18next";
 import { Column } from "../../types";
 
 interface ColumnFilterProps extends WithTranslation {
     column: Column;
-    onChange: (event) => void;
+    onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-class ColumnFilter extends React.Component<ColumnFilterProps, object> {
+class ColumnFilter extends React.Component<ColumnFilterProps> {
     render() {
-        const a = 5;
         const { t } = this.props;
         return (
             <li>
