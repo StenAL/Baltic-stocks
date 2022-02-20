@@ -19,7 +19,7 @@ interface AppState {
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:12345/api";
 
-export default class App extends Component<any, AppState> {
+export default class App extends Component<unknown, AppState> {
     public static readonly COLUMN_IDS: ColumnId[] = [
         "id",
         "ticker",
@@ -117,32 +117,54 @@ export default class App extends Component<any, AppState> {
         };
     }
 
-    componentDidMount(): void {
-        fetch(API_URL + "/stocks")
-            .then((res) => res.json())
-            .then((data) => {
-                const stocks: Stock[] = data.stocks.map((d: Stock) => ({
-                    ...d,
-                    visible: true,
-                }));
-                const index = data.index;
-                stocks.sort((a, b) => a.name.localeCompare(b.name));
-                this.setState({
-                    stocks,
-                    timeFetched: data.timeFetched,
-                    sortingStocksBy: "name",
-                    sortingOrder: "desc",
-                    index: index,
-                });
-            })
-            .catch((e) => console.log(e));
+    override async componentDidMount(): Promise<void> {
+        const data = await fetch(`${API_URL}/stocks`).then((res) => res.json());
+
+        const stocks: Stock[] = data.stocks.map((d: Stock) => ({
+            ...d,
+            visible: true,
+        }));
+        const index = data.index;
+        stocks.sort((a, b) => a.name.localeCompare(b.name));
+        this.setState({
+            stocks,
+            timeFetched: data.timeFetched,
+            sortingStocksBy: "name",
+            sortingOrder: "desc",
+            index: index,
+        });
     }
 
     getStockDisplayedData = (stock: Stock): RenderedData => {
+        const fd = this.getDisplayedFinancialData(stock);
         return {
-            ...stock,
-            ...stock.keyStats,
-            ...this.getDisplayedFinancialData(stock),
+            id: stock.id,
+            name: stock.name,
+            ticker: stock.ticker,
+            isin: stock.isin,
+            priceEarningTtm: stock.keyStats.priceEarningTtm,
+            priceBook: stock.keyStats.priceBook,
+            priceSalesTtm: stock.keyStats.priceSalesTtm,
+            revenueGrowthThreeYearAvg: stock.keyStats.revenueGrowthThreeYearAvg,
+            epsGrowthThreeYearAverage: stock.keyStats.epsGrowthThreeYearAverage,
+            operatingMarginTtm: stock.keyStats.operatingMarginTtm,
+            netMarginTtm: stock.keyStats.netMarginTtm,
+            roeTtm: stock.keyStats.roeTtm,
+            debtEquity: stock.keyStats.debtEquity,
+            revenue: fd?.revenue,
+            operatingIncome: fd?.operatingIncome,
+            netIncome: fd?.netIncome,
+            earningsPerShare: fd?.earningsPerShare,
+            dilutedSharesOutstanding: fd?.dilutedSharesOutstanding,
+            currentAssets: fd?.currentAssets,
+            nonCurrentAssets: fd?.nonCurrentAssets,
+            totalAssets: fd?.totalAssets,
+            currentLiabilities: fd?.currentLiabilities,
+            totalLiabilities: fd?.totalLiabilities,
+            totalEquity: fd?.totalEquity,
+            operatingCashFlow: fd?.operatingCashFlow,
+            capitalExpenditure: fd?.capitalExpenditure,
+            freeCashFlow: fd?.freeCashFlow,
         };
     };
 
@@ -190,40 +212,48 @@ export default class App extends Component<any, AppState> {
         if (columnTitle === this.state.sortingStocksBy) {
             // already sorting table by this attribute, reverse the order
             stocks.reverse();
-            this.setState({
+            return this.setState({
                 stocks,
                 sortingOrder: this.state.sortingOrder === "desc" ? "asc" : "desc",
             });
-        } else {
-            let sortedStocks: Stock[] = stocks
-                .filter(
-                    (s) => s[columnTitle] || s.keyStats[columnTitle] || this.getDisplayedFinancialData(s)?.[columnTitle]
-                ) // don't sort stocks where sorting attribute is not available
-                .sort((a, b) => this.compareStocksByAttribute(a, b, columnTitle));
-            sortedStocks = [
-                ...stocks.filter(
-                    (s) =>
-                        !s[columnTitle] && !s.keyStats[columnTitle] && !this.getDisplayedFinancialData(s)?.[columnTitle]
-                ),
-                ...sortedStocks,
-            ]; // add null/undefined to beginning of sorted sequence
-            this.setState({
-                stocks: sortedStocks,
-                sortingStocksBy: columnTitle,
-                sortingOrder: "desc",
-            });
         }
+        let sortedStocks: Stock[] = stocks
+            .filter(
+                (s) =>
+                    s[columnTitle as keyof Stock] ||
+                    s.keyStats[columnTitle] ||
+                    this.getDisplayedFinancialData(s)?.[columnTitle]
+            ) // don't sort stocks where sorting attribute is not available
+            .sort((a, b) => this.compareStocksByAttribute(a, b, columnTitle));
+        sortedStocks = [
+            ...stocks.filter(
+                (s) =>
+                    !s[columnTitle as keyof Stock] &&
+                    !s.keyStats[columnTitle] &&
+                    !this.getDisplayedFinancialData(s)?.[columnTitle]
+            ),
+            ...sortedStocks,
+        ]; // add null/undefined to beginning of sorted sequence
+        this.setState({
+            stocks: sortedStocks,
+            sortingStocksBy: columnTitle,
+            sortingOrder: "desc",
+        });
     };
 
     compareStocksByAttribute = (a: Stock, b: Stock, attribute: ColumnId): number => {
-        const aStockAttribute: string = a[attribute] ? a[attribute] : "";
-        const bStockAttribute: string = b[attribute] ? b[attribute] : "";
+        if (attribute in a.keyStats && attribute in b.keyStats) {
+            return a.keyStats[attribute] - b.keyStats[attribute];
+        }
+        const aFinancialData = this.getDisplayedFinancialData(a);
+        const bFinancialData = this.getDisplayedFinancialData(b);
+        if (aFinancialData && bFinancialData && attribute in aFinancialData && attribute in bFinancialData) {
+            return aFinancialData[attribute] - bFinancialData[attribute];
+        }
 
-        return (
-            a.keyStats[attribute] - b.keyStats[attribute] ||
-            this.getDisplayedFinancialData(a)?.[attribute] - this.getDisplayedFinancialData(b)?.[attribute] ||
-            aStockAttribute.localeCompare(bStockAttribute)
-        );
+        // Attribute is not in KeyStats or FinancialData so it must be a key of Stock included in the table
+        const narrowedAttribute = attribute as "id" | "ticker" | "name" | "isin";
+        return a[narrowedAttribute].localeCompare(b[narrowedAttribute]);
     };
 
     getVisibleYears = (): number[] => {
@@ -251,7 +281,7 @@ export default class App extends Component<any, AppState> {
         this.setState({ selectedYear: year });
     };
 
-    render() {
+    override render() {
         const visibleStocksData = this.state.stocks.filter((s) => s.visible).map((s) => this.getStockDisplayedData(s));
         const visibleColumns = this.state.columns.filter((c) => c.visible).map((c) => c.title);
         const tickerSortedStocks = this.state.stocks.slice().sort((a, b) => a.ticker.localeCompare(b.ticker));
