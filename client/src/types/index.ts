@@ -9,7 +9,7 @@ export interface Dividend {
     paid: Date;
     amount: number;
 }
-export interface FinancialData {
+export interface FinancialData extends Record<ColumnId, number> {
     year: number;
     revenue: number;
     operatingIncome: number;
@@ -34,7 +34,7 @@ export interface IndexType {
     name: string;
     changePercent: number;
 }
-export interface KeyStats {
+export interface KeyStats extends Record<ColumnId, number> {
     priceEarningTtm: number;
     priceBook: number;
     priceSalesTtm: number;
@@ -46,6 +46,9 @@ export interface KeyStats {
     debtEquity: number;
 }
 
+/**
+ * Returned by the backend
+ */
 export interface Stock {
     id: string;
     name: string;
@@ -57,21 +60,28 @@ export interface Stock {
     visible: boolean;
 }
 
+/**
+ * Flattened structure of Stock that is rendered in table form
+ */
 export interface RenderedData {
-    id?: string;
-    name?: string;
-    ticker?: string;
-    isin?: string;
-    priceEarningTtm?: number;
-    priceBook?: number;
-    priceSalesTtm?: number;
-    revenueGrowthThreeYearAvg?: number;
-    epsGrowthThreeYearAverage?: number;
-    operatingMarginTtm?: number;
-    netMarginTtm?: number;
-    roeTtm?: number;
-    debtEquity?: number;
-    year?: number;
+    // From Stock
+    id: string;
+    name: string;
+    ticker: string;
+    isin: string;
+
+    // KeyStats
+    priceEarningTtm: number;
+    priceBook: number;
+    priceSalesTtm: number;
+    revenueGrowthThreeYearAvg: number;
+    epsGrowthThreeYearAverage: number;
+    operatingMarginTtm: number;
+    netMarginTtm: number;
+    roeTtm: number;
+    debtEquity: number;
+
+    // FinancialData
     revenue?: number;
     operatingIncome?: number;
     netIncome?: number;
