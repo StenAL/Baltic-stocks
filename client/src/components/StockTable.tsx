@@ -7,7 +7,7 @@ import { WithTranslation, withTranslation } from "react-i18next";
 
 interface StockTableProps extends WithTranslation {
     stockDisplayValues: RenderedData[];
-    sortingBy: string;
+    sortingBy: ColumnId | undefined;
     sortingOrder: "asc" | "desc";
     timeFetched: string;
     renderedColumns: ColumnId[];

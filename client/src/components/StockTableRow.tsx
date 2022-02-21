@@ -17,8 +17,8 @@ export class StockTableRow extends React.Component<StockTableRowProps> {
             .map(([columnId, columnValue]) => (
                 <td
                     className={`tableCell ${
-                        Number.isFinite(columnValue) || columnValue === null ? "right-align" : "left-align"
-                    }`} // right-align numbers and nulls
+                        !isNaN(Number(columnValue)) || columnValue === "-" ? "right-align" : "left-align"
+                    }`} // right-align numbers and missing values
                     key={`${stockDisplayValue.id}_${columnId}`}
                 >
                     {columnValue}
@@ -26,8 +26,8 @@ export class StockTableRow extends React.Component<StockTableRowProps> {
             ));
     };
 
-    getCellDisplayValue = (initialValue: number | string | null | undefined): string => {
-        if (initialValue === null || initialValue === undefined) return "-";
+    getCellDisplayValue = (initialValue: number | string | undefined): string => {
+        if (initialValue === undefined) return "-";
         return typeof initialValue === "number" ? initialValue.toFixed(2).toString() : initialValue;
     };
 

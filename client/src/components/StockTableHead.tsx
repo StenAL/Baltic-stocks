@@ -6,7 +6,7 @@ import { ColumnId } from "../types";
 interface StockTableHeadProps extends WithTranslation {
     titles: ColumnId[];
     onHeaderClick: (columnId: ColumnId) => void;
-    sortingBy: string;
+    sortingBy: ColumnId | undefined;
     sortingOrder: "asc" | "desc";
 }
 
