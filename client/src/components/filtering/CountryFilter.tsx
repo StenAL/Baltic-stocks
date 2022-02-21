@@ -1,35 +1,33 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, FunctionComponent, useCallback } from "react";
 import "../../style/FiltersContainer.css";
 import { Stock } from "../../types";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
-interface CountryFilterProps extends WithTranslation {
+interface CountryFilterProps {
     country: string;
     stocks: Stock[];
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-class CountryFilter extends React.Component<CountryFilterProps> {
-    allCountryStocksVisible = (): boolean =>
-        this.props.stocks.filter((s) => s.isin.startsWith(this.props.country)).some((s) => s.visible);
+export const CountryFilter: FunctionComponent<CountryFilterProps> = ({ country, stocks, onChange }) => {
+    const { t } = useTranslation();
+    const allCountryStocksVisible = useCallback(
+        (): boolean => stocks.filter((s) => s.isin.startsWith(country)).some((s) => s.visible),
+        [country, stocks]
+    );
 
-    render() {
-        const { t } = this.props;
-        return (
-            <li>
-                <input
-                    type="checkbox"
-                    className="checkbox-filter"
-                    id={`checkbox-${this.props.country}`}
-                    checked={this.allCountryStocksVisible()}
-                    onChange={this.props.onChange}
-                />
-                <label htmlFor={`checkbox-${this.props.country}`}>
-                    <b>{t(this.props.country)}</b>
-                </label>
-            </li>
-        );
-    }
-}
-
-export default withTranslation()(CountryFilter);
+    return (
+        <li>
+            <input
+                type="checkbox"
+                className="checkbox-filter"
+                id={`checkbox-${country}`}
+                checked={allCountryStocksVisible()}
+                onChange={onChange}
+            />
+            <label htmlFor={`checkbox-${country}`}>
+                <b>{t(country)}</b>
+            </label>
+        </li>
+    );
+};

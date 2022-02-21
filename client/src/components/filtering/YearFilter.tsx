@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, FunctionComponent } from "react";
 import "../../style/FiltersContainer.css";
 
 interface YearFilterProps {
@@ -7,19 +7,11 @@ interface YearFilterProps {
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export class YearFilter extends React.Component<YearFilterProps> {
-    render() {
-        return (
-            <li>
-                <input
-                    type="radio"
-                    className="radio-filter"
-                    id={`radio-${this.props.year}`}
-                    checked={this.props.selected}
-                    onChange={this.props.onChange}
-                />
-                <label htmlFor={`radio-${this.props.year}`}>{this.props.year}</label>
-            </li>
-        );
-    }
-}
+export const YearFilter: FunctionComponent<YearFilterProps> = ({ year, selected, onChange }) => {
+    return (
+        <li>
+            <input type="radio" className="radio-filter" id={`radio-${year}`} checked={selected} onChange={onChange} />
+            <label htmlFor={`radio-${year}`}>{year}</label>
+        </li>
+    );
+};

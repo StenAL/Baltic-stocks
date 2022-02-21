@@ -1,29 +1,25 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, FunctionComponent } from "react";
 import "../../style/FiltersContainer.css";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Column } from "../../types";
 
-interface ColumnFilterProps extends WithTranslation {
+interface ColumnFilterProps {
     column: Column;
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-class ColumnFilter extends React.Component<ColumnFilterProps> {
-    render() {
-        const { t } = this.props;
-        return (
-            <li>
-                <input
-                    type="checkbox"
-                    className="checkbox-filter"
-                    id={`checkbox-${this.props.column.title}`}
-                    checked={this.props.column.visible}
-                    onChange={this.props.onChange}
-                />
-                <label htmlFor={`checkbox-${this.props.column.title}`}>{t(this.props.column.title)}</label>
-            </li>
-        );
-    }
-}
-
-export default withTranslation()(ColumnFilter);
+export const ColumnFilter: FunctionComponent<ColumnFilterProps> = ({ column, onChange }) => {
+    const { t } = useTranslation();
+    return (
+        <li>
+            <input
+                type="checkbox"
+                className="checkbox-filter"
+                id={`checkbox-${column.title}`}
+                checked={column.visible}
+                onChange={onChange}
+            />
+            <label htmlFor={`checkbox-${column.title}`}>{t(column.title)}</label>
+        </li>
+    );
+};

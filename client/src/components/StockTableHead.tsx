@@ -1,36 +1,39 @@
-import React from "react";
+import React, { FunctionComponent, useCallback } from "react";
 import "../style/StockTableHead.css";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { ColumnId } from "../types";
 
-interface StockTableHeadProps extends WithTranslation {
+interface StockTableHeadProps {
     titles: ColumnId[];
     onHeaderClick: (columnId: ColumnId) => void;
     sortingBy: ColumnId | undefined;
     sortingOrder: "asc" | "desc";
 }
 
-class StockTableHead extends React.Component<StockTableHeadProps> {
-    getHeaderClassName = (title: string): string => {
-        let className = "tableHeader";
-        if (this.props.sortingBy === title) {
-            className += ` ${this.props.sortingOrder}`;
-        }
-        return className;
-    };
+export const StockTableHead: FunctionComponent<StockTableHeadProps> = ({
+    titles,
+    onHeaderClick,
+    sortingBy,
+    sortingOrder,
+}) => {
+    const { t } = useTranslation();
+    const getHeaderClassName = useCallback(
+        (title: string): string => {
+            let className = "tableHeader";
+            if (sortingBy === title) {
+                className += ` ${sortingOrder}`;
+            }
+            return className;
+        },
+        [sortingBy, sortingOrder]
+    );
 
-    generateTableHeaders = (): JSX.Element[] => {
-        const { t } = this.props;
-        return this.props.titles.map((title) => (
-            <th className={this.getHeaderClassName(title)} key={title} onClick={() => this.props.onHeaderClick(title)}>
+    const generateTableHeaders = useCallback((): JSX.Element[] => {
+        return titles.map((title) => (
+            <th className={getHeaderClassName(title)} key={title} onClick={() => onHeaderClick(title)}>
                 {t(title)}
             </th>
         ));
-    };
-
-    render() {
-        return <tr>{this.generateTableHeaders()}</tr>;
-    }
-}
-
-export default withTranslation()(StockTableHead);
+    }, [getHeaderClassName, onHeaderClick, t, titles]);
+    return <tr>{generateTableHeaders()}</tr>;
+};

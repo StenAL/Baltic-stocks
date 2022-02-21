@@ -1,17 +1,18 @@
-import React from "react";
+import React, { FunctionComponent, useCallback } from "react";
 import "../style/HighlightedStats.css";
 import { Stock } from "../types";
 import { IndexType } from "../types";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
-interface HighlightedStatsProps extends WithTranslation {
+interface HighlightedStatsProps {
     stocks: Stock[];
     index: IndexType;
 }
 
-class HighlightedStats extends React.Component<HighlightedStatsProps> {
-    getTotalProfitString = (): string => {
-        const { stocks } = this.props;
+export const HighlightedStats: FunctionComponent<HighlightedStatsProps> = ({ stocks, index }) => {
+    const { t } = useTranslation();
+
+    const getTotalProfitString = useCallback((): string => {
         let profit = stocks
             .map((s) => s.financialData)
             .flat()
@@ -24,26 +25,23 @@ class HighlightedStats extends React.Component<HighlightedStatsProps> {
             return "0";
         }
         return profitString.join(" ");
-    };
+    }, [stocks]);
 
-    getIndexInvestmentChange = (base: number): string =>
-        ((this.props.index.changePercent / 100 + 1) * base).toFixed(2).toString();
+    const getIndexInvestmentChange = useCallback(
+        (base: number): string => ((index.changePercent / 100 + 1) * base).toFixed(2).toString(),
+        [index]
+    );
 
-    render() {
-        const { t } = this.props;
-        return (
-            <div className="highlightContainer">
-                <div className="highlightedStat">
-                    <h2>{this.getTotalProfitString() + " "}€</h2>
-                    <p>{t("2019 profit")}</p>
-                </div>
-                <div className="highlightedStat">
-                    <h2>{this.getIndexInvestmentChange(1000) + " "}€</h2>
-                    <p>{t("12 month index change")}</p>
-                </div>
+    return (
+        <div className="highlightContainer">
+            <div className="highlightedStat">
+                <h2>{getTotalProfitString() + " "}€</h2>
+                <p>{t("2019 profit")}</p>
             </div>
-        );
-    }
-}
-
-export default withTranslation()(HighlightedStats);
+            <div className="highlightedStat">
+                <h2>{getIndexInvestmentChange(1000) + " "}€</h2>
+                <p>{t("12 month index change")}</p>
+            </div>
+        </div>
+    );
+};
