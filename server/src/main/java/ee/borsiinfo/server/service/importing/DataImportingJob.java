@@ -20,37 +20,42 @@ import static java.util.stream.Collectors.toList;
 public class DataImportingJob {
     public static final int FETCH_FREQUENCY_DAYS = 1;
     private static final String BALTIC_GENERAL_INDEX_TICKER = "OMXBGI";
-    private static final List<String> BALTIC_MAIN_LIST_ISINS = List.of("LT0000102337",
-        "EE3100034653",
-        "LT0000127466",
-        "EE3100145616",
-        "EE3100007857",
-        "EE3100016965",
-        "EE3100127242",
-        "LT0000102030",
-        "EE3100004250",
-        "LV0000101590",
-        "LT0000111650",
-        "EE3100073644",
-        "LT0000128092",
-        "EE3100098328",
-        "EE3100039496",
-        "LT0000131872",
-        "LV0000100501",
-        "EE3100006040",
-        "EE3100101031",
-        "LT0000101446",
-        "LT0000111676",
-        "LT0000100372",
-        "LT0000102253",
-        "LV0000101129",
-        "EE3100001751",
-        "EE3100004466",
-        "LT0000123911",
-        "EE0000001105",
-        "EE3100021635",
-        "EE3100026436",
-        "LT0000127508");
+    private static final List<String> BALTIC_MAIN_LIST_ISINS = List.of(
+        "LT0000102337", // Apranga
+        "EE3100034653", // Arco Vara
+        "LT0000127466", // AUGA group
+        "EE3100145616", // Baltika
+        "EE3100007857", // Coop Pank
+        "LV0000101806", // DelfinGroup
+        "EE3100016965", // Ekspress Grupp
+        "EE3100127242", // EfTEN Real Estate Fund III
+        "EE3100137985", // Enefit Green
+        "LT0000102030", // Grigeo
+        "EE3100004250", // Harju Elekter
+        "LV0000101590", // HansaMatrix
+        "EE3100082306", // Hepsor
+        "LT0000115768", // Ignitis grupė
+        "LT0000111650", // Klaipėdos nafta
+        "EE3100073644", // LHV Group
+        "LT0000128092", // Linas Agro Group
+        "EE3100098328", // Merko Ehitus
+        "EE3100039496", // Nordecon
+        "LT0000131872", // Novaturas
+        "EE3100006040", // Pro Kapital Grupp
+        "EE3100101031", // PRFoods
+        "LT0000101446", // Panevėžio statybos trestas
+        "LT0000111676", // Pieno žvaigždės
+        "LT0000100372", // Rokiškio sūris
+        "LT0000102253", // Šiaulių bankas
+        "LV0000101129", // SAF Tehnika
+        "EE3100001751", // Silvano Fashion Group
+        "EE3100004466", // Tallink Grupp
+        "LT0000123911", // Telia Lietuva
+        "EE0000001105", // Tallinna Kaubamaja Grupp
+        "EE3100021635", // Tallinna Sadam
+        "EE3100026436", // Tallinna Vesi
+        "LT0000127508" // Vilkyškių pieninė
+    );
 
     private final StockRepository stockRepository;
     private final IndexRepository indexRepository;
