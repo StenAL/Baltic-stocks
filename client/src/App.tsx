@@ -1,9 +1,9 @@
 import React, { ChangeEvent, FunctionComponent, useCallback, useEffect, useState } from "react";
-import FiltersContainer from "./components/filtering/FiltersContainer";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import HighlightedStats from "./components/HighlightedStats";
-import StockTable from "./components/StockTable";
+import { FiltersContainer } from "./components/filtering/FiltersContainer";
+import { Footer } from "./components/Footer";
+import { Header } from "./components/Header";
+import { HighlightedStats } from "./components/HighlightedStats";
+import { StockTable } from "./components/StockTable";
 import "./style/App.css";
 import { Column, ColumnId, FinancialData, IndexType, RenderedData, Stock } from "./types";
 
