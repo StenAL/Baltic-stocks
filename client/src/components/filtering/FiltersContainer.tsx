@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from "react";
 import "../../style/FiltersContainer.css";
 import { WithTranslation, withTranslation } from "react-i18next";
-import App from "../../App";
+import { YEARLY_FINANCIAL_DATA_IDS } from "../../App";
 import { Column } from "../../types";
 import ColumnFilter from "./ColumnFilter";
 import { Stock } from "../../types";
@@ -24,13 +24,13 @@ class FiltersContainer extends React.Component<FilterersContainerProps> {
     getKeyStatsFilters = (): JSX.Element[] =>
         this.props.columns
             .filter((col) => col.title !== "id")
-            .filter((col) => !App.YEARLY_FINANCIAL_DATA_IDS.includes(col.title))
+            .filter((col) => !YEARLY_FINANCIAL_DATA_IDS.includes(col.title))
             .map((col) => <ColumnFilter column={col} key={col.title} onChange={this.props.onColumnChange} />);
 
     getFinancialDataFilters = (): JSX.Element[] =>
         this.props.columns
             .filter((col) => col.title !== "id")
-            .filter((col) => App.YEARLY_FINANCIAL_DATA_IDS.includes(col.title))
+            .filter((col) => YEARLY_FINANCIAL_DATA_IDS.includes(col.title))
             .map((col) => <ColumnFilter column={col} key={col.title} onChange={this.props.onColumnChange} />);
 
     getCountryFilters = (): JSX.Element[] =>
