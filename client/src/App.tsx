@@ -10,7 +10,7 @@ import { Column, ColumnId, FinancialData, IndexType, RenderedData, Stock } from 
 interface AppState {
     stocks: Stock[];
     columns: Column[];
-    sortingStocksBy: ColumnId;
+    sortingStocksBy: ColumnId | undefined;
     sortingOrder: "asc" | "desc";
     selectedYear: number;
     timeFetched: string;
@@ -102,7 +102,7 @@ export default class App extends Component<unknown, AppState> {
         this.state = {
             stocks: [],
             columns,
-            sortingStocksBy: "name",
+            sortingStocksBy: undefined,
             sortingOrder: "desc",
             selectedYear: 2020,
             timeFetched: "",
@@ -233,7 +233,7 @@ export default class App extends Component<unknown, AppState> {
                     !this.getDisplayedFinancialData(s)?.[columnTitle]
             ),
             ...sortedStocks,
-        ]; // add null/undefined to beginning of sorted sequence
+        ]; // add stocks where sorting attribute is undefined to beginning of sorted sequence
         this.setState({
             stocks: sortedStocks,
             sortingStocksBy: columnTitle,
@@ -259,17 +259,9 @@ export default class App extends Component<unknown, AppState> {
     getVisibleYears = (): number[] => {
         const visibleYears: number[] = this.state.stocks
             .filter((s) => s.visible)
+            .filter(s => s.financialData.length > 0)
             .map((s) => s.financialData)
             .flat()
-            .filter(
-                (f) =>
-                    Object.values(f) // object has non-null values in more than column (year is always non-null)
-                        .reduce(
-                            (previousValue, currentValue) =>
-                                currentValue !== null ? previousValue + 1 : previousValue,
-                            0
-                        ) > 1
-            )
             .map((f) => f.year);
         const visibleYearsNoDuplicates = Array.from(new Set(visibleYears)); // get rid of duplicates
         visibleYearsNoDuplicates.sort();
@@ -279,6 +271,11 @@ export default class App extends Component<unknown, AppState> {
     selectYear = (event: ChangeEvent<HTMLInputElement>): void => {
         const year: number = Number.parseInt(event.target.id.replace("radio-", ""));
         this.setState({ selectedYear: year });
+        if (this.state.sortingStocksBy !== undefined && App.YEARLY_FINANCIAL_DATA_IDS.includes(this.state.sortingStocksBy)) {
+            // invalidate sorting -- there is different financial data for each year
+            // if the same sorting order was kept we'd have to re-sort, causing the table entries to shift around
+            this.setState({ sortingStocksBy: undefined });
+        }
     };
 
     override render() {
