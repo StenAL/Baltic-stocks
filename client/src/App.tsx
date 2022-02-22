@@ -93,14 +93,7 @@ export const App: FunctionComponent = () => {
     const [sortingOrder, setSortingOrder] = useState<"asc" | "desc">("desc");
     const [selectedYear, setSelectedYear] = useState<number>(2020);
     const [timeFetched, setTimeFetched] = useState<string>("");
-    const [index, setIndex] = useState<IndexType>({
-        id: -1,
-        start: "",
-        end: "",
-        name: "",
-        ticker: "",
-        changePercent: 0,
-    });
+    const [index, setIndex] = useState<IndexType | undefined>();
 
     useEffect(() => {
         const fetchData = async () => {
