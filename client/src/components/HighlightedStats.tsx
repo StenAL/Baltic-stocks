@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 interface HighlightedStatsProps {
     stocks: Stock[];
-    index: IndexType;
+    index: IndexType | undefined;
 }
 
 export const HighlightedStats: FunctionComponent<HighlightedStatsProps> = ({ stocks, index }) => {
@@ -28,7 +28,8 @@ export const HighlightedStats: FunctionComponent<HighlightedStatsProps> = ({ sto
     }, [stocks]);
 
     const getIndexInvestmentChange = useCallback(
-        (base: number): string => ((index.changePercent / 100 + 1) * base).toFixed(2).toString(),
+        (initialMoney: number): string =>
+            index ? ((index.changePercent / 100 + 1) * initialMoney).toFixed(2).toString() : "XXXX.XX",
         [index]
     );
 
