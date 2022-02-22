@@ -9,6 +9,8 @@ interface HighlightedStatsProps {
     index: IndexType | undefined;
 }
 
+const CUMULATIVE_PROFIT_YEAR = 2020;
+
 export const HighlightedStats: FunctionComponent<HighlightedStatsProps> = ({ stocks, index }) => {
     const { t } = useTranslation();
 
@@ -16,11 +18,11 @@ export const HighlightedStats: FunctionComponent<HighlightedStatsProps> = ({ sto
         let profit = stocks
             .map((s) => s.financialData)
             .flat()
-            .filter((f) => f.year === 2019)
+            .filter((f) => f.year === CUMULATIVE_PROFIT_YEAR)
             .map((data) => data.netIncome)
             .reduce((acc, curr) => acc + curr, 0);
         profit = Math.round(profit) * 1000000;
-        const profitString = profit.toString().match(/(\d+?)(?=(\d{3})+(?!\d)|$)/g);
+        const profitString = profit.toString().match(/(\d+?)(?=(\d{3})+(?!\d)|$)/g); // group into sections of three (leading group can be shorter)
         if (!profitString) {
             return "0";
         }
@@ -37,7 +39,9 @@ export const HighlightedStats: FunctionComponent<HighlightedStatsProps> = ({ sto
         <div className="highlightContainer">
             <div className="highlightedStat">
                 <h2>{getTotalProfitString() + " "}€</h2>
-                <p>{t("2019 profit")}</p>
+                <p>
+                    {t("cumulative profit in year")} {CUMULATIVE_PROFIT_YEAR}
+                </p>
             </div>
             <div className="highlightedStat">
                 <h2>{getIndexInvestmentChange(1000) + " "}€</h2>

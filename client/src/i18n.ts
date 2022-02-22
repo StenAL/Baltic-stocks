@@ -5,7 +5,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 interface Translation {
     title: string;
     tagline: string;
-    "2019 profit": string;
+    "cumulative profit in year": string;
     "12 month index change": string;
     keyStats: string;
     financials: string;
@@ -48,7 +48,7 @@ const resources: Record<string, { translation: Translation }> = {
         translation: {
             title: "Baltic Stocks",
             tagline: "More than 30 different shares, updated daily",
-            "2019 profit": "cumulative profits of Baltic Main List companies in 2019",
+            "cumulative profit in year": "cumulative profits of Baltic Main List companies in",
             "12 month index change":
                 "portfolio value today if you had bought 1000 € of Baltic Main List stocks one year ago",
             keyStats: "Key Stats",
@@ -91,7 +91,7 @@ const resources: Record<string, { translation: Translation }> = {
         translation: {
             title: "Balti Aktsiad",
             tagline: "Enam kui 30 erineva väärtpaberi alati värsked andmed",
-            "2019 profit": "Balti põhinimekirja ettevõtete viimase kasum 2019. aastal",
+            "cumulative profit in year": "Balti põhinimekirja ettevõtete kogukasum aastal",
             "12 month index change":
                 "portfelli väärtus täna, kui oleksid ostnud aasta tagasi 1000 € eest Balti põhinimekirja aktsiaid",
             keyStats: "Üldnäitajad",
@@ -145,5 +145,3 @@ i18n.use(LanguageDetector)
         },
     })
     .catch(console.log);
-
-export default i18n;
