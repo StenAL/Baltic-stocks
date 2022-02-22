@@ -98,10 +98,11 @@ export const App: FunctionComponent = () => {
     useEffect(() => {
         const fetchData = async () => {
             const data = await fetch(`${API_URL}/stocks`).then((res) => res.json());
-            const stocks: Stock[] = data.stocks.map((d: Stock) => ({
-                ...d,
-                visible: true,
-            }));
+            const stocks: Stock[] =
+                data.stocks?.map((d: Stock) => ({
+                    ...d,
+                    visible: true,
+                })) || [];
             stocks.sort((a, b) => a.name.localeCompare(b.name));
             setStocks(stocks);
             setTimeFetched(data.timeFetched);
