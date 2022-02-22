@@ -26,6 +26,7 @@ public class StockDataImportingService {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yy");
 
     public Optional<Stock> fetchData(String isin) {
+        log.debug("Fetching data for stock ISIN '{}'", isin);
         String url = generateApiUrl(isin);
         Document doc;
         try {
@@ -38,17 +39,36 @@ public class StockDataImportingService {
 
         try {
             Element financialDataTable = doc.selectFirst("#OverviewFinancials table");
+            if (financialDataTable == null) {
+                throw new RuntimeException("Could not fetch stock: no matching CSS selector for '#OverviewFinancials table'");
+            }
             List<FinancialData> financialData = convertHtmlToFinancialData(financialDataTable);
 
             Element keyStatsTable = doc.selectFirst("#OverviewRatios table");
+            if (keyStatsTable == null) {
+                throw new RuntimeException("Could not fetch stock: no matching CSS selector for '#OverviewRatios table'");
+            }
             KeyStats keyStats = convertHtmlToKeyStats(keyStatsTable);
 
             Element dividendsTable = doc.selectFirst("#OverviewDividends table");
+            if (dividendsTable == null) {
+                throw new RuntimeException("Could not fetch stock: no matching CSS selector for '#OverviewDividends table'");
+            }
             List<Dividend> dividends = convertHtmlToDividends(dividendsTable);
 
+            Element stockName = doc.selectFirst(".securityName");
+            if (stockName == null) {
+                throw new RuntimeException("Could not fetch stock: no matching CSS selector for '.securityName'");
+            }
+
+            Element ticker = doc.selectFirst(".securitySymbol");
+            if (ticker == null) {
+                throw new RuntimeException("Could not fetch stock: no matching CSS selector for '.securityName'");
+            }
+
             Stock stock = Stock.builder()
-                .name(doc.selectFirst(".securityName").text())
-                .ticker(doc.selectFirst(".securitySymbol").text())
+                .name(stockName.text())
+                .ticker(ticker.text())
                 .isin(isin)
                 .financialData(financialData)
                 .keyStats(keyStats)
@@ -90,53 +110,23 @@ public class StockDataImportingService {
         for (int j = 1; j < 4; j++) {
             String squareText = rowSquares.size() == 4 ? rowSquares.get(j).text() : "";
             switch (row) {
-                case 0:
-                    financialData.get(j - 1).setYear(Integer.parseInt(squareText));
-                    break;
-                case 3:
-                    financialData.get(j - 1).setRevenue(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
-                    break;
-                case 4:
-                    financialData.get(j - 1).setOperatingIncome(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
-                    break;
-                case 5:
-                    financialData.get(j - 1).setNetIncome(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
-                    break;
-                case 6:
-                    financialData.get(j - 1).setEarningsPerShare(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
-                    break;
-                case 7:
-                    financialData.get(j - 1).setDilutedSharesOutstanding(StringParserUtil.parseIntegerIfPresent(squareText).orElse(null));
-                    break;
-                case 9:
-                    financialData.get(j - 1).setCurrentAssets(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
-                    break;
-                case 10:
-                    financialData.get(j - 1).setNonCurrentAssets(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
-                    break;
-                case 11:
-                    financialData.get(j - 1).setTotalAssets(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
-                    break;
-                case 12:
-                    financialData.get(j - 1).setCurrentLiabilities(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
-                    break;
-                case 13:
-                    financialData.get(j - 1).setTotalLiabilities(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
-                    break;
-                case 14:
-                    financialData.get(j - 1).setTotalEquity(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
-                    break;
-                case 16:
-                    financialData.get(j - 1).setOperatingCashFlow(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
-                    break;
-                case 17:
-                    financialData.get(j - 1).setCapitalExpenditure(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
-                    break;
-                case 18:
-                    financialData.get(j - 1).setFreeCashFlow(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
-                    break;
-                default:
-                    break;
+                case 0 -> financialData.get(j - 1).setYear(Integer.parseInt(squareText));
+                case 3 -> financialData.get(j - 1).setRevenue(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
+                case 4 -> financialData.get(j - 1).setOperatingIncome(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
+                case 5 -> financialData.get(j - 1).setNetIncome(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
+                case 6 -> financialData.get(j - 1).setEarningsPerShare(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
+                case 7 -> financialData.get(j - 1).setDilutedSharesOutstanding(StringParserUtil.parseIntegerIfPresent(squareText).orElse(null));
+                case 9 -> financialData.get(j - 1).setCurrentAssets(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
+                case 10 -> financialData.get(j - 1).setNonCurrentAssets(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
+                case 11 -> financialData.get(j - 1).setTotalAssets(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
+                case 12 -> financialData.get(j - 1).setCurrentLiabilities(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
+                case 13 -> financialData.get(j - 1).setTotalLiabilities(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
+                case 14 -> financialData.get(j - 1).setTotalEquity(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
+                case 16 -> financialData.get(j - 1).setOperatingCashFlow(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
+                case 17 -> financialData.get(j - 1).setCapitalExpenditure(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
+                case 18 -> financialData.get(j - 1).setFreeCashFlow(StringParserUtil.parseDoubleIfPresent(squareText).orElse(null));
+                default -> {
+                }
             }
         }
     }

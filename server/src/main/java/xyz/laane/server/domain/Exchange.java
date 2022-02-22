@@ -10,8 +10,8 @@ public enum Exchange {
     RIGA("EX$$$$XRIS", "LV"),
     VILNIUS("EX$$$$XLIT", "LT");
 
-    private String exchangeCode;
-    private String isinPrefix;
+    private final String exchangeCode;
+    private final String isinPrefix;
     Exchange(String exchangeCode, String isinPrefix) {
         this.exchangeCode = exchangeCode;
         this.isinPrefix = isinPrefix;

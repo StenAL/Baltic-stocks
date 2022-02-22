@@ -24,7 +24,12 @@ public class IndexDataImportingService {
 
     public Index fetchData(String ticker) {
         URI uri = UriComponentsBuilder.fromUriString(generateApiUrl(ticker)).build(true).toUri();
-        return convertDtoToIndex(restTemplate.getForObject(uri, IndexDTO.class));
+        IndexDTO indexDTO = restTemplate.getForObject(uri, IndexDTO.class);
+        if (indexDTO == null) {
+            log.error("Failed to fetch index '{}' data", ticker);
+            throw new RuntimeException("Failed to fetch index " + ticker + " data");
+        }
+        return convertDtoToIndex(indexDTO);
     }
 
     private Index convertDtoToIndex(IndexDTO dto) {
