@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback } from "react";
+import { FunctionComponent, useCallback } from "react";
 import i18n from "i18next";
 import "flag-icons/css/flag-icons.min.css";
 

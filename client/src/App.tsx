@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FunctionComponent, useCallback, useEffect, useState } from "react";
+import { ChangeEvent, FunctionComponent, useCallback, useEffect, useState } from "react";
 import { FiltersContainer } from "./components/filtering/FiltersContainer";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";

@@ -3,7 +3,7 @@
         "target": "es2018",
         "lib": ["dom", "ES2020"],
         "allowJs": true,
-        "skipLibCheck": true,
+        "skipLibCheck": false,
         "esModuleInterop": true,
         "strict": true,
         "forceConsistentCasingInFileNames": true,
@@ -12,7 +12,7 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "noEmit": true,
-        "jsx": "react"
+        "jsx": "react-jsx"
     },
     "include": ["src"]
 }

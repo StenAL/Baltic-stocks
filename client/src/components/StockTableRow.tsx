@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback } from "react";
+import { FunctionComponent, useCallback } from "react";
 import "../style/StockTableRow.css";
 import { ColumnId, RenderedData } from "../types";
 
@@ -26,7 +26,7 @@ export const StockTableRow: FunctionComponent<StockTableRowProps> = ({
                 <td
                     className={`tableCell ${
                         !isNaN(Number(columnValue)) || columnValue === "-" ? "right-align" : "left-align"
-                    }`} // right-align numbers and missing values
+                    }`}
                     key={`${stockDisplayValue.isin}_${columnId}`}
                 >
                     {columnValue}

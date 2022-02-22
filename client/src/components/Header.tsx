@@ -1,5 +1,5 @@
 import i18next from "i18next";
-import React, { FunctionComponent } from "react";
+import { FunctionComponent } from "react";
 import "../style/Header.css";
 import { useTranslation } from "react-i18next";
 import { LanguageSelector } from "./LanguageSelector";

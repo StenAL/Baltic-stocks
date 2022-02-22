@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FunctionComponent, useCallback } from "react";
+import { ChangeEvent, FunctionComponent, useCallback } from "react";
 import "../../style/FiltersContainer.css";
 import { useTranslation } from "react-i18next";
 import { YEARLY_FINANCIAL_DATA_IDS } from "../../App";
