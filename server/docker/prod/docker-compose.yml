@@ -25,7 +25,7 @@ services:
       DB_HOST: db
       SENTRY_DSN: ${SENTRY_DSN}
     ports:
-      - 12345:12345
+      - "12345:12345"
     depends_on:
       - db
     command: ["/wait-for-it.sh", "${DB_HOST}:3306", "--", "sh", "-c", "java -jar /app.jar --spring.profiles.active=prod"]
