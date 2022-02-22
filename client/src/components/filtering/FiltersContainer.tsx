@@ -35,7 +35,6 @@ export const FiltersContainer: FunctionComponent<FilterersContainerProps> = ({
     const getKeyStatsFilters = useCallback(
         (): JSX.Element[] =>
             columns
-                .filter((col) => col.title !== "id")
                 .filter((col) => !YEARLY_FINANCIAL_DATA_IDS.includes(col.title))
                 .map((col) => <ColumnFilter column={col} key={col.title} onChange={onColumnChange} />),
         [columns, onColumnChange]
@@ -44,7 +43,6 @@ export const FiltersContainer: FunctionComponent<FilterersContainerProps> = ({
     const getFinancialDataFilters = useCallback(
         (): JSX.Element[] =>
             columns
-                .filter((col) => col.title !== "id")
                 .filter((col) => YEARLY_FINANCIAL_DATA_IDS.includes(col.title))
                 .map((col) => <ColumnFilter column={col} key={col.title} onChange={onColumnChange} />),
         [columns, onColumnChange]

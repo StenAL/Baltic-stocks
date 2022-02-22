@@ -27,7 +27,7 @@ export const StockTableRow: FunctionComponent<StockTableRowProps> = ({
                     className={`tableCell ${
                         !isNaN(Number(columnValue)) || columnValue === "-" ? "right-align" : "left-align"
                     }`} // right-align numbers and missing values
-                    key={`${stockDisplayValue.id}_${columnId}`}
+                    key={`${stockDisplayValue.isin}_${columnId}`}
                 >
                     {columnValue}
                 </td>

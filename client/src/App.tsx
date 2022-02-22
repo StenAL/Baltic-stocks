@@ -8,7 +8,6 @@ import "./style/App.css";
 import { Column, ColumnId, FinancialData, IndexType, RenderedData, Stock } from "./types";
 
 const COLUMN_IDS: ColumnId[] = [
-    "id",
     "ticker",
     "name",
     "isin",
@@ -198,7 +197,6 @@ export const App: FunctionComponent = () => {
         (stock: Stock): RenderedData => {
             const fd = getDisplayedFinancialData(stock);
             return {
-                id: stock.id,
                 name: stock.name,
                 ticker: stock.ticker,
                 isin: stock.isin,
@@ -242,7 +240,7 @@ export const App: FunctionComponent = () => {
             }
 
             // Attribute is not in KeyStats or FinancialData so it must be a key of Stock included in the table
-            const narrowedAttribute = attribute as "id" | "ticker" | "name" | "isin";
+            const narrowedAttribute = attribute as "ticker" | "name" | "isin";
             return a[narrowedAttribute].localeCompare(b[narrowedAttribute]);
         },
         [getDisplayedFinancialData]
