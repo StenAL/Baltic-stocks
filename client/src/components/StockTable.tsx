@@ -30,7 +30,7 @@ export const StockTable: FunctionComponent<StockTableProps> = ({
                     renderedColumns={renderedColumns}
                     isAlternateRow={i % 2 === 1}
                     stockDisplayValue={s}
-                    key={`stock_${s.id}`}
+                    key={`stock_${s.isin}`}
                 />
             )),
         [renderedColumns]

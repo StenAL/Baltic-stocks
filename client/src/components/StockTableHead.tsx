@@ -18,7 +18,7 @@ export const StockTableHead: FunctionComponent<StockTableHeadProps> = ({
 }) => {
     const { t } = useTranslation();
     const getHeaderClassName = useCallback(
-        (title: string): string => {
+        (title: ColumnId): string => {
             let className = "tableHeader";
             if (sortingBy === title) {
                 className += ` ${sortingOrder}`;

@@ -65,7 +65,6 @@ export interface Stock {
  */
 export interface RenderedData {
     // From Stock
-    id: string;
     name: string;
     ticker: string;
     isin: string;
