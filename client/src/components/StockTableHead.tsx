@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback } from "react";
+import { FunctionComponent, useCallback } from "react";
 import "../style/StockTableHead.css";
 import { useTranslation } from "react-i18next";
 import { ColumnId } from "../types";

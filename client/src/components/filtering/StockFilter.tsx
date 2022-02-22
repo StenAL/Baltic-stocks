@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FunctionComponent } from "react";
+import { ChangeEvent, FunctionComponent } from "react";
 import "../../style/FiltersContainer.css";
 import { Stock } from "../../types";
 

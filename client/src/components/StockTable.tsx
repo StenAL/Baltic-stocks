@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback } from "react";
+import { FunctionComponent, useCallback } from "react";
 import { ColumnId, RenderedData } from "../types";
 import { StockTableHead } from "./StockTableHead";
 import { StockTableRow } from "./StockTableRow";
