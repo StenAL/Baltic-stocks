@@ -1,5 +1,11 @@
 package xyz.laane.server.service.importing;
 
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.ApplicationListener;
+import xyz.laane.server.domain.Batch;
+import xyz.laane.server.domain.Index;
+import xyz.laane.server.domain.Stock;
+import xyz.laane.server.repository.BatchRepository;
 import xyz.laane.server.repository.IndexRepository;
 import xyz.laane.server.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,16 +14,16 @@ import org.springframework.cache.CacheManager;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DataImportingJob {
+public class DataImportingJob implements ApplicationListener<ApplicationReadyEvent> {
     public static final int FETCH_FREQUENCY_DAYS = 1;
     private static final String BALTIC_GENERAL_INDEX_TICKER = "OMXBGI";
     private static final List<String> BALTIC_MAIN_LIST_ISINS = List.of(
@@ -59,19 +65,39 @@ public class DataImportingJob {
 
     private final StockRepository stockRepository;
     private final IndexRepository indexRepository;
+    private final BatchRepository batchRepository;
     private final StockDataImportingService stockDataImportingService;
     private final IndexDataImportingService indexDataImportingService;
     private final CacheManager cacheManager;
 
+
+    @Override
+    public void onApplicationEvent(final ApplicationReadyEvent event) {
+        LocalDateTime lastFetch = batchRepository.findTopByOrderByTimestampDesc().getTimestamp();
+        if (lastFetch.isBefore(LocalDateTime.now().minusDays(DataImportingJob.FETCH_FREQUENCY_DAYS))) {
+            log.info("Current stock data is older than {} days. Fetching new data.", DataImportingJob.FETCH_FREQUENCY_DAYS);
+            updateAllStocks();
+        }
+    }
+
     @Scheduled(cron = "0 0 8 * * *") // 8:00:00 every day
     public void updateAllStocks() {
         log.info("Importing new stock data");
-        stockRepository.saveAll(BALTIC_MAIN_LIST_ISINS.stream()
+        Batch batch = Batch.builder()
+            .timestamp(LocalDateTime.now())
+            .build();
+        batchRepository.save(batch);
+
+        List<Stock> stocks = BALTIC_MAIN_LIST_ISINS.stream()
             .map(stockDataImportingService::fetchData)
             .flatMap(Optional::stream)
-            .collect(toList()));
+            .toList();
+        stocks.forEach(s -> s.setBatch(batch));
+        stockRepository.saveAll(stocks);
 
-        indexRepository.save(indexDataImportingService.fetchData(BALTIC_GENERAL_INDEX_TICKER));
+        Index index = indexDataImportingService.fetchData(BALTIC_GENERAL_INDEX_TICKER);
+        index.setBatch(batch);
+        indexRepository.save(index);
         Objects.requireNonNull(cacheManager.getCache("data")).clear();
     }
 

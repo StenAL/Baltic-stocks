@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import xyz.laane.server.domain.*;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -73,7 +72,6 @@ public class StockDataImportingService {
                 .financialData(financialData)
                 .keyStats(keyStats)
                 .dividends(dividends)
-                .timeFetched(LocalDateTime.now())
                 .build();
             stock.getFinancialData().forEach(f -> f.setStock(stock));
             stock.getDividends().forEach(d -> d.setStock(stock));

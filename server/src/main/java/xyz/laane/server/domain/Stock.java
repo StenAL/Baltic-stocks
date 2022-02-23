@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -23,8 +22,6 @@ public class Stock {
     private String ticker;
     private String name;
     private String isin;
-    @JsonIgnore
-    private LocalDateTime timeFetched;
 
     @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
     private List<FinancialData> financialData;
@@ -32,4 +29,8 @@ public class Stock {
     private KeyStats keyStats;
     @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
     private List<Dividend> dividends;
+
+    @OneToOne
+    @JsonIgnore
+    private Batch batch;
 }
