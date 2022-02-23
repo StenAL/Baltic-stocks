@@ -3,14 +3,16 @@ name: Frontend - build and deploy
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - "client/**" # limit workflow only to changes in frontend folder
   pull_request:
     branches:
-      - master
+      - main
     paths:
       - "client/**"
+      - ".github/workflows/client-cd.yml"
+
 
 defaults:
   run:
@@ -42,7 +44,7 @@ jobs:
 
   publish:
     needs: build
-    if: github.ref == 'refs/heads/master'
+    if: ${{ github.ref == 'refs/heads/${{ github.event.repository.default_branch }}'}}
     runs-on: ubuntu-latest
     steps:
       - name: checkout current repository
@@ -65,7 +67,7 @@ jobs:
         run: npm run build
 
       - name: deploy assets to server
-        uses: appleboy/scp-action@master
+        uses: appleboy/scp-action@v0.1.2
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}

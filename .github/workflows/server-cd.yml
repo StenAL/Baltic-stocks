@@ -3,14 +3,15 @@ name: Backend - build and deploy
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - "server/**" # limit workflow only to changes in backend folder
   pull_request:
     branches:
-      - master
+      - main
     paths:
       - "server/**"
+      - ".github/workflows/server-cd.yml"
 
 jobs:
   build:
@@ -33,7 +34,7 @@ jobs:
           build-root-directory: server
 
       - name: create server artifact from jar
-        if: github.ref == 'refs/heads/master'
+        if: ${{ github.ref == 'refs/heads/${{ github.event.repository.default_branch }}'}}
         uses: actions/upload-artifact@v1
         with:
           name: server
@@ -41,7 +42,7 @@ jobs:
 
   publish:
     needs: build
-    if: github.ref == 'refs/heads/master'
+    if: ${{ github.ref == 'refs/heads/${{ github.event.repository.default_branch }}'}}
     runs-on: ubuntu-latest
     steps:
       - name: checkout current repository
@@ -72,7 +73,7 @@ jobs:
           tags: stenal/baltic-stock-server:latest
 
       - name: deploy production docker-compose.yml
-        uses: appleboy/scp-action@master
+        uses: appleboy/scp-action@v0.1.2
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
@@ -83,7 +84,7 @@ jobs:
           strip_components: 3
 
       - name: Deploy published images
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
