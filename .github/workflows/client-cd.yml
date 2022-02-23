@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "client/**" # limit workflow only to changes in frontend folder
+      - ".github/workflows/server-cd.yml"
   pull_request:
     branches:
       - main
@@ -44,7 +45,7 @@ jobs:
 
   publish:
     needs: build
-    if: ${{ github.ref == 'refs/heads/${{ github.event.repository.default_branch }}'}}
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: checkout current repository
