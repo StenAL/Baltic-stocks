@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -27,6 +26,8 @@ public class Index {
     private String ticker;
     private String name;
     private Double changePercent;
+
+    @OneToOne
     @JsonIgnore
-    private LocalDateTime timeFetched;
+    private Batch batch;
 }

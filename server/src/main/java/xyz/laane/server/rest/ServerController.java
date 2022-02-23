@@ -1,9 +1,11 @@
 package xyz.laane.server.rest;
 
 import org.springframework.cache.Cache;
+import xyz.laane.server.domain.Batch;
 import xyz.laane.server.domain.Index;
 import xyz.laane.server.domain.Stock;
 import xyz.laane.server.dto.DataResponse;
+import xyz.laane.server.repository.BatchRepository;
 import xyz.laane.server.repository.IndexRepository;
 import xyz.laane.server.repository.StockRepository;
 import xyz.laane.server.service.importing.DataImportingJob;
@@ -25,6 +27,7 @@ public class ServerController {
 
     private final StockRepository stockRepository;
     private final IndexRepository indexRepository;
+    private final BatchRepository batchRepository;
     private final DataImportingJob dataImportingJob;
     private final CacheManager cacheManager;
 
@@ -32,20 +35,17 @@ public class ServerController {
     @Cacheable("data")
     @CrossOrigin("*")
     public DataResponse getAllData() {
-        log.debug("Fetching data");
-        LocalDateTime fetchAfter = LocalDateTime.now().minusDays(DataImportingJob.FETCH_FREQUENCY_DAYS);
-        List<Stock> stocks = stockRepository.findAllByTimeFetchedAfter(fetchAfter);
-        List<Index> indexes = indexRepository.findAllByTimeFetchedAfter(fetchAfter);
-        if (stocks.isEmpty()) {
-            log.warn("Could not find any stocks in database from past {} days", DataImportingJob.FETCH_FREQUENCY_DAYS);
-            return new DataResponse(null, LocalDateTime.now(), null);
-        }
+        log.debug("Got request to /stocks");
+        Batch latestBatch = batchRepository.findTopByOrderByTimestampDesc();
+        log.info("Returning data fetched at {} (batch {})", latestBatch.getTimestamp(), latestBatch.getId());
+        List<Stock> stocks = stockRepository.findAllByBatchId(latestBatch.getId());
+        List<Index> indexes = indexRepository.findAllByBatchId(latestBatch.getId());
+        LocalDateTime timeFetched = latestBatch.getTimestamp().truncatedTo(ChronoUnit.HOURS);
         if (indexes.isEmpty()) {
             log.warn("Could not find any indexes in database from past {} days", DataImportingJob.FETCH_FREQUENCY_DAYS);
-            return new DataResponse(stocks, LocalDateTime.now(), null);
+            return new DataResponse(stocks, timeFetched, null);
         }
 
-        LocalDateTime timeFetched = stocks.get(0).getTimeFetched().truncatedTo(ChronoUnit.HOURS);
         return new DataResponse(stocks, timeFetched, indexes.get(0));
     }
 

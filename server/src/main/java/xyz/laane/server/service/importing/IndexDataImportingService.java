@@ -10,7 +10,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Slf4j
@@ -40,7 +39,6 @@ public class IndexDataImportingService {
             .ticker(chart.getTicker())
             .name(chart.getFullName())
             .changePercent(chart.getChangePercent())
-            .timeFetched(LocalDateTime.now())
             .build();
         log.info("Imported {}", index);
         return index;
