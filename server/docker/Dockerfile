@@ -1,4 +1,3 @@
 FROM openjdk:17
-COPY build/resources/main/wait-for-it.sh wait-for-it.sh
-RUN chmod a+x wait-for-it.sh
 COPY build/libs/*.jar app.jar
+ENTRYPOINT ["java", "-jar", "/app.jar", "--spring.profiles.active=prod"]
