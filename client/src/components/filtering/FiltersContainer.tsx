@@ -1,8 +1,8 @@
-import { ChangeEvent, FunctionComponent, useCallback } from "react";
+import { FunctionComponent, useCallback } from "react";
 import "../../style/FiltersContainer.css";
 import { useTranslation } from "react-i18next";
 import { YEARLY_FINANCIAL_DATA_IDS } from "../../App";
-import { Column } from "../../types";
+import { Column, CountryCode } from "../../types";
 import { ColumnFilter } from "./ColumnFilter";
 import { Stock } from "../../types";
 import { StockFilter } from "./StockFilter";
@@ -14,21 +14,15 @@ interface FilterersContainerProps {
     stocks: Stock[];
     years: number[];
     selectedYear: number;
-    onColumnChange: (event: ChangeEvent<HTMLInputElement>) => void;
-    onStockChange: (event: ChangeEvent<HTMLInputElement>) => void;
-    onCountryChange: (event: ChangeEvent<HTMLInputElement>) => void;
-    onYearChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
+
+const COUNTRY_CODES: [CountryCode, CountryCode, CountryCode] = ["EE", "LV", "LT"];
 
 export const FiltersContainer: FunctionComponent<FilterersContainerProps> = ({
     columns,
     stocks,
     years,
     selectedYear,
-    onColumnChange,
-    onStockChange,
-    onCountryChange,
-    onYearChange,
 }) => {
     const { t } = useTranslation();
 
@@ -36,37 +30,39 @@ export const FiltersContainer: FunctionComponent<FilterersContainerProps> = ({
         (): JSX.Element[] =>
             columns
                 .filter((col) => !YEARLY_FINANCIAL_DATA_IDS.includes(col.title))
-                .map((col) => <ColumnFilter column={col} key={col.title} onChange={onColumnChange} />),
-        [columns, onColumnChange]
+                .map((col) => <ColumnFilter column={col} key={col.title} />),
+        [columns]
     );
 
     const getFinancialDataFilters = useCallback(
         (): JSX.Element[] =>
             columns
                 .filter((col) => YEARLY_FINANCIAL_DATA_IDS.includes(col.title))
-                .map((col) => <ColumnFilter column={col} key={col.title} onChange={onColumnChange} />),
-        [columns, onColumnChange]
+                .map((col) => <ColumnFilter column={col} key={col.title} />),
+        [columns]
     );
 
     const getCountryFilters = useCallback(
         (): JSX.Element[] =>
-            ["EE", "LV", "LT"].map((country) => (
-                <CountryFilter stocks={stocks} key={country} onChange={onCountryChange} country={country} />
+            COUNTRY_CODES.map((countryCode) => (
+                <CountryFilter
+                    stocks={stocks.filter((s) => s.isin.startsWith(countryCode))}
+                    key={countryCode}
+                    countryCode={countryCode}
+                />
             )),
-        [stocks, onCountryChange]
+        [stocks]
     );
 
     const getStockFilters = useCallback((): JSX.Element[] => {
         const sortedStocks = stocks.slice().sort((a, b) => a.name.localeCompare(b.name));
-        return sortedStocks.map((stock) => <StockFilter stock={stock} key={stock.name} onChange={onStockChange} />);
-    }, [stocks, onStockChange]);
+        return sortedStocks.map((stock) => <StockFilter stock={stock} key={stock.name} />);
+    }, [stocks]);
 
     const getYearFilters = useCallback(
         (): JSX.Element[] =>
-            years.map((year) => (
-                <YearFilter year={year} key={year} selected={year === selectedYear} onChange={onYearChange} />
-            )),
-        [years, selectedYear, onYearChange]
+            years.map((year) => <YearFilter year={year} key={year} selected={year === selectedYear} />),
+        [years, selectedYear]
     );
     const keyStatsFilters = getKeyStatsFilters();
     const financialDataFilters = getFinancialDataFilters();

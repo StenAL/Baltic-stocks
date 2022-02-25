@@ -1,13 +1,14 @@
-import { ChangeEvent, FunctionComponent } from "react";
+import { FunctionComponent } from "react";
+import { ActionType, useDispatchContext } from "../../Reducer";
 import "../../style/FiltersContainer.css";
 import { Stock } from "../../types";
 
 interface StockFilterProps {
     stock: Stock;
-    onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const StockFilter: FunctionComponent<StockFilterProps> = ({ stock, onChange }) => {
+export const StockFilter: FunctionComponent<StockFilterProps> = ({ stock }) => {
+    const dispatch = useDispatchContext();
     return (
         <li>
             <input
@@ -15,7 +16,7 @@ export const StockFilter: FunctionComponent<StockFilterProps> = ({ stock, onChan
                 className="checkbox-filter"
                 id={`checkbox-${stock.name}`}
                 checked={stock.visible}
-                onChange={onChange}
+                onChange={() => dispatch({ type: ActionType.INVERT_STOCK_VISIBILITY, isin: stock.isin })}
             />
             <label htmlFor={`checkbox-${stock.name}`}>{stock.name}</label>
         </li>
