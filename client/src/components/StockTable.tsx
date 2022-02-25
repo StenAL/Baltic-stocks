@@ -11,7 +11,6 @@ interface StockTableProps {
     sortingOrder: "asc" | "desc";
     timeFetched: string;
     renderedColumns: ColumnId[];
-    onHeaderClick: (columnId: ColumnId) => void;
 }
 
 export const StockTable: FunctionComponent<StockTableProps> = ({
@@ -20,7 +19,6 @@ export const StockTable: FunctionComponent<StockTableProps> = ({
     sortingOrder,
     timeFetched,
     renderedColumns,
-    onHeaderClick,
 }) => {
     const { t } = useTranslation();
     const getTableRows = useCallback(
@@ -40,12 +38,7 @@ export const StockTable: FunctionComponent<StockTableProps> = ({
         <div>
             <table className="stockTable">
                 <thead>
-                    <StockTableHead
-                        onHeaderClick={onHeaderClick}
-                        titles={renderedColumns}
-                        sortingOrder={sortingOrder}
-                        sortingBy={sortingBy}
-                    />
+                    <StockTableHead titles={renderedColumns} sortingOrder={sortingOrder} sortingBy={sortingBy} />
                 </thead>
                 <tbody>{tableRows}</tbody>
             </table>

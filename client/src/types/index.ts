@@ -1,3 +1,5 @@
+export type CountryCode = "EE" | "LV" | "LT";
+
 export interface Column {
     visible: boolean;
     title: ColumnId;
@@ -53,7 +55,7 @@ export interface Stock {
     id: string;
     name: string;
     ticker: string;
-    isin: string;
+    isin: `${CountryCode}${string}`;
     financialData: FinancialData[];
     keyStats: KeyStats;
     dividends: Dividend[];
