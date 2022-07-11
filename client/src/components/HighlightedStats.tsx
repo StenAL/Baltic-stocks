@@ -1,5 +1,6 @@
 import { FunctionComponent, useCallback } from "react";
 import "../style/HighlightedStats.css";
+import { DEFAULT_DATA_YEAR } from "../App";
 import { Stock } from "../types";
 import { IndexType } from "../types";
 import { useTranslation } from "react-i18next";
@@ -9,8 +10,6 @@ interface HighlightedStatsProps {
     index: IndexType | undefined;
 }
 
-const CUMULATIVE_PROFIT_YEAR = 2020;
-
 export const HighlightedStats: FunctionComponent<HighlightedStatsProps> = ({ stocks, index }) => {
     const { t } = useTranslation();
 
@@ -18,7 +17,7 @@ export const HighlightedStats: FunctionComponent<HighlightedStatsProps> = ({ sto
         let profit = stocks
             .map((s) => s.financialData)
             .flat()
-            .filter((f) => f.year === CUMULATIVE_PROFIT_YEAR)
+            .filter((f) => f.year === DEFAULT_DATA_YEAR)
             .map((data) => data.netIncome)
             .reduce((acc, curr) => acc + curr, 0);
         profit = Math.round(profit) * 1000000;
@@ -40,7 +39,7 @@ export const HighlightedStats: FunctionComponent<HighlightedStatsProps> = ({ sto
             <div className="highlightedStat">
                 <h2>{getTotalProfitString() + " "}€</h2>
                 <p>
-                    {t("cumulative profit in year")} {CUMULATIVE_PROFIT_YEAR}
+                    {t("cumulative profit in year")} {DEFAULT_DATA_YEAR}
                 </p>
             </div>
             <div className="highlightedStat">
