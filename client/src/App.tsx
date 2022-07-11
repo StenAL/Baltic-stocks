@@ -8,6 +8,7 @@ import "./style/App.css";
 import { ActionType, DispatchContextProvider, reducer } from "./Reducer";
 import { Column, ColumnId, FinancialData, IndexType, RenderedData, Stock } from "./types";
 
+export const DEFAULT_DATA_YEAR = 2021;
 const COLUMN_IDS: ColumnId[] = [
     "ticker",
     "name",
@@ -103,7 +104,7 @@ export const App: FunctionComponent = () => {
         })),
         stocks: [],
         sortingStocksBy: undefined,
-        selectedYear: 2020,
+        selectedYear: DEFAULT_DATA_YEAR,
         sortingOrder: "desc",
         timeFetched: "",
         index: undefined,
