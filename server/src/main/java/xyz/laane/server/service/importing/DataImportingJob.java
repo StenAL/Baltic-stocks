@@ -42,7 +42,7 @@ public class DataImportingJob implements ApplicationListener<ApplicationReadyEve
         "EE3100082306", // Hepsor
         "LT0000115768", // Ignitis grupė
         "LT0000111650", // Klaipėdos nafta
-        "EE3100073644", // LHV Group
+        "EE3100102203", // LHV Group
         "LT0000128092", // Linas Agro Group
         "EE3100098328", // Merko Ehitus
         "EE3100039496", // Nordecon
