@@ -1,10 +1,10 @@
-import { FunctionComponent, useCallback } from "react";
+import { FunctionComponent, useCallback, useMemo } from "react";
 import "../style/StockTableRow.css";
 import { ColumnId, RenderedData } from "../types";
 
 interface StockTableRowProps {
     stockDisplayValue: RenderedData;
-    isAlternateRow: boolean; // for styling every second row
+    isAlternateRow: boolean;
     renderedColumns: ColumnId[];
 }
 
@@ -18,7 +18,7 @@ export const StockTableRow: FunctionComponent<StockTableRowProps> = ({
         return typeof initialValue === "number" ? initialValue.toFixed(2).toString() : initialValue;
     }, []);
 
-    const getRowCells = useCallback((): JSX.Element[] => {
+    const cells = useMemo((): JSX.Element[] => {
         return renderedColumns
             .map((columnId) => [columnId, stockDisplayValue[columnId]])
             .map(([columnId, columnValue]) => [columnId, getCellDisplayValue(columnValue)])
@@ -33,6 +33,5 @@ export const StockTableRow: FunctionComponent<StockTableRowProps> = ({
                 </td>
             ));
     }, [getCellDisplayValue, renderedColumns, stockDisplayValue]);
-    const cells = getRowCells();
     return <tr className={isAlternateRow ? "alternateRow" : ""}>{cells}</tr>;
 };

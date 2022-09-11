@@ -1,4 +1,4 @@
-import { FunctionComponent, useCallback, useEffect, useReducer, useState } from "react";
+import { FunctionComponent, useCallback, useEffect, useMemo, useReducer, useState } from "react";
 import { FiltersContainer } from "./components/filtering/FiltersContainer";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
@@ -125,16 +125,16 @@ export const App: FunctionComponent = () => {
         fetchData().catch((e) => console.error(`Error while fetching data: ${e}`));
     }, []);
 
-    const getVisibleYears = useCallback((): number[] => {
+    const visibleYears = useMemo((): number[] => {
         const visibleYears: number[] = state.stocks
             .filter((s) => s.visible)
             .filter((s) => s.financialData.length > 0)
             .map((s) => s.financialData)
             .flat()
             .map((f) => f.year);
-        const visibleYearsNoDuplicates = Array.from(new Set(visibleYears)); // get rid of duplicates
-        visibleYearsNoDuplicates.sort();
-        return visibleYearsNoDuplicates;
+        const uniqueVisibleYears = Array.from(new Set(visibleYears));
+        uniqueVisibleYears.sort();
+        return uniqueVisibleYears;
     }, [state.stocks]);
 
     const getStockDisplayedData = useCallback(
@@ -183,11 +183,11 @@ export const App: FunctionComponent = () => {
                 <FiltersContainer
                     columns={state.columns}
                     stocks={tickerSortedStocks}
-                    years={getVisibleYears()}
+                    years={visibleYears}
                     selectedYear={state.selectedYear}
                 />
                 <StockTable
-                    stockDisplayValues={visibleStocksData}
+                    stocks={visibleStocksData}
                     sortingBy={state.sortingStocksBy}
                     sortingOrder={state.sortingOrder}
                     renderedColumns={visibleColumns}

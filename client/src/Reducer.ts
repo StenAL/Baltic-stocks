@@ -160,7 +160,7 @@ const DispatchContext = createContext<Dispatch<Action> | undefined>(undefined);
 export const useDispatchContext: () => Dispatch<Action> = () => {
     const context = useContext(DispatchContext);
     if (context === undefined) {
-        throw new Error("useCount must be used within a CountProvider");
+        throw new Error("useDispatchContext must be used within a CountProvider");
     }
     return context;
 };

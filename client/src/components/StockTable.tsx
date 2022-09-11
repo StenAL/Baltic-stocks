@@ -1,4 +1,4 @@
-import { FunctionComponent, useCallback } from "react";
+import { FunctionComponent, useMemo } from "react";
 import { ColumnId, RenderedData } from "../types";
 import { StockTableHead } from "./StockTableHead";
 import { StockTableRow } from "./StockTableRow";
@@ -6,7 +6,7 @@ import "../style/StockTable.css";
 import { useTranslation } from "react-i18next";
 
 interface StockTableProps {
-    stockDisplayValues: RenderedData[];
+    stocks: RenderedData[];
     sortingBy: ColumnId | undefined;
     sortingOrder: "asc" | "desc";
     timeFetched: string;
@@ -14,15 +14,15 @@ interface StockTableProps {
 }
 
 export const StockTable: FunctionComponent<StockTableProps> = ({
-    stockDisplayValues,
+    stocks,
     sortingBy,
     sortingOrder,
     timeFetched,
     renderedColumns,
 }) => {
     const { t } = useTranslation();
-    const getTableRows = useCallback(
-        (stocks: RenderedData[]): JSX.Element[] =>
+    const tableRows = useMemo(
+        (): JSX.Element[] =>
             stocks.map((s, i) => (
                 <StockTableRow
                     renderedColumns={renderedColumns}
@@ -31,9 +31,8 @@ export const StockTable: FunctionComponent<StockTableProps> = ({
                     key={`stock_${s.isin}`}
                 />
             )),
-        [renderedColumns]
+        [stocks, renderedColumns]
     );
-    const tableRows = getTableRows(stockDisplayValues);
     return (
         <div>
             <table className="stockTable">
