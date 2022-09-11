@@ -1,6 +1,6 @@
-import { FunctionComponent, useCallback } from "react";
-import i18n from "i18next";
+import { FunctionComponent } from "react";
 import "flag-icons/css/flag-icons.min.css";
+import { useTranslation } from "react-i18next";
 
 interface LanguageSelectorProps {
     languageCode: string;
@@ -8,8 +8,13 @@ interface LanguageSelectorProps {
 }
 
 export const LanguageSelector: FunctionComponent<LanguageSelectorProps> = ({ languageCode, countryCode }) => {
-    const onChange = useCallback((languageCode: string) => {
-        i18n.changeLanguage(languageCode).catch((e) => console.error(`Error while changing language: ${e}`));
-    }, []);
-    return <span className={`language-select fi fi-${countryCode}`} onClick={() => onChange(languageCode)} />;
+    const { i18n } = useTranslation();
+    return (
+        <span
+            className={`language-select fi fi-${countryCode}`}
+            onClick={() =>
+                i18n.changeLanguage(languageCode).catch((e) => console.error(`Error while changing language: ${e}`))
+            }
+        />
+    );
 };

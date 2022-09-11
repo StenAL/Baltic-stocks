@@ -1,4 +1,4 @@
-import { FunctionComponent, useCallback } from "react";
+import { FunctionComponent, useMemo } from "react";
 import "../../style/FiltersContainer.css";
 import { useTranslation } from "react-i18next";
 import { YEARLY_FINANCIAL_DATA_IDS } from "../../App";
@@ -26,7 +26,7 @@ export const FiltersContainer: FunctionComponent<FilterersContainerProps> = ({
 }) => {
     const { t } = useTranslation();
 
-    const getKeyStatsFilters = useCallback(
+    const keyStatsFilters = useMemo(
         (): JSX.Element[] =>
             columns
                 .filter((col) => !YEARLY_FINANCIAL_DATA_IDS.includes(col.title))
@@ -34,7 +34,7 @@ export const FiltersContainer: FunctionComponent<FilterersContainerProps> = ({
         [columns]
     );
 
-    const getFinancialDataFilters = useCallback(
+    const financialDataFilters = useMemo(
         (): JSX.Element[] =>
             columns
                 .filter((col) => YEARLY_FINANCIAL_DATA_IDS.includes(col.title))
@@ -42,7 +42,7 @@ export const FiltersContainer: FunctionComponent<FilterersContainerProps> = ({
         [columns]
     );
 
-    const getCountryFilters = useCallback(
+    const countryFilters = useMemo(
         (): JSX.Element[] =>
             COUNTRY_CODES.map((countryCode) => (
                 <CountryFilter
@@ -54,21 +54,17 @@ export const FiltersContainer: FunctionComponent<FilterersContainerProps> = ({
         [stocks]
     );
 
-    const getStockFilters = useCallback((): JSX.Element[] => {
+    const stockFilters = useMemo((): JSX.Element[] => {
         const sortedStocks = stocks.slice().sort((a, b) => a.name.localeCompare(b.name));
         return sortedStocks.map((stock) => <StockFilter stock={stock} key={stock.name} />);
     }, [stocks]);
 
-    const getYearFilters = useCallback(
+    const yearFilters = useMemo(
         (): JSX.Element[] =>
             years.map((year) => <YearFilter year={year} key={year} selected={year === selectedYear} />),
         [years, selectedYear]
     );
-    const keyStatsFilters = getKeyStatsFilters();
-    const financialDataFilters = getFinancialDataFilters();
-    const countryFilters = getCountryFilters();
-    const stockFilters = getStockFilters();
-    const yearFilters = getYearFilters();
+
     return (
         <div className="filtersContainer">
             <div className="filter">
