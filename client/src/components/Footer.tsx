@@ -7,13 +7,9 @@ export const Footer: FunctionComponent = () => {
     return (
         <footer>
             <img src={`${process.env.PUBLIC_URL}/footer.png`} className="footer" alt="Skyline view of Tallinn" />
-            <p
-                dangerouslySetInnerHTML={{
-                    __html: t("open-source", {
-                        interpolation: { escapeValue: false },
-                    }),
-                }}
-            />
+            <p>
+                {t("this app is")} <a href="https://github.com/StenAL/baltic-stocks">{t("open-source")}</a>
+            </p>
         </footer>
     );
 };
