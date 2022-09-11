@@ -37,7 +37,7 @@ export const HighlightedStats: FunctionComponent<HighlightedStatsProps> = ({ sto
     return (
         <div className="highlightContainer">
             <div className="highlightedStat">
-                <h2>{ totalProfit }&nbsp;€</h2>
+                <h2>{totalProfit}&nbsp;€</h2>
                 <p>
                     {t("cumulative profit in year")} {DEFAULT_DATA_YEAR}
                 </p>

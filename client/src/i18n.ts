@@ -1,8 +1,11 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
+import { ColumnId, CountryCode } from "./types";
 
-interface Translation {
+type TranslatedKey = ColumnId | CountryCode; // keys which must be translated
+
+export interface Translation extends Record<TranslatedKey, string> {
     title: string;
     tagline: string;
     "cumulative profit in year": string;
@@ -11,35 +14,8 @@ interface Translation {
     financials: string;
     "financial data disclaimer": string;
     stocks: string;
-    ticker: string;
-    name: string;
-    isin: string;
-    priceEarningTtm: string;
-    priceBook: string;
-    priceSalesTtm: string;
-    revenueGrowthThreeYearAvg: string;
-    operatingMarginTtm: string;
-    netMarginTtm: string;
-    roeTtm: string;
-    debtEquity: string;
-    revenue: string;
-    operatingIncome: string;
-    netIncome: string;
-    earningsPerShare: string;
-    dilutedSharesOutstanding: string;
-    currentAssets: string;
-    nonCurrentAssets: string;
-    totalAssets: string;
-    currentLiabilities: string;
-    totalLiabilities: string;
-    totalEquity: string;
-    operatingCashFlow: string;
-    capitalExpenditure: string;
-    freeCashFlow: string;
-    EE: string;
-    LV: string;
-    LT: string;
     "data as of": string;
+    "this app is": string;
     "open-source": string;
 }
 
@@ -84,7 +60,8 @@ const resources: Record<string, { translation: Translation }> = {
             LV: "Latvia",
             LT: "Lithuania",
             "data as of": "Data as of",
-            "open-source": 'This application is <a href="https://github.com/StenAL/baltic-stocks">open-source</a>',
+            "this app is": "This application is",
+            "open-source": "open-source",
         },
     },
     et: {
@@ -127,7 +104,8 @@ const resources: Record<string, { translation: Translation }> = {
             LV: "Läti",
             LT: "Leedu",
             "data as of": "Andmed seisuga",
-            "open-source": 'See rakendus on <a href="https://github.com/StenAL/baltic-stocks">avatud lähtekoodiga</a>',
+            "this app is": "See rakendus on",
+            "open-source": "avatud lähtekoodiga",
         },
     },
 };
@@ -144,4 +122,11 @@ i18n.use(LanguageDetector)
             escapeValue: false, // not needed for React as it escapes by default
         },
     })
-    .catch(console.log);
+    .catch(console.error);
+
+// https://react.i18next.com/latest/typescript
+declare module "react-i18next" {
+    interface CustomTypeOptions {
+        resources: typeof resources["en"];
+    }
+}

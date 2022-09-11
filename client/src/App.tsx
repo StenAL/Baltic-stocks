@@ -148,7 +148,6 @@ export const App: FunctionComponent = () => {
                 priceBook: stock.keyStats.priceBook,
                 priceSalesTtm: stock.keyStats.priceSalesTtm,
                 revenueGrowthThreeYearAvg: stock.keyStats.revenueGrowthThreeYearAvg,
-                epsGrowthThreeYearAverage: stock.keyStats.epsGrowthThreeYearAverage,
                 operatingMarginTtm: stock.keyStats.operatingMarginTtm,
                 netMarginTtm: stock.keyStats.netMarginTtm,
                 roeTtm: stock.keyStats.roeTtm,

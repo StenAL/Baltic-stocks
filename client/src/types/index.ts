@@ -76,7 +76,6 @@ export interface RenderedData {
     priceBook: number;
     priceSalesTtm: number;
     revenueGrowthThreeYearAvg: number;
-    epsGrowthThreeYearAverage: number;
     operatingMarginTtm: number;
     netMarginTtm: number;
     roeTtm: number;
