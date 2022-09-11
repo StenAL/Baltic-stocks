@@ -1,8 +1,8 @@
 plugins {
-    id 'org.springframework.boot' version '2.6.3'
-    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-    id "com.gorylenko.gradle-git-properties" version "2.4.0"  // Used by Sentry to match errors to specific git commit
-    id "io.freefair.lombok" version "6.4.1"
+    id 'org.springframework.boot' version '2.7.3'
+    id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+    id "com.gorylenko.gradle-git-properties" version "2.4.1"  // Used by Sentry to match errors to specific git commit
+    id "io.freefair.lombok" version "6.5.1"
     id 'java'
 }
 
@@ -21,20 +21,26 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
-    implementation 'org.mariadb.jdbc:mariadb-java-client:3.0.3'
-    implementation "org.flywaydb:flyway-core:8.5.0"
-    implementation "org.flywaydb:flyway-mysql:8.5.0"
+    implementation 'org.mariadb.jdbc:mariadb-java-client:3.0.7'
+    implementation "org.flywaydb:flyway-core:9.3.0"
+    implementation "org.flywaydb:flyway-mysql:9.3.0"
 
-    implementation "org.jsoup:jsoup:1.14.3"
+    implementation "org.jsoup:jsoup:1.15.3"
 
-    implementation 'io.sentry:sentry-spring-boot-starter:5.6.1'
-    implementation 'io.sentry:sentry-logback:5.6.1'
+    implementation 'io.sentry:sentry-spring-boot-starter:6.4.1'
+    implementation 'io.sentry:sentry-logback:6.4.1'
 }
 
 tasks.named('wrapper') {
     // by default the Gradle wrapper includes only compiled output
     // this changes it to include sources and docs
     distributionType = Wrapper.DistributionType.ALL
+}
+
+tasks.named("jar") {
+    // the Spring Boot plugin already generates an executable jar as part of the bootJar task
+    // https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/#packaging-executable.and-plain-archives
+    enabled = false
 }
 
 def springProfile = 'default'
