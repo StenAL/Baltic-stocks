@@ -77,6 +77,8 @@ public class DataImportingJob implements ApplicationListener<ApplicationReadyEve
         if (lastFetch.isBefore(LocalDateTime.now().minusDays(DataImportingJob.FETCH_FREQUENCY_DAYS))) {
             log.info("Current stock data is older than {} days. Fetching new data.", DataImportingJob.FETCH_FREQUENCY_DAYS);
             updateAllStocks();
+        } else {
+            log.debug("Current stock data is fresh. Not fetching new data");
         }
     }
 
@@ -94,6 +96,7 @@ public class DataImportingJob implements ApplicationListener<ApplicationReadyEve
             .toList();
         stocks.forEach(s -> s.setBatch(batch));
         stockRepository.saveAll(stocks);
+        log.info("Imported {} stocks", BALTIC_MAIN_LIST_ISINS.size());
 
         Index index = indexDataImportingService.fetchData(BALTIC_GENERAL_INDEX_TICKER);
         index.setBatch(batch);
