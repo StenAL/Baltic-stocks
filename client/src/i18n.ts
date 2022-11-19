@@ -125,7 +125,7 @@ i18n.use(LanguageDetector)
     .catch(console.error);
 
 // https://react.i18next.com/latest/typescript
-declare module "react-i18next" {
+declare module "i18next" {
     interface CustomTypeOptions {
         resources: typeof resources["en"];
     }
