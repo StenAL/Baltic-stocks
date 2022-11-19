@@ -24,12 +24,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout current repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: set up Node.js 16.x
-        uses: actions/setup-node@v2
+      - name: set up Node.js 18.x
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18'
 
       - name: npm install
         run: npm ci
@@ -49,12 +49,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout current repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: set up Node.js 12.x
-        uses: actions/setup-node@v1
+      - name: set up Node.js 18.x
+        uses: actions/setup-node@v3
         with:
-          node-version: '12.x'
+          node-version: '18.x'
 
       - name: npm install
         working-directory: ./client
@@ -63,7 +63,6 @@ jobs:
       - name: build static assets
         env:
           REACT_APP_API_URL: https://laane.xyz/stonks/api
-          REACT_APP_GOOGLE_ANALYTICS_CODE: UA-162143380-1
         working-directory: ./client
         run: npm run build
 
