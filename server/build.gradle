@@ -1,8 +1,8 @@
 plugins {
-    id 'org.springframework.boot' version '2.7.3'
-    id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+    id 'org.springframework.boot' version '3.0.1'
+    id 'io.spring.dependency-management' version '1.1.0'
     id "com.gorylenko.gradle-git-properties" version "2.4.1"  // Used by Sentry to match errors to specific git commit
-    id "io.freefair.lombok" version "6.5.1"
+    id "io.freefair.lombok" version "6.6.1"
     id 'java'
 }
 
@@ -21,14 +21,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
-    implementation 'org.mariadb.jdbc:mariadb-java-client:3.0.7'
-    implementation "org.flywaydb:flyway-core:9.3.0"
-    implementation "org.flywaydb:flyway-mysql:9.3.0"
+    implementation 'org.mariadb.jdbc:mariadb-java-client:3.1.1'
+    implementation "org.flywaydb:flyway-core:9.11.0"
+    implementation "org.flywaydb:flyway-mysql:9.11.0"
 
     implementation "org.jsoup:jsoup:1.15.3"
 
-    implementation 'io.sentry:sentry-spring-boot-starter:6.4.1'
-    implementation 'io.sentry:sentry-logback:6.4.1'
+    implementation 'io.sentry:sentry-spring-boot-starter:6.11.0'
+    implementation 'io.sentry:sentry-logback:6.11.0'
 }
 
 tasks.named('wrapper') {
