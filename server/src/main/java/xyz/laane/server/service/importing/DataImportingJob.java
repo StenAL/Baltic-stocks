@@ -91,6 +91,7 @@ public class DataImportingJob implements ApplicationListener<ApplicationReadyEve
         batchRepository.save(batch);
 
         List<Stock> stocks = BALTIC_MAIN_LIST_ISINS.stream()
+            .parallel()
             .map(stockDataImportingService::fetchData)
             .flatMap(Optional::stream)
             .toList();
