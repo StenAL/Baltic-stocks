@@ -13,7 +13,7 @@ Deployment is automated using GitHub Actions and AWS. The deployed backend is
 containerized using Docker.
 
 ## Development
-To locally run this you need [Java 17](https://adoptium.net/), 
+To locally run this you need [Java](https://adoptium.net/), 
 [NodeJS](https://nodejs.org/en/),
 [Docker + Docker Compose](https://docs.docker.com/get-docker/) or [MariaDB](https://mariadb.org/download/),
 [Gradle](https://gradle.org/install/) (optional).
