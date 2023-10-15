@@ -1,8 +1,8 @@
 plugins {
-    id 'org.springframework.boot' version '3.0.1'
+    id 'org.springframework.boot' version '3.1.4'
     id 'io.spring.dependency-management' version '1.1.0'
     id "com.gorylenko.gradle-git-properties" version "2.4.1"  // Used by Sentry to match errors to specific git commit
-    id "io.freefair.lombok" version "6.6.1"
+    id "io.freefair.lombok" version "8.4" // Lombok 1.18.30
     id 'java'
 }
 
@@ -10,7 +10,7 @@ group = 'xyz.laane'
 version = '1.0.0'
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
 }
 
 repositories {
