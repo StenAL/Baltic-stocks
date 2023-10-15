@@ -30,16 +30,15 @@ public class DataImportingJob implements ApplicationListener<ApplicationReadyEve
         "LT0000102337", // Apranga
         "EE3100034653", // Arco Vara
         "LT0000127466", // AUGA group
-        "EE3100145616", // Baltika
         "EE3100007857", // Coop Pank
         "LV0000101806", // DelfinGroup
         "EE3100016965", // Ekspress Grupp
         "EE3100127242", // EfTEN Real Estate Fund III
         "EE3100137985", // Enefit Green
         "LT0000102030", // Grigeo
-        "EE3100004250", // Harju Elekter
-        "LV0000101590", // HansaMatrix
+        "EE3100004250", // Harju Elekter Group
         "EE3100082306", // Hepsor
+        "LV0000101863", // INDEXO
         "LT0000115768", // Ignitis grupė
         "LT0000111650", // Klaipėdos nafta
         "EE3100102203", // LHV Group
