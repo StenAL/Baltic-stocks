@@ -38,6 +38,15 @@ jobs:
           name: server
           path: server/build
 
+      - name: build and publish server Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: server
+          file: server/docker/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: false
+          tags: stenal/baltic-stock-server:latest
+
   publish:
     needs: build
     if: github.ref == 'refs/heads/main'
