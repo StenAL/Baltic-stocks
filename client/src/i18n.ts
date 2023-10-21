@@ -111,7 +111,8 @@ const resources: Record<string, { translation: Translation }> = {
 };
 
 // https://github.com/i18next/react-i18next/blob/master/example/react/src/i18n.js
-i18n.use(LanguageDetector)
+await i18n
+    .use(LanguageDetector)
     .use(initReactI18next)
     .init({
         resources,

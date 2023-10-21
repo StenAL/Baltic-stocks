@@ -1,9 +1,9 @@
 {
     "compilerOptions": {
         "noEmit": true, // emitting the bundle is handled by react-scripts
-        "target": "ES2021",
+        "target": "ES2022",
         "module": "ES2022",
-        "lib": ["ES2021", "dom"],
+        "lib": ["ES2022", "DOM"],
         "strict": true,
         "forceConsistentCasingInFileNames": true,
         "moduleResolution": "node",
