@@ -100,7 +100,7 @@ export const reducer: Reducer<AppState, Action> = (state, action) => {
                     (s) =>
                         s[columnTitle as keyof Stock] ||
                         s.keyStats[columnTitle] ||
-                        getDisplayedFinancialData(s, state.selectedYear)?.[columnTitle]
+                        getDisplayedFinancialData(s, state.selectedYear)?.[columnTitle],
                 ) // don't sort stocks where sorting attribute is not available
                 .sort((a, b) => compareStocksByAttribute(a, b, columnTitle, state.selectedYear));
             sortedStocks = [
@@ -108,7 +108,7 @@ export const reducer: Reducer<AppState, Action> = (state, action) => {
                     (s) =>
                         !s[columnTitle as keyof Stock] &&
                         !s.keyStats[columnTitle] &&
-                        !getDisplayedFinancialData(s, state.selectedYear)?.[columnTitle]
+                        !getDisplayedFinancialData(s, state.selectedYear)?.[columnTitle],
                 ),
                 ...sortedStocks,
             ]; // add stocks where sorting attribute is "undefined" to beginning of sorted sequence
@@ -120,7 +120,7 @@ export const reducer: Reducer<AppState, Action> = (state, action) => {
                           ...stock,
                           visible: !stock.visible,
                       }
-                    : stock
+                    : stock,
             );
             return { ...state, stocks: invertedVisibilityStocks };
         case ActionType.TOGGLE_COUNTRY_STOCKS:
@@ -130,7 +130,7 @@ export const reducer: Reducer<AppState, Action> = (state, action) => {
                           ...s,
                           visible: action.visible,
                       }
-                    : s
+                    : s,
             );
             return { ...state, stocks: toggledCountryStocks };
         case ActionType.TOGGLE_COLUMN_VISIBILITY:
@@ -140,7 +140,7 @@ export const reducer: Reducer<AppState, Action> = (state, action) => {
                           ...col,
                           visible: !col.visible,
                       }
-                    : col
+                    : col,
             );
             return { ...state, columns: newColumns };
         case ActionType.SELECT_YEAR:

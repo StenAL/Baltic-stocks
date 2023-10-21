@@ -21,7 +21,7 @@ export const StockTableHead: FunctionComponent<StockTableHeadProps> = ({ titles,
             }
             return className;
         },
-        [sortingBy, sortingOrder]
+        [sortingBy, sortingOrder],
     );
 
     const generateTableHeaders = useCallback((): JSX.Element[] => {

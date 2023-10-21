@@ -31,7 +31,7 @@ export const FiltersContainer: FunctionComponent<FilterersContainerProps> = ({
             columns
                 .filter((col) => !YEARLY_FINANCIAL_DATA_IDS.includes(col.title))
                 .map((col) => <ColumnFilter column={col} key={col.title} />),
-        [columns]
+        [columns],
     );
 
     const financialDataFilters = useMemo(
@@ -39,7 +39,7 @@ export const FiltersContainer: FunctionComponent<FilterersContainerProps> = ({
             columns
                 .filter((col) => YEARLY_FINANCIAL_DATA_IDS.includes(col.title))
                 .map((col) => <ColumnFilter column={col} key={col.title} />),
-        [columns]
+        [columns],
     );
 
     const countryFilters = useMemo(
@@ -51,7 +51,7 @@ export const FiltersContainer: FunctionComponent<FilterersContainerProps> = ({
                     countryCode={countryCode}
                 />
             )),
-        [stocks]
+        [stocks],
     );
 
     const stockFilters = useMemo((): JSX.Element[] => {
@@ -62,7 +62,7 @@ export const FiltersContainer: FunctionComponent<FilterersContainerProps> = ({
     const yearFilters = useMemo(
         (): JSX.Element[] =>
             years.map((year) => <YearFilter year={year} key={year} selected={year === selectedYear} />),
-        [years, selectedYear]
+        [years, selectedYear],
     );
 
     return (

@@ -113,7 +113,7 @@ export const App: FunctionComponent = () => {
     useEffect(() => {
         const fetchData = async () => {
             const data: { stocks?: Stock[]; timeFetched?: string; index?: IndexType } = await fetch(
-                `${API_URL}/stocks`
+                `${API_URL}/stocks`,
             ).then((res) => res.json());
             dispatch({
                 type: ActionType.FETCH_DATA,
@@ -168,7 +168,7 @@ export const App: FunctionComponent = () => {
                 freeCashFlow: fd?.freeCashFlow,
             };
         },
-        [state.selectedYear]
+        [state.selectedYear],
     );
 
     const visibleStocksData = state.stocks.filter((s) => s.visible).map((s) => getStockDisplayedData(s));
