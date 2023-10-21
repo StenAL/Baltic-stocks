@@ -31,7 +31,7 @@ export const StockTable: FunctionComponent<StockTableProps> = ({
                     key={`stock_${s.isin}`}
                 />
             )),
-        [stocks, renderedColumns]
+        [stocks, renderedColumns],
     );
     return (
         <div>

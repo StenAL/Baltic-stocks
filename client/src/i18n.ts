@@ -128,6 +128,6 @@ await i18n
 // https://react.i18next.com/latest/typescript
 declare module "i18next" {
     interface CustomTypeOptions {
-        resources: typeof resources["en"];
+        resources: (typeof resources)["en"];
     }
 }

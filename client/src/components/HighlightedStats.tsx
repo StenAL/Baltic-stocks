@@ -31,7 +31,7 @@ export const HighlightedStats: FunctionComponent<HighlightedStatsProps> = ({ sto
     const getIndexInvestmentChange = useCallback(
         (initialMoney: number): string =>
             index ? ((index.changePercent / 100 + 1) * initialMoney).toFixed(2).toString() : "XXXX.XX",
-        [index]
+        [index],
     );
 
     return (
