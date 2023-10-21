@@ -2,7 +2,7 @@ name: "baltic-stocks-dev"
 
 services:
   db:
-    image: mariadb:10.6
+    image: mariadb:10.11
     volumes:
       - db-data:/var/lib/mysql
     container_name: baltic-stocks-mariadb-dev
