@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+
+    <!-- without this, logback adds its own status to logs (https://stackoverflow.com/questions/3257154/how-to-prevent-logback-from-outputting-its-own-status-at-the-start-of-every-log) -->
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+
+    <appender name="SENTRY" class="io.sentry.logback.SentryAppender" />
+
+    <root level="info">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="SENTRY" />
+    </root>
+</configuration>
