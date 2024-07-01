@@ -8,7 +8,7 @@ import "./style/App.css";
 import { ActionType, DispatchContextProvider, reducer } from "./Reducer";
 import { Column, ColumnId, FinancialData, IndexType, RenderedData, Stock } from "./types";
 
-export const DEFAULT_DATA_YEAR = 2022;
+export const DEFAULT_DATA_YEAR = 2023;
 const COLUMN_IDS: ColumnId[] = [
     "ticker",
     "name",
