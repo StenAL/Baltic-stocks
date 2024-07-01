@@ -27,6 +27,7 @@ public class DataImportingJob implements ApplicationListener<ApplicationReadyEve
     public static final int FETCH_FREQUENCY_DAYS = 1;
     private static final String BALTIC_GENERAL_INDEX_TICKER = "OMXBGI";
     private static final List<String> BALTIC_MAIN_LIST_ISINS = List.of(
+        "LT0000128092", // Akola Group
         "LT0000102337", // Apranga
         "EE3100034653", // Arco Vara
         "LT0000127466", // AUGA group
@@ -35,14 +36,14 @@ public class DataImportingJob implements ApplicationListener<ApplicationReadyEve
         "EE3100016965", // Ekspress Grupp
         "EE3100127242", // EfTEN Real Estate Fund III
         "EE3100137985", // Enefit Green
-        "LT0000102030", // Grigeo
+        "LT0000102030", // Grigeo Group
         "EE3100004250", // Harju Elekter Group
         "EE3100082306", // Hepsor
         "LV0000101863", // INDEXO
         "LT0000115768", // Ignitis grupė
-        "LT0000111650", // Klaipėdos nafta
+        "EE3100149394", // Infortar
+        "LT0000111650", // KN Energies
         "EE3100102203", // LHV Group
-        "LT0000128092", // Linas Agro Group
         "EE3100098328", // Merko Ehitus
         "EE3100039496", // Nordecon
         "LT0000131872", // Novaturas
@@ -56,7 +57,7 @@ public class DataImportingJob implements ApplicationListener<ApplicationReadyEve
         "EE3100001751", // Silvano Fashion Group
         "EE3100004466", // Tallink Grupp
         "LT0000123911", // Telia Lietuva
-        "EE0000001105", // Tallinna Kaubamaja Grupp
+        "EE0000001105", // TKM Grupp
         "EE3100021635", // Tallinna Sadam
         "EE3100026436", // Tallinna Vesi
         "LT0000127508" // Vilkyškių pieninė
