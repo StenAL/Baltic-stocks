@@ -139,33 +139,10 @@ export const App: FunctionComponent = () => {
 
     const getStockDisplayedData = useCallback(
         (stock: Stock): RenderedData => {
-            const fd = getDisplayedFinancialData(stock, state.selectedYear);
             return {
-                name: stock.name,
-                ticker: stock.ticker,
-                isin: stock.isin,
-                priceEarningTtm: stock.keyStats.priceEarningTtm,
-                priceBook: stock.keyStats.priceBook,
-                priceSalesTtm: stock.keyStats.priceSalesTtm,
-                revenueGrowthThreeYearAvg: stock.keyStats.revenueGrowthThreeYearAvg,
-                operatingMarginTtm: stock.keyStats.operatingMarginTtm,
-                netMarginTtm: stock.keyStats.netMarginTtm,
-                roeTtm: stock.keyStats.roeTtm,
-                debtEquity: stock.keyStats.debtEquity,
-                revenue: fd?.revenue,
-                operatingIncome: fd?.operatingIncome,
-                netIncome: fd?.netIncome,
-                earningsPerShare: fd?.earningsPerShare,
-                dilutedSharesOutstanding: fd?.dilutedSharesOutstanding,
-                currentAssets: fd?.currentAssets,
-                nonCurrentAssets: fd?.nonCurrentAssets,
-                totalAssets: fd?.totalAssets,
-                currentLiabilities: fd?.currentLiabilities,
-                totalLiabilities: fd?.totalLiabilities,
-                totalEquity: fd?.totalEquity,
-                operatingCashFlow: fd?.operatingCashFlow,
-                capitalExpenditure: fd?.capitalExpenditure,
-                freeCashFlow: fd?.freeCashFlow,
+                ...stock,
+                ...stock.keyStats,
+                ...getDisplayedFinancialData(stock, state.selectedYear),
             };
         },
         [state.selectedYear],

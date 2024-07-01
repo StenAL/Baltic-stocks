@@ -1,6 +1,6 @@
 import { createContext, Dispatch, Reducer, useContext } from "react";
 import { AppState, getDisplayedFinancialData, YEARLY_FINANCIAL_DATA_IDS } from "./App";
-import { Column, ColumnId, CountryCode, IndexType, Stock } from "./types";
+import { Column, ColumnId, CountryCode, FinancialData, IndexType, KeyStats, Stock } from "./types";
 
 export enum ActionType {
     FETCH_DATA = "FETCH_DATA",
@@ -58,17 +58,35 @@ interface SelectYearAction extends ActionBase {
 
 const compareStocksByAttribute = (a: Stock, b: Stock, attribute: ColumnId, year: number): number => {
     if (attribute in a.keyStats && attribute in b.keyStats) {
-        return a.keyStats[attribute] - b.keyStats[attribute];
+        const keyStatsAttribute = attribute as keyof KeyStats & ColumnId;
+        return a.keyStats[keyStatsAttribute] - b.keyStats[keyStatsAttribute];
+    } else if (attribute in a.keyStats) {
+        return 1;
+    } else if (attribute in b.keyStats) {
+        return -1;
     }
+
     const aFinancialData = getDisplayedFinancialData(a, year);
     const bFinancialData = getDisplayedFinancialData(b, year);
     if (aFinancialData && bFinancialData && attribute in aFinancialData && attribute in bFinancialData) {
-        return aFinancialData[attribute] - bFinancialData[attribute];
+        const financialDataAttribute = attribute as keyof FinancialData & ColumnId;
+        return aFinancialData[financialDataAttribute] - bFinancialData[financialDataAttribute];
+    } else if (aFinancialData && attribute in aFinancialData) {
+        return 1;
+    } else if (bFinancialData && attribute in bFinancialData) {
+        return -1;
     }
 
     // Attribute is not in KeyStats or FinancialData so it must be a key of Stock included in the table
-    const narrowedAttribute = attribute as "ticker" | "name" | "isin";
-    return a[narrowedAttribute].localeCompare(b[narrowedAttribute]);
+    if (attribute in a && attribute in b) {
+        const stockAttribute = attribute as keyof Stock & ColumnId;
+        return a[stockAttribute].localeCompare(b[stockAttribute]);
+    } else if (attribute in a) {
+        return 1;
+    } else if (attribute in b) {
+        return -1;
+    }
+    return 0;
 };
 
 export const reducer: Reducer<AppState, Action> = (state, action) => {
@@ -95,23 +113,9 @@ export const reducer: Reducer<AppState, Action> = (state, action) => {
                 newStocks.reverse();
                 return { ...state, stocks: newStocks, sortingOrder: state.sortingOrder === "desc" ? "asc" : "desc" };
             }
-            let sortedStocks: Stock[] = newStocks
-                .filter(
-                    (s) =>
-                        s[columnTitle as keyof Stock] ||
-                        s.keyStats[columnTitle] ||
-                        getDisplayedFinancialData(s, state.selectedYear)?.[columnTitle],
-                ) // don't sort stocks where sorting attribute is not available
-                .sort((a, b) => compareStocksByAttribute(a, b, columnTitle, state.selectedYear));
-            sortedStocks = [
-                ...state.stocks.filter(
-                    (s) =>
-                        !s[columnTitle as keyof Stock] &&
-                        !s.keyStats[columnTitle] &&
-                        !getDisplayedFinancialData(s, state.selectedYear)?.[columnTitle],
-                ),
-                ...sortedStocks,
-            ]; // add stocks where sorting attribute is "undefined" to beginning of sorted sequence
+            let sortedStocks: Stock[] = newStocks.sort((a, b) =>
+                compareStocksByAttribute(a, b, columnTitle, state.selectedYear),
+            );
             return { ...state, stocks: sortedStocks, sortingStocksBy: columnTitle, sortingOrder: "desc" };
         case ActionType.INVERT_STOCK_VISIBILITY:
             const invertedVisibilityStocks: Stock[] = state.stocks.map((stock) =>
