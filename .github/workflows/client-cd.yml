@@ -24,12 +24,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout current repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: set up Node.js 18.x
-        uses: actions/setup-node@v3
+      - name: set up Node.js LTS
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: npm install
         run: npm ci
@@ -49,12 +49,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout current repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: set up Node.js 18.x
-        uses: actions/setup-node@v3
+      - name: set up Node.js LTS
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '20'
 
       - name: npm install
         working-directory: ./client
@@ -67,7 +67,7 @@ jobs:
         run: npm run build
 
       - name: deploy assets to server
-        uses: appleboy/scp-action@v0.1.3
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}

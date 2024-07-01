@@ -2,7 +2,7 @@ name: "baltic-stocks-dev"
 
 services:
   db:
-    image: mariadb:10.11
+    image: mariadb:11.4
     volumes:
       - db-data:/var/lib/mysql
     container_name: baltic-stocks-mariadb-dev
@@ -13,6 +13,6 @@ services:
       MYSQL_PASSWORD: admin
     ports:
       - "13306:3306"
-    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    command: ['mariadbd', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 volumes:
   db-data: {}
