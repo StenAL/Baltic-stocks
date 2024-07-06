@@ -1,0 +1,78 @@
+---
+
+- name: deploy backend
+  hosts: all
+  tasks:
+    - name: apt update && apt upgrade
+      become: true
+      apt:
+        update_cache: yes
+        upgrade: yes
+
+    - name: download Docker apt repository key
+      become: true
+      ansible.builtin.get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /etc/apt/keyrings/docker.asc
+
+    - name: add Docker apt repository
+      become: true
+      ansible.builtin.apt_repository:
+        repo: deb [{% if ansible_architecture == "aarch64" %}arch=arm64{% endif %} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        state: present
+        filename: docker
+
+    - name: install Docker
+      become: true
+      apt:
+        pkg:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+        - docker-buildx-plugin
+        - docker-compose-plugin
+
+    - name: create deployment directory
+      become: true
+      ansible.builtin.file:
+        path: /usr/local/share/baltic-stocks
+        state: directory
+        mode: '0755'
+
+    - name: deploy docker-compose.yml
+      become: true
+      copy:
+        src: ../server/docker/prod/docker-compose.yml
+        dest: /usr/local/share/baltic-stocks/docker-compose.yml
+
+    - name: create baltic-stocks service user
+      become: true
+      ansible.builtin.user:
+        name: baltic-stocks
+        group: docker
+
+    - name: deploy systemd service
+      become: true
+      copy:
+          src: baltic-stocks.service
+          dest: /etc/systemd/system/baltic-stocks.service
+      register: service_deploy_result
+
+    - name: reload systemd daemon if necessary
+      become: true
+      ansible.builtin.systemd_service:
+        daemon_reload: true
+      when: service_deploy_result.changed
+
+
+    - name: docker compose pull
+      command:
+        cmd: "docker compose -f /usr/local/share/baltic-stocks/docker-compose.yml pull"
+
+    # missing manual step: deploy .env file to same directory as docker-compose
+    - name: enable and run systemd service
+      become: true
+      ansible.builtin.systemd_service:
+        name: baltic-stocks.service
+        enabled: true
+        state: restarted
