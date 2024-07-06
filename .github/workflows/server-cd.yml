@@ -46,6 +46,11 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
+      - name: set up WARP (workaround for IPv6 on GitHub Actions)
+        uses: fscarmen/warp-on-actions@v1.1
+        with:
+          stack: ipv6
+
       - name: checkout current repository
         uses: actions/checkout@v4
 
@@ -73,24 +78,18 @@ jobs:
           push: true
           tags: stenal/baltic-stock-server:latest
 
-      - name: deploy production docker-compose.yml
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          source: "server/docker/prod/docker-compose.yml"
-          target: "~"
-          strip_components: 3
+      - name: setup SSH for Ansible
+        shell: bash
+        run: |
+          eval `ssh-agent -s`
+          mkdir -p /home/runner/.ssh/
+          touch /home/runner/.ssh/id_rsa
+          echo -e "${{secrets.SSH_KEY}}" > /home/runner/.ssh/id_rsa
+          chmod 700 /home/runner/.ssh/id_rsa
+          ssh-keyscan -t rsa,dsa,ecdsa,ed25519 ${{ secrets.SSH_HOST }} >> /home/runner/.ssh/known_hosts
 
-      - name: Deploy published images
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: |
-            docker compose pull
-            docker compose up -d
+      - name: run Ansible deployment playbook
+        working-directory: ./ansible
+        shell: bash
+        run: |
+          ansible-playbook -vv --private-key /home/runner/.ssh/id_rsa -u ${{secrets.SSH_USER}} -i ${{ secrets.SSH_HOST }}, backend.yml
