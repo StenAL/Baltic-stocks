@@ -48,6 +48,11 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
+      - name: set up WARP (workaround for IPv6 on GitHub Actions)
+        uses: fscarmen/warp-on-actions@v1.1
+        with:
+          stack: ipv6
+
       - name: checkout current repository
         uses: actions/checkout@v4
 
@@ -66,13 +71,19 @@ jobs:
         working-directory: ./client
         run: npm run build
 
-      - name: deploy assets to server
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          source: "client/build/**"
-          target: "/var/www/stonks"
-          strip_components: 2
+      - name: setup SSH for Ansible
+        shell: bash
+        run: |
+          eval `ssh-agent -s`
+          mkdir -p /home/runner/.ssh/
+          touch /home/runner/.ssh/id_rsa
+          echo -e "${{secrets.SSH_KEY}}" > /home/runner/.ssh/id_rsa
+          chmod 700 /home/runner/.ssh/id_rsa
+          ssh-keyscan -t rsa,dsa,ecdsa,ed25519 ${{ secrets.SSH_HOST }} >> /home/runner/.ssh/known_hosts
+
+      - name: run Ansible deployment playbook
+        shell: bash
+        working-directory: ./ansible
+        run: |
+          ansible-playbook -vv --private-key /home/runner/.ssh/id_rsa -u ${{secrets.SSH_USER}} -i ${{ secrets.SSH_HOST }}, frontend.yml
+
