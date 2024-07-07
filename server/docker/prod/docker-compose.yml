@@ -1,5 +1,9 @@
 name: "baltic-stocks-prod"
 
+networks:
+  ip6net:
+    enable_ipv6: true
+
 services:
   db:
     image: mariadb:10.6
@@ -17,7 +21,11 @@ services:
   server:
     image: stenal/baltic-stock-server
     container_name: baltic-stocks-server
+    networks:
+      - ip6net
+      - default
     environment:
+      _JAVA_OPTIONS: '-Djava.net.preferIPv6Addresses=true'
       DB_DATABASE: ${DB_DATABASE}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
