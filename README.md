@@ -8,7 +8,7 @@ https://laane.xyz/stonks
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE.md) 
 
 ## Tools
-Baltic Stocks uses Java and MariaDB for its backend and a React and TypeScript for frontend.
+Baltic Stocks uses Java and MariaDB for its backend and React and TypeScript for the frontend.
 Deployment is automated using GitHub Actions and AWS. The deployed backend is
 containerized using Docker.
 
@@ -20,7 +20,7 @@ To locally run this you need [Java](https://adoptium.net/),
 
 ### Backend
 The following instructions use `server` as their root directory
-1. Run `docker-compose up` in `docker/dev/docker-compose.yml` to start a preconfigured
+1. Run `docker compose up` in `docker/dev/docker-compose.yml` to start a preconfigured
  database in a Docker container. Alternatively set up the database manually using MariaDB.
 2. Insert sample data to DB from `data` directory `.sql` files
 3. Start the backend using `gradle bootRun` (local Gradle installation) 
@@ -35,7 +35,7 @@ The following instructions use `client` as their root directory
 
 ## Contributing and Issues
 Contributions are always welcome. Anyone can open issues and
- pull requests on [GitHub](https://github.com/StenAL/baltic-stocks) 
+pull requests on [GitHub](https://github.com/StenAL/baltic-stocks) 
 
 ## License
 This project is licensed under the [MIT license](https://github.com/StenAL/baltic-stocks/blob/master/LICENSE)
