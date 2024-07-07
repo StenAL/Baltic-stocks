@@ -1,0 +1,89 @@
+---
+
+- name: deploy frontend
+  hosts: all
+  tasks:
+    - name: apt update && apt upgrade
+      become: true
+      apt:
+        update_cache: yes
+        upgrade: yes
+
+    - name: install dependencies
+      become: true
+      apt:
+        pkg:
+          - curl
+          - gnupg2
+          - ca-certificates
+          - ubuntu-keyring
+          - rsync
+
+    - name: download Nginx apt repository key
+      become: true
+      ansible.builtin.get_url:
+        url: https://nginx.org/keys/nginx_signing.key
+        dest: /etc/apt/keyrings/nginx.asc
+
+    - name: add Nginx apt repository
+      become: true
+      ansible.builtin.apt_repository:
+        repo: deb [{% if ansible_architecture == "aarch64" %}arch=arm64{% endif %} signed-by=/etc/apt/keyrings/nginx.asc] https://nginx.org/packages/mainline/ubuntu {{ ansible_distribution_release }} stable
+        state: present
+        filename: nginx-test
+
+    - name: increase Nginx repository priority
+      become: true
+      ansible.builtin.copy:
+        dest: /etc/apt/preferences.d/99nginx
+        content: |
+          Package: *
+          Pin: origin nginx.org
+          Pin: release o=nginx
+          Pin-Priority: 900
+
+    - name: install Nginx
+      become: true
+      apt:
+        pkg:
+          - nginx
+
+    - name: deploy frontend files
+      ansible.posix.synchronize:
+        src: ../client/build/
+        dest: /var/www/stonks
+
+    - name: deploy Nginx conf fragments
+      copy:
+        src: '{{item}}'
+        dest: '/etc/nginx/conf.d/'
+      loop:
+        - baltic-stocks-upstream.conf
+        - baltic-stocks-location.conf
+      tags: this
+
+
+    - name: include upstream block in nginx.conf
+      become: true
+      lineinfile:
+        path: /etc/nginx/nginx.conf
+        search_string: "include /etc/nginx/conf.d/baltic-stocks-upstream.conf;"
+        insertafter: "http {"
+        line: "    include /etc/nginx/conf.d/baltic-stocks-upstream.conf;"
+      tags: this
+
+    - name: include location block in nginx.conf
+      become: true
+      lineinfile:
+        path: /etc/nginx/nginx.conf
+        search_string: "include /etc/nginx/conf.d/baltic-stocks-location.conf;"
+        insertafter: 'listen\s*\[::\]:443 ssl default_server;'
+        line: "        include /etc/nginx/conf.d/baltic-stocks-location.conf;"
+      tags: this
+
+    - name: enable and run Nginx
+      become: true
+      ansible.builtin.systemd_service:
+        name: nginx.service
+        enabled: true
+        state: reloaded
