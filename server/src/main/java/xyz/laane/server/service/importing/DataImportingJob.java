@@ -76,7 +76,11 @@ public class DataImportingJob implements ApplicationListener<ApplicationReadyEve
         LocalDateTime lastFetch = batchRepository.findTopByOrderByTimestampDesc().getTimestamp();
         if (lastFetch.isBefore(LocalDateTime.now().minusDays(DataImportingJob.FETCH_FREQUENCY_DAYS))) {
             log.info("Current stock data is older than {} days. Fetching new data.", DataImportingJob.FETCH_FREQUENCY_DAYS);
-            updateAllStocks();
+            try {
+                updateAllStocks();
+            } catch (Exception e) {
+                log.error("Failed to update stocks: {}", e.getMessage(), e);
+            }
         } else {
             log.debug("Current stock data is fresh. Not fetching new data");
         }
