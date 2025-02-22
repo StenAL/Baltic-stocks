@@ -3,23 +3,24 @@ package xyz.laane.server.domain;
 import lombok.Getter;
 
 import java.util.Arrays;
+import java.util.Set;
 
 @Getter
 public enum Exchange {
-    TALLINN("EX$$$$XTAL", "EE"),
-    RIGA("EX$$$$XRIS", "LV"),
-    VILNIUS("EX$$$$XLIT", "LT");
+    TALLINN("EX$$$$XTAL", Set.of("EE")),
+    RIGA("EX$$$$XRIS", Set.of("LV", "LU")),
+    VILNIUS("EX$$$$XLIT", Set.of("LT"));
 
     private final String exchangeCode;
-    private final String isinPrefix;
-    Exchange(String exchangeCode, String isinPrefix) {
+    private final Set<String> isinPrefixes;
+    Exchange(String exchangeCode, Set<String> isinPrefixes) {
         this.exchangeCode = exchangeCode;
-        this.isinPrefix = isinPrefix;
+        this.isinPrefixes = isinPrefixes;
     }
 
     public static Exchange findByPrefix(String prefix) {
         return Arrays.stream(Exchange.values())
-            .filter(exchange -> exchange.getIsinPrefix().equals(prefix))
+            .filter(exchange -> exchange.getIsinPrefixes().contains(prefix))
             .findFirst()
             .orElseThrow(() -> new IllegalArgumentException("No exchange found with prefix " + prefix));
     }
