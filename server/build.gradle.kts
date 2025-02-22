@@ -5,7 +5,6 @@ plugins {
     java
     id("org.springframework.boot") version "3.3.1"
     id("io.spring.dependency-management") version "1.1.5"
-    id("com.gorylenko.gradle-git-properties") version "2.4.2"  // Used by Sentry to match errors to specific git commit
     id("io.freefair.lombok") version "8.6" // Lombok 1.18.30
 }
 
@@ -26,9 +25,6 @@ dependencies {
     implementation("org.flywaydb:flyway-mysql:10.15.0")
 
     implementation("org.jsoup:jsoup:1.17.2")
-
-    implementation("io.sentry:sentry-spring-boot-starter-jakarta:6.32.0")
-    implementation("io.sentry:sentry-logback:6.32.0")
 }
 
 tasks.wrapper {
