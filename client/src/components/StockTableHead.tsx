@@ -1,4 +1,4 @@
-import { FunctionComponent, useCallback } from "react";
+import { FunctionComponent, useCallback, type JSX } from "react";
 import { useTranslation } from "react-i18next";
 import { ActionType, useDispatchContext } from "../Reducer";
 import "../style/StockTableHead.css";

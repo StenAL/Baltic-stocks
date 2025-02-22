@@ -29,7 +29,7 @@ jobs:
       - name: set up Node.js LTS
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: npm install
         run: npm ci
@@ -49,9 +49,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: set up WARP (workaround for IPv6 on GitHub Actions)
-        uses: fscarmen/warp-on-actions@v1.1
+        uses: fscarmen/warp-on-actions@v1.3
         with:
           stack: ipv6
+          mode: client
 
       - name: checkout current repository
         uses: actions/checkout@v4
@@ -59,7 +60,7 @@ jobs:
       - name: set up Node.js LTS
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: npm install
         working-directory: ./client

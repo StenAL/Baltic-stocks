@@ -1,4 +1,4 @@
-import { FunctionComponent, useMemo } from "react";
+import { FunctionComponent, useMemo, type JSX } from "react";
 import { ColumnId, RenderedData } from "../types";
 import { StockTableHead } from "./StockTableHead";
 import { StockTableRow } from "./StockTableRow";
