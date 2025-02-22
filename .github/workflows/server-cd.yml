@@ -28,11 +28,8 @@ jobs:
           distribution: 'temurin'
 
       - name: build application jar
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          gradle-version: wrapper
-          arguments: build
-          build-root-directory: server
+        working-directory: server
+        run: ./gradlew build
 
       - name: create server artifact from jar
         if: github.ref == 'refs/heads/main'
@@ -47,9 +44,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: set up WARP (workaround for IPv6 on GitHub Actions)
-        uses: fscarmen/warp-on-actions@v1.1
+        uses: fscarmen/warp-on-actions@v1.3
         with:
           stack: ipv6
+          mode: client
 
       - name: checkout current repository
         uses: actions/checkout@v4
