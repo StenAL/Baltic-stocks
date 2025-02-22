@@ -1,5 +1,6 @@
 package xyz.laane.server.service.importing;
 
+import xyz.laane.server.dto.ImportingRequest;
 import xyz.laane.server.util.StringParserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,15 +25,16 @@ public class StockDataImportingService {
     private static final int ISIN_PREFIX_LENGTH = 2;
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yy");
 
-    public Optional<Stock> fetchData(String isin) {
-        log.debug("Fetching data for stock ISIN '{}'", isin);
-        String url = generateApiUrl(isin);
+    public Optional<Stock> fetchData(ImportingRequest importingRequest) {
+        log.debug("Fetching data for request '{}'", importingRequest);
+        String url = generateApiUrl(importingRequest.isin());
+        log.info("Url: {}", url);
         Document doc;
         try {
             doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36")
                 .timeout(120 * 1000).get();
         } catch (IOException e) {
-            log.error("Failed to connect to data API for ISIN {}", isin, e);
+            log.error("Failed to connect to data API for ISIN {}", importingRequest.isin(), e);
             return Optional.empty();
         }
 
@@ -55,20 +57,10 @@ public class StockDataImportingService {
             }
             List<Dividend> dividends = convertHtmlToDividends(dividendsTable);
 
-            Element stockName = doc.selectFirst(".securityName");
-            if (stockName == null) {
-                throw new RuntimeException("Could not fetch stock: no matching CSS selector for '.securityName'");
-            }
-
-            Element ticker = doc.selectFirst(".securitySymbol");
-            if (ticker == null) {
-                throw new RuntimeException("Could not fetch stock: no matching CSS selector for '.securityName'");
-            }
-
             Stock stock = Stock.builder()
-                .name(stockName.text())
-                .ticker(ticker.text())
-                .isin(isin)
+                .name(importingRequest.name())
+                .ticker(importingRequest.ticker())
+                .isin(importingRequest.isin())
                 .financialData(financialData)
                 .keyStats(keyStats)
                 .dividends(dividends)
@@ -78,7 +70,7 @@ public class StockDataImportingService {
             log.info("Imported {}", stock);
             return Optional.of(stock);
         } catch (Exception e) {
-            log.error("Failed fetching stock data for ISIN {}", isin, e);
+            log.error("Failed fetching stock data for ISIN {}", importingRequest.isin(), e);
         }
         return Optional.empty();
     }
