@@ -4,8 +4,8 @@ version = "1.0.0"
 plugins {
     java
     id("org.springframework.boot") version "3.4.3"
-    id("io.spring.dependency-management") version "1.1.5"
-    id("io.freefair.lombok") version "8.6" // Lombok 1.18.30
+    id("io.spring.dependency-management") version "1.1.7"
+    id("io.freefair.lombok") version "8.12.1" // Lombok 1.18.36
 }
 
 java {
@@ -24,7 +24,7 @@ dependencies {
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-mysql")
 
-    implementation("org.jsoup:jsoup:1.17.2")
+    implementation("org.jsoup:jsoup:1.18.3")
 }
 
 tasks.wrapper {
