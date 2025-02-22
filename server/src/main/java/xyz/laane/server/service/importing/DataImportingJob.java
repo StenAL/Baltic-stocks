@@ -5,6 +5,7 @@ import org.springframework.context.ApplicationListener;
 import xyz.laane.server.domain.Batch;
 import xyz.laane.server.domain.Index;
 import xyz.laane.server.domain.Stock;
+import xyz.laane.server.dto.ImportingRequest;
 import xyz.laane.server.repository.BatchRepository;
 import xyz.laane.server.repository.IndexRepository;
 import xyz.laane.server.repository.StockRepository;
@@ -26,41 +27,41 @@ import java.util.Optional;
 public class DataImportingJob implements ApplicationListener<ApplicationReadyEvent> {
     public static final int FETCH_FREQUENCY_DAYS = 1;
     private static final String BALTIC_GENERAL_INDEX_TICKER = "OMXBGI";
-    private static final List<String> BALTIC_MAIN_LIST_ISINS = List.of(
-        "LT0000128092", // Akola Group
-        "LT0000102337", // Apranga
-        "EE3100034653", // Arco Vara
-        "LT0000127466", // AUGA group
-        "EE3100007857", // Coop Pank
-        "LV0000101806", // DelfinGroup
-        "EE3100016965", // Ekspress Grupp
-        "EE3100127242", // EfTEN Real Estate Fund III
-        "EE3100137985", // Enefit Green
-        "LT0000102030", // Grigeo Group
-        "EE3100004250", // Harju Elekter Group
-        "EE3100082306", // Hepsor
-        "LV0000101863", // INDEXO
-        "LT0000115768", // Ignitis grupė
-        "EE3100149394", // Infortar
-        "LT0000111650", // KN Energies
-        "EE3100102203", // LHV Group
-        "EE3100098328", // Merko Ehitus
-        "EE3100039496", // Nordecon
-        "LT0000131872", // Novaturas
-        "EE3100006040", // Pro Kapital Grupp
-        "EE3100101031", // PRFoods
-        "LT0000101446", // Panevėžio statybos trestas
-        "LT0000111676", // Pieno žvaigždės
-        "LT0000100372", // Rokiškio sūris
-        "LT0000102253", // Šiaulių bankas
-        "LV0000101129", // SAF Tehnika
-        "EE3100001751", // Silvano Fashion Group
-        "EE3100004466", // Tallink Grupp
-        "LT0000123911", // Telia Lietuva
-        "EE0000001105", // TKM Grupp
-        "EE3100021635", // Tallinna Sadam
-        "EE3100026436", // Tallinna Vesi
-        "LT0000127508" // Vilkyškių pieninė
+    private static final List<ImportingRequest> BALTIC_MAIN_LIST_DATA = List.of(
+            new ImportingRequest("LT0000128092", "AKO1L", "Akola Group"),
+        new ImportingRequest("LT0000102337", "APG1L", "Apranga"),
+        new ImportingRequest("EE3100034653", "ARC1T", "Arco Vara"),
+        new ImportingRequest("LT0000127466", "AUG1L", "AUGA group"),
+        new ImportingRequest("EE3100007857", "CPA1T", "Coop Pank"),
+        new ImportingRequest("LV0000101806", "DGR1R", "DelfinGroup"),
+        new ImportingRequest("EE3100016965", "EEG1T", "Ekspress Grupp"),
+        new ImportingRequest("EE3100127242", "EFT1T", "EfTEN Real Estate Fund III"),
+        new ImportingRequest("EE3100137985", "EGR1T", "Enefit Green"),
+        new ImportingRequest("LT0000102030", "GRG1L", "Grigeo Group"),
+        new ImportingRequest("EE3100004250", "HAE1T", "Harju Elekter Group"),
+        new ImportingRequest("EE3100082306", "HPR1T", "Hepsor"),
+        new ImportingRequest("LV0000101863", "IDX1R", "INDEXO"),
+        new ImportingRequest("LT0000115768", "IGN1L", "Ignitis grupė"),
+        new ImportingRequest("EE3100149394", "INF1T", "Infortar"),
+        new ImportingRequest("LT0000111650", "KNE1L", "KN Energies"),
+        new ImportingRequest("EE3100102203", "LHV1T", "LHV Group"),
+        new ImportingRequest("EE3100098328", "MRK1T", "Merko Ehitus"),
+        new ImportingRequest("EE3100039496", "NCN1T", "Nordecon"),
+        new ImportingRequest("LT0000131872", "NTU1L", "Novaturas"),
+        new ImportingRequest("EE3100006040", "PKG1T", "Pro Kapital Grupp"),
+        new ImportingRequest("EE3100101031", "PRF1T", "PRFoods"),
+        new ImportingRequest("LT0000101446", "PTR1L", "Panevėžio statybos trestas"),
+        new ImportingRequest("LT0000111676", "PZV1L", "Pieno žvaigždės"),
+        new ImportingRequest("LT0000100372", "RSU1L", "Rokiškio sūris"),
+        new ImportingRequest("LT0000102253", "SAB1L", "Šiaulių bankas"),
+        new ImportingRequest("LV0000101129", "SAF1R", "SAF Tehnika"),
+        new ImportingRequest("EE3100001751", "SFG1T", "Silvano Fashion Group"),
+        new ImportingRequest("EE3100004466", "TAL1T", "Tallink Grupp"),
+        new ImportingRequest("LT0000123911", "TEL1L", "Telia Lietuva"),
+        new ImportingRequest("EE0000001105", "TKM1T", "TKM Grupp"),
+        new ImportingRequest("EE3100021635", "TSM1T", "Tallinna Sadam"),
+        new ImportingRequest("EE3100026436", "TVE1T", "Tallinna Vesi"),
+        new ImportingRequest("LT0000127508", "VLP1L", "Vilkyškių pieninė")
     );
 
     private final StockRepository stockRepository;
@@ -94,14 +95,14 @@ public class DataImportingJob implements ApplicationListener<ApplicationReadyEve
             .build();
         batchRepository.save(batch);
 
-        List<Stock> stocks = BALTIC_MAIN_LIST_ISINS.stream()
+        List<Stock> stocks = BALTIC_MAIN_LIST_DATA.stream()
             .parallel()
             .map(stockDataImportingService::fetchData)
             .flatMap(Optional::stream)
             .toList();
         stocks.forEach(s -> s.setBatch(batch));
         stockRepository.saveAll(stocks);
-        log.info("Imported {} stocks", BALTIC_MAIN_LIST_ISINS.size());
+        log.info("Imported {} stocks", BALTIC_MAIN_LIST_DATA.size());
 
         Index index = indexDataImportingService.fetchData(BALTIC_GENERAL_INDEX_TICKER);
         index.setBatch(batch);
