@@ -1,4 +1,4 @@
-import { FunctionComponent, useMemo } from "react";
+import { FunctionComponent, useMemo, type JSX } from "react";
 import "../../style/FiltersContainer.css";
 import { useTranslation } from "react-i18next";
 import { YEARLY_FINANCIAL_DATA_IDS } from "../../App";

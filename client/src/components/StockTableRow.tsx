@@ -18,7 +18,7 @@ export const StockTableRow: FunctionComponent<StockTableRowProps> = ({
         return typeof initialValue === "number" ? initialValue.toFixed(2).toString() : initialValue;
     }, []);
 
-    const cells = useMemo((): JSX.Element[] => {
+    const cells = useMemo((): React.JSX.Element[] => {
         return renderedColumns
             .map((columnId) => [columnId, stockDisplayValue[columnId]])
             .map(([columnId, columnValue]) => [columnId, getCellDisplayValue(columnValue)])
