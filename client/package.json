@@ -31,8 +31,8 @@
         "eject": "react-scripts eject",
         "lint": "eslint \"src/**/*.{ts,tsx}\"",
         "lint:fix": "eslint --fix \"src/**/*.{ts,tsx}\"",
-        "format": "prettier -c ./**/*.{js,json,ts,tsx,css,html}",
-        "format:fix": "prettier -w ./**/*.{js,json,ts,tsx,css,html}"
+        "format": "prettier -c './**/*.{js,json,ts,tsx,css,html}'",
+        "format:fix": "prettier -w './**/*.{js,json,ts,tsx,css,html}'"
     },
     "eslintConfig": {
         "extends": "react-app"
