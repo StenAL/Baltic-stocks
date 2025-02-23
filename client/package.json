@@ -1,7 +1,6 @@
 {
     "name": "baltic-stocks-client",
     "version": "1.0.0",
-    "homepage": "/stonks",
     "private": true,
     "dependencies": {
         "flag-icons": "^7.3.2",
@@ -14,39 +13,16 @@
     "devDependencies": {
         "@types/react": "^19.0.10",
         "@types/react-dom": "^19.0.4",
+        "@vitejs/plugin-react": "^4.3.4",
         "prettier": "^3.5.2",
-        "react-scripts": "^5.0.1",
-        "typescript": "~5.7.3"
-    },
-    "overrides": {
-        "react-scripts": {
-            "typescript": "^5"
-        }
+        "typescript": "~5.7.3",
+        "vite": "^6.1.0"
     },
     "scripts": {
-        "start": "react-scripts start",
+        "start": "vite",
         "compile": "tsc",
-        "build": "react-scripts build",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject",
-        "lint": "eslint \"src/**/*.{ts,tsx}\"",
-        "lint:fix": "eslint --fix \"src/**/*.{ts,tsx}\"",
+        "build": "vite build",
         "format": "prettier -c '../**/*.{js,json,ts,tsx,css,html,md}'",
         "format:fix": "prettier -w '../**/*.{js,json,ts,tsx,css,html,md}'"
-    },
-    "eslintConfig": {
-        "extends": "react-app"
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
     }
 }

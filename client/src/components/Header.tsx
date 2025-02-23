@@ -12,7 +12,7 @@ export const Header: FunctionComponent = () => {
             ) : (
                 <LanguageSelector languageCode={"en"} countryCode={"gb"} />
             )}
-            <img src={process.env.PUBLIC_URL + "/logo.png"} className="logo" alt="Logo" />
+            <img src={import.meta.env.BASE_URL + "/logo.png"} className="logo" alt="Logo" />
             <h1>{t("title")}</h1>
             <h2>{t("tagline")}</h2>
         </header>

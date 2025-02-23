@@ -1,15 +1,16 @@
 {
     "compilerOptions": {
-        "noEmit": true, // emitting the bundle is handled by react-scripts
-        "target": "ES2022",
+        "noEmit": true, // emitting the bundle is handled by vite
+        "target": "ES2024",
         "module": "ES2022",
-        "lib": ["ES2022", "DOM"],
+        "lib": ["ES2024", "DOM"],
         "strict": true,
         "forceConsistentCasingInFileNames": true,
         "moduleResolution": "node",
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "jsx": "react-jsx"
+        "jsx": "react-jsx",
+        "types": ["vite/client"]
     },
     "include": ["src"]
 }
