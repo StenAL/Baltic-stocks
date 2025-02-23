@@ -5,7 +5,6 @@ plugins {
     java
     id("org.springframework.boot") version "3.4.3"
     id("io.spring.dependency-management") version "1.1.7"
-    id("io.freefair.lombok") version "8.12.1" // Lombok 1.18.36
 }
 
 java {
@@ -23,6 +22,9 @@ dependencies {
     implementation("org.mariadb.jdbc:mariadb-java-client")
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-mysql")
+
+    compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
 
     implementation("org.jsoup:jsoup:1.18.3")
 }
