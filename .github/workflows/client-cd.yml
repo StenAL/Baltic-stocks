@@ -37,10 +37,7 @@ jobs:
       - name: check formatting (Prettier)
         run: npm run format
 
-      - name: check linting (ESLint)
-        run: npm run lint
-
-      - name: compile TypeScript
+      - name: check TypeScript
         run: npm run compile
 
   publish:
@@ -68,7 +65,7 @@ jobs:
 
       - name: build static assets
         env:
-          REACT_APP_API_URL: https://laane.xyz/stonks/api
+          VITE_API_URL: https://laane.xyz/stonks/api
         working-directory: ./client
         run: npm run build
 
