@@ -1,12 +1,11 @@
 package xyz.laane.server.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.*;
 
 @Data
 @Builder
@@ -14,7 +13,8 @@ import jakarta.persistence.Id;
 @NoArgsConstructor
 @Entity
 public class KeyStats {
-    @Id @JsonIgnore
+    @Id
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
