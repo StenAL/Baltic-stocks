@@ -1,9 +1,10 @@
 package xyz.laane.server.service.importing;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import xyz.laane.server.dto.ImportingRequest;
 import xyz.laane.server.util.StringParserUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -17,13 +18,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class StockDataImportingService {
 
     private static final String API_BASE_URL = "https://lt.morningstar.com/gj8uge2g9k/stockreport/default.aspx";
     private static final int ISIN_PREFIX_LENGTH = 2;
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yy");
+    private final Logger log = LoggerFactory.getLogger(StockDataImportingService.class);
 
     public Optional<Stock> fetchData(ImportingRequest importingRequest) {
         log.debug("Fetching data for request '{}'", importingRequest);

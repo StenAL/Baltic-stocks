@@ -1,5 +1,6 @@
 package xyz.laane.server.rest;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
 import xyz.laane.server.domain.Batch;
 import xyz.laane.server.domain.Index;
@@ -10,10 +11,10 @@ import xyz.laane.server.repository.IndexRepository;
 import xyz.laane.server.repository.StockRepository;
 import xyz.laane.server.service.importing.DataImportingJob;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -30,6 +31,7 @@ public class ServerController {
     private final BatchRepository batchRepository;
     private final DataImportingJob dataImportingJob;
     private final CacheManager cacheManager;
+    private final Logger log = LoggerFactory.getLogger(ServerController.class);
 
     @GetMapping("/stocks")
     @Cacheable("data")
