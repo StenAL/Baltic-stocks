@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -48,7 +47,7 @@ public class ServerController {
             return new DataResponse(stocks, timeFetched, null);
         }
 
-        return new DataResponse(stocks, timeFetched, indexes.get(0));
+        return new DataResponse(stocks, timeFetched, indexes.getFirst());
     }
 
     @PostMapping("/importAll")

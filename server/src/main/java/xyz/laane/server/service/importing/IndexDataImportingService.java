@@ -33,13 +33,13 @@ public class IndexDataImportingService {
     }
 
     private Index convertDtoToIndex(IndexDTO dto) {
-        IndexDTO.IndexData.Chart chart = dto.getData().getCharts().get(0);
+        IndexDTO.Chart chart = dto.data().charts().getFirst();
         Index index = Index.builder()
-            .start(dto.getData().getStart())
-            .end(dto.getData().getEnd())
-            .ticker(chart.getTicker())
-            .name(chart.getFullName())
-            .changePercent(chart.getChangePercent())
+            .start(dto.data().start())
+            .end(dto.data().end())
+            .ticker(chart.ticker())
+            .name(chart.fullName())
+            .changePercent(chart.changePercent())
             .build();
         log.info("Imported {}", index);
         return index;

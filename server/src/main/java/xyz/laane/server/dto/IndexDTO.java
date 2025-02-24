@@ -7,54 +7,54 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-public class IndexDTO {
-    private IndexData data;
-    private String status;
+public record IndexDTO(
+        IndexData data,
+        String status
+) {
+    public record IndexData(
+            LocalDate start,
+            LocalDate end,
+            @JsonProperty("start_local")
+            String startLocal,
+            @JsonProperty("end_local")
+            String endLocal,
+            @JsonProperty("chart_type")
+            String chartType,
+            @JsonProperty("download_url")
+            String downloadUrl,
+            List<Chart> charts
+    ) {
+    }
 
-    @Data
-    public static class IndexData {
-        private LocalDate start;
-        private LocalDate end;
-        @JsonProperty("start_local")
-        private String startLocal;
-        @JsonProperty("end_local")
-        private String endLocal;
-        @JsonProperty("chart_type")
-        private String chartType;
-        @JsonProperty("download_url")
-        private String downloadUrl;
-
-        private List<Chart> charts;
-
-        @Data
-        public static class Chart {
+    public record Chart(
             @JsonProperty("id")
-            private String ticker;
+            String ticker,
             @JsonProperty("shortname")
-            private String shortName;
+            String shortName,
             @JsonProperty("fullname")
-            private String fullName;
+            String fullName,
 
             @JsonProperty("first_value")
-            private double firstValue;
+            double firstValue,
             @JsonProperty("last_value")
-            private double lastValue;
+            double lastValue,
 
             @JsonProperty("change")
-            private double changePercent;
+            double changePercent,
 
-            private LocalDate start;
-            private LocalDate end;
+            LocalDate start,
+            LocalDate end,
             @JsonProperty("start_local")
-            private String startLocal;
+            String startLocal,
             @JsonProperty("end_local")
-            private String endLocal;
+            String endLocal,
             @JsonProperty("chart_type")
-            private String chartType;
-            private String type;
-            private int decimals;
-        }
+            String chartType,
+            String type,
+            int decimals
+    ) {
     }
+
 }
+
+
