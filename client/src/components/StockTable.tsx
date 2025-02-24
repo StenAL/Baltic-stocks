@@ -1,4 +1,4 @@
-import { FunctionComponent, useMemo, type JSX } from "react";
+import { FunctionComponent, useMemo, ReactElement } from "react";
 import { ColumnId, RenderedData } from "../types";
 import { StockTableHead } from "./StockTableHead";
 import { StockTableRow } from "./StockTableRow";
@@ -22,7 +22,7 @@ export const StockTable: FunctionComponent<StockTableProps> = ({
 }) => {
     const { t } = useTranslation();
     const tableRows = useMemo(
-        (): JSX.Element[] =>
+        (): ReactElement[] =>
             stocks.map((s, i) => (
                 <StockTableRow
                     renderedColumns={renderedColumns}

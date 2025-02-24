@@ -1,4 +1,4 @@
-import { FunctionComponent, useCallback, useMemo } from "react";
+import { FunctionComponent, ReactElement, useCallback, useMemo } from "react";
 import "../style/StockTableRow.css";
 import { ColumnId, RenderedData } from "../types";
 
@@ -18,7 +18,7 @@ export const StockTableRow: FunctionComponent<StockTableRowProps> = ({
         return typeof initialValue === "number" ? initialValue.toFixed(2).toString() : initialValue;
     }, []);
 
-    const cells = useMemo((): React.JSX.Element[] => {
+    const cells = useMemo((): ReactElement[] => {
         return renderedColumns
             .map((columnId) => [columnId, stockDisplayValue[columnId]])
             .map(([columnId, columnValue]) => [columnId, getCellDisplayValue(columnValue)])

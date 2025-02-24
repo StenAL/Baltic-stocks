@@ -1,4 +1,4 @@
-import { FunctionComponent, useMemo, type JSX } from "react";
+import { FunctionComponent, useMemo, ReactElement } from "react";
 import "../../style/FiltersContainer.css";
 import { useTranslation } from "react-i18next";
 import { YEARLY_FINANCIAL_DATA_IDS } from "../../App";
@@ -27,7 +27,7 @@ export const FiltersContainer: FunctionComponent<FilterersContainerProps> = ({
     const { t } = useTranslation();
 
     const keyStatsFilters = useMemo(
-        (): JSX.Element[] =>
+        (): ReactElement[] =>
             columns
                 .filter((col) => !YEARLY_FINANCIAL_DATA_IDS.includes(col.title))
                 .map((col) => <ColumnFilter column={col} key={col.title} />),
@@ -35,7 +35,7 @@ export const FiltersContainer: FunctionComponent<FilterersContainerProps> = ({
     );
 
     const financialDataFilters = useMemo(
-        (): JSX.Element[] =>
+        (): ReactElement[] =>
             columns
                 .filter((col) => YEARLY_FINANCIAL_DATA_IDS.includes(col.title))
                 .map((col) => <ColumnFilter column={col} key={col.title} />),
@@ -43,7 +43,7 @@ export const FiltersContainer: FunctionComponent<FilterersContainerProps> = ({
     );
 
     const countryFilters = useMemo(
-        (): JSX.Element[] =>
+        (): ReactElement[] =>
             COUNTRY_CODES.map((countryCode) => (
                 <CountryFilter
                     stocks={stocks.filter((s) => s.isin.startsWith(countryCode))}
@@ -54,13 +54,13 @@ export const FiltersContainer: FunctionComponent<FilterersContainerProps> = ({
         [stocks],
     );
 
-    const stockFilters = useMemo((): JSX.Element[] => {
+    const stockFilters = useMemo((): ReactElement[] => {
         const sortedStocks = stocks.slice().sort((a, b) => a.name.localeCompare(b.name));
         return sortedStocks.map((stock) => <StockFilter stock={stock} key={stock.name} />);
     }, [stocks]);
 
     const yearFilters = useMemo(
-        (): JSX.Element[] =>
+        (): ReactElement[] =>
             years.map((year) => <YearFilter year={year} key={year} selected={year === selectedYear} />),
         [years, selectedYear],
     );
