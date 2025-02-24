@@ -5,6 +5,7 @@ plugins {
     java
     id("org.springframework.boot") version "3.4.3"
     id("io.spring.dependency-management") version "1.1.7"
+    id("com.diffplug.spotless") version "7.0.2"
 }
 
 java {
@@ -28,6 +29,17 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
 
     implementation("org.jsoup:jsoup:1.18.3")
+}
+
+spotless {
+    java {
+        palantirJavaFormat()
+        importOrder()
+        removeUnusedImports()
+        formatAnnotations()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
 }
 
 tasks.wrapper {
