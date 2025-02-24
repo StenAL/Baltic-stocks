@@ -3,9 +3,7 @@ package xyz.laane.server.util;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
-import lombok.experimental.UtilityClass;
 
-@UtilityClass
 public class StringParserUtil {
 
     public static Optional<Integer> parseIntegerIfPresent(String value) {
@@ -20,7 +18,7 @@ public class StringParserUtil {
         return value.equals("t.b.c.") ? Optional.empty() : Optional.of(LocalDate.parse(value, formatter));
     }
 
-    private String standardizeNumber(String number) {
+    private static String standardizeNumber(String number) {
         return number.replace(",", "");
     }
 }
