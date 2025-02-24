@@ -1,4 +1,4 @@
-import { FunctionComponent, useCallback, type JSX } from "react";
+import { FunctionComponent, useCallback, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { ActionType, useDispatchContext } from "../Reducer";
 import "../style/StockTableHead.css";
@@ -24,7 +24,7 @@ export const StockTableHead: FunctionComponent<StockTableHeadProps> = ({ titles,
         [sortingBy, sortingOrder],
     );
 
-    const generateTableHeaders = useCallback((): JSX.Element[] => {
+    const generateTableHeaders = useCallback((): ReactElement[] => {
         return titles.map((title) => (
             <th
                 className={getHeaderClassName(title)}

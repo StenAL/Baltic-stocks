@@ -6,10 +6,10 @@
         "lib": ["ES2024", "DOM"],
         "strict": true,
         "forceConsistentCasingInFileNames": true,
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "jsx": "react-jsx",
+        "jsx": "preserve",
         "types": ["vite/client"]
     },
     "include": ["src"]
