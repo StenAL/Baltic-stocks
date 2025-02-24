@@ -159,7 +159,7 @@ export const reducer: Reducer<AppState, Action> = (state, action) => {
     return state;
 };
 
-const DispatchContext = createContext<Dispatch<Action> | undefined>(undefined);
+export const DispatchContext = createContext<Dispatch<Action> | undefined>(undefined);
 
 export const useDispatchContext: () => Dispatch<Action> = () => {
     const context = useContext(DispatchContext);
@@ -168,5 +168,3 @@ export const useDispatchContext: () => Dispatch<Action> = () => {
     }
     return context;
 };
-
-export const DispatchContextProvider = DispatchContext.Provider;

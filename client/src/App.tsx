@@ -5,7 +5,7 @@ import { Header } from "./components/Header";
 import { HighlightedStats } from "./components/HighlightedStats";
 import { StockTable } from "./components/StockTable";
 import "./style/App.css";
-import { ActionType, DispatchContextProvider, reducer } from "./Reducer";
+import { ActionType, DispatchContext, reducer } from "./Reducer";
 import { Column, ColumnId, FinancialData, IndexType, RenderedData, Stock } from "./types";
 
 export const DEFAULT_DATA_YEAR = 2024;
@@ -152,7 +152,7 @@ export const App: FunctionComponent = () => {
     const visibleColumns = state.columns.filter((c) => c.visible).map((c) => c.title);
     const tickerSortedStocks = state.stocks.slice().sort((a, b) => a.ticker.localeCompare(b.ticker));
     return (
-        <DispatchContextProvider value={dispatch}>
+        <DispatchContext value={dispatch}>
             <div className="App">
                 <Header />
                 <HighlightedStats stocks={state.stocks} index={state.index} />
@@ -171,6 +171,6 @@ export const App: FunctionComponent = () => {
                 />
                 <Footer />
             </div>
-        </DispatchContextProvider>
+        </DispatchContext>
     );
 };
