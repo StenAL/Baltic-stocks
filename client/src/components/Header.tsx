@@ -7,6 +7,7 @@ export const Header: FunctionComponent = () => {
     const { t, i18n } = useTranslation();
     return (
         <header>
+            <title>{t("title")}</title>
             {i18n.language.substring(0, 2) === "en" ? (
                 <LanguageSelector languageCode={"et"} countryCode={"ee"} />
             ) : (
