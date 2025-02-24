@@ -1,10 +1,9 @@
 package xyz.laane.server.util;
 
-import lombok.experimental.UtilityClass;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class StringParserUtil {

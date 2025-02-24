@@ -1,10 +1,9 @@
 package xyz.laane.server.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
-
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import lombok.*;
 
 @Data
 @Builder
@@ -12,11 +11,14 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Entity
 public class Dividend {
-    @Id @JsonIgnore
+    @Id
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
-    @ToString.Exclude @JsonIgnore
+    @ToString.Exclude
+    @JsonIgnore
     private Stock stock;
 
     private LocalDate declaredDate;

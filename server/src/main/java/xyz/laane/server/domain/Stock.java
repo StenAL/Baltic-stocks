@@ -1,13 +1,12 @@
 package xyz.laane.server.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import jakarta.persistence.*;
-import java.util.List;
 
 @Data
 @Builder
@@ -25,8 +24,10 @@ public class Stock {
 
     @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
     private List<FinancialData> financialData;
+
     @OneToOne(cascade = CascadeType.ALL)
     private KeyStats keyStats;
+
     @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
     private List<Dividend> dividends;
 
