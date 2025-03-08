@@ -41,6 +41,10 @@ spotless {
         trimTrailingWhitespace()
         endWithNewline()
     }
+
+    kotlinGradle {
+        ktlint()
+    }
 }
 
 tasks.wrapper {
