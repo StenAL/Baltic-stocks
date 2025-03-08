@@ -24,7 +24,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-cache")
 
     implementation("org.mariadb.jdbc:mariadb-java-client")
-    implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-mysql")
 
     compileOnly("org.projectlombok:lombok")
