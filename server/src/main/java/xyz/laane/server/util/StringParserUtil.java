@@ -2,16 +2,18 @@ package xyz.laane.server.util;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 public class StringParserUtil {
+    private static List<String> EMPTY_VALUES = List.of("-", "∞");
 
     public static Optional<Integer> parseIntegerIfPresent(String value) {
-        return value.equals("-") ? Optional.empty() : Optional.of(Integer.valueOf(standardizeNumber(value)));
+        return EMPTY_VALUES.contains(value) ? Optional.empty() : Optional.of(Integer.valueOf(standardizeNumber(value)));
     }
 
     public static Optional<Double> parseDoubleIfPresent(String value) {
-        return value.equals("-") ? Optional.empty() : Optional.of(Double.valueOf(standardizeNumber(value)));
+        return EMPTY_VALUES.contains(value) ? Optional.empty() : Optional.of(Double.valueOf(standardizeNumber(value)));
     }
 
     public static Optional<LocalDate> parseLocalDateIfPresent(String value, DateTimeFormatter formatter) {
