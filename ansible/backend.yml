@@ -18,7 +18,7 @@
     - name: add Docker apt repository
       become: true
       ansible.builtin.apt_repository:
-        repo: deb [{% if ansible_architecture == "aarch64" %}arch=arm64{% endif %} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        repo: deb [{% if ansible_architecture == "aarch64" %}arch=arm64 {% endif %}signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
         state: present
         filename: docker
 
@@ -31,6 +31,17 @@
         - containerd.io
         - docker-buildx-plugin
         - docker-compose-plugin
+
+    - name: add user to docker group
+      become: true
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: true
+
+    - name: reset ssh connection to propagate group changes
+      ansible.builtin.meta:
+        reset_connection
 
     - name: create deployment directory
       become: true
