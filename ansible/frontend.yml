@@ -28,9 +28,9 @@
     - name: add Nginx apt repository
       become: true
       ansible.builtin.apt_repository:
-        repo: deb [{% if ansible_architecture == "aarch64" %}arch=arm64{% endif %} signed-by=/etc/apt/keyrings/nginx.asc] https://nginx.org/packages/mainline/ubuntu {{ ansible_distribution_release }} stable
+        repo: deb [{% if ansible_architecture == "aarch64" %}arch=arm64 {% endif %}signed-by=/etc/apt/keyrings/nginx.asc] https://nginx.org/packages/ubuntu {{ ansible_distribution_release }} nginx 
         state: present
-        filename: nginx-test
+        filename: nginx
 
     - name: increase Nginx repository priority
       become: true
@@ -49,18 +49,23 @@
           - nginx
 
     - name: deploy frontend files
+      become: true
       ansible.posix.synchronize:
         src: ../client/build/
         dest: /var/www/stonks
 
+    - name: verify Nginx default_server exists
+      shell: "grep -q '443 ssl default_server;' /etc/nginx/nginx.conf"
+      changed_when: false
+
     - name: deploy Nginx conf fragments
+      become: true
       copy:
         src: '{{item}}'
         dest: '/etc/nginx/conf.d/'
       loop:
         - baltic-stocks-upstream.conf
         - baltic-stocks-location.conf
-      tags: this
 
 
     - name: include upstream block in nginx.conf
@@ -70,16 +75,14 @@
         search_string: "include /etc/nginx/conf.d/baltic-stocks-upstream.conf;"
         insertafter: "http {"
         line: "    include /etc/nginx/conf.d/baltic-stocks-upstream.conf;"
-      tags: this
 
     - name: include location block in nginx.conf
       become: true
       lineinfile:
         path: /etc/nginx/nginx.conf
         search_string: "include /etc/nginx/conf.d/baltic-stocks-location.conf;"
-        insertafter: 'listen\s*\[::\]:443 ssl default_server;'
+        insertafter: '443 ssl default_server;'
         line: "        include /etc/nginx/conf.d/baltic-stocks-location.conf;"
-      tags: this
 
     - name: enable and run Nginx
       become: true
