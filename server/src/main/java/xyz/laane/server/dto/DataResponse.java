@@ -8,5 +8,8 @@ import xyz.laane.server.domain.Stock;
 
 public record DataResponse(
         List<Stock> stocks,
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm dd.MM.yyyy") LocalDateTime timeFetched,
+
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm dd.MM.yyyy")
+        LocalDateTime timeFetched,
+
         Index index) {}

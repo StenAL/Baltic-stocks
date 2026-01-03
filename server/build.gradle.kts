@@ -5,12 +5,12 @@ plugins {
     java
     id("org.springframework.boot") version "4.0.1"
     id("io.spring.dependency-management") version "1.1.7"
-    id("com.diffplug.spotless") version "7.0.2"
+    id("com.diffplug.spotless") version "8.1.0"
 }
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 
@@ -33,7 +33,7 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 
-    implementation("org.jsoup:jsoup:1.18.3")
+    implementation("org.jsoup:jsoup:1.22.1")
 }
 
 spotless {
