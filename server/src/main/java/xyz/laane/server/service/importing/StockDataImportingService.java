@@ -109,62 +109,76 @@ public class StockDataImportingService {
             String squareText = rowSquares.size() == 4 ? rowSquares.get(j).text() : "";
             switch (row) {
                 case 0 -> financialData.get(j - 1).setYear(Integer.parseInt(squareText));
-                case 3 -> financialData
-                        .get(j - 1)
-                        .setRevenue(StringParserUtil.parseDoubleIfPresent(squareText)
-                                .orElse(null));
-                case 4 -> financialData
-                        .get(j - 1)
-                        .setOperatingIncome(StringParserUtil.parseDoubleIfPresent(squareText)
-                                .orElse(null));
-                case 5 -> financialData
-                        .get(j - 1)
-                        .setNetIncome(StringParserUtil.parseDoubleIfPresent(squareText)
-                                .orElse(null));
-                case 6 -> financialData
-                        .get(j - 1)
-                        .setEarningsPerShare(StringParserUtil.parseDoubleIfPresent(squareText)
-                                .orElse(null));
-                case 7 -> financialData
-                        .get(j - 1)
-                        .setDilutedSharesOutstanding(StringParserUtil.parseIntegerIfPresent(squareText)
-                                .orElse(null));
-                case 9 -> financialData
-                        .get(j - 1)
-                        .setCurrentAssets(StringParserUtil.parseDoubleIfPresent(squareText)
-                                .orElse(null));
-                case 10 -> financialData
-                        .get(j - 1)
-                        .setNonCurrentAssets(StringParserUtil.parseDoubleIfPresent(squareText)
-                                .orElse(null));
-                case 11 -> financialData
-                        .get(j - 1)
-                        .setTotalAssets(StringParserUtil.parseDoubleIfPresent(squareText)
-                                .orElse(null));
-                case 12 -> financialData
-                        .get(j - 1)
-                        .setCurrentLiabilities(StringParserUtil.parseDoubleIfPresent(squareText)
-                                .orElse(null));
-                case 13 -> financialData
-                        .get(j - 1)
-                        .setTotalLiabilities(StringParserUtil.parseDoubleIfPresent(squareText)
-                                .orElse(null));
-                case 14 -> financialData
-                        .get(j - 1)
-                        .setTotalEquity(StringParserUtil.parseDoubleIfPresent(squareText)
-                                .orElse(null));
-                case 16 -> financialData
-                        .get(j - 1)
-                        .setOperatingCashFlow(StringParserUtil.parseDoubleIfPresent(squareText)
-                                .orElse(null));
-                case 17 -> financialData
-                        .get(j - 1)
-                        .setCapitalExpenditure(StringParserUtil.parseDoubleIfPresent(squareText)
-                                .orElse(null));
-                case 18 -> financialData
-                        .get(j - 1)
-                        .setFreeCashFlow(StringParserUtil.parseDoubleIfPresent(squareText)
-                                .orElse(null));
+                case 3 ->
+                    financialData
+                            .get(j - 1)
+                            .setRevenue(StringParserUtil.parseDoubleIfPresent(squareText)
+                                    .orElse(null));
+                case 4 ->
+                    financialData
+                            .get(j - 1)
+                            .setOperatingIncome(StringParserUtil.parseDoubleIfPresent(squareText)
+                                    .orElse(null));
+                case 5 ->
+                    financialData
+                            .get(j - 1)
+                            .setNetIncome(StringParserUtil.parseDoubleIfPresent(squareText)
+                                    .orElse(null));
+                case 6 ->
+                    financialData
+                            .get(j - 1)
+                            .setEarningsPerShare(StringParserUtil.parseDoubleIfPresent(squareText)
+                                    .orElse(null));
+                case 7 ->
+                    financialData
+                            .get(j - 1)
+                            .setDilutedSharesOutstanding(StringParserUtil.parseIntegerIfPresent(squareText)
+                                    .orElse(null));
+                case 9 ->
+                    financialData
+                            .get(j - 1)
+                            .setCurrentAssets(StringParserUtil.parseDoubleIfPresent(squareText)
+                                    .orElse(null));
+                case 10 ->
+                    financialData
+                            .get(j - 1)
+                            .setNonCurrentAssets(StringParserUtil.parseDoubleIfPresent(squareText)
+                                    .orElse(null));
+                case 11 ->
+                    financialData
+                            .get(j - 1)
+                            .setTotalAssets(StringParserUtil.parseDoubleIfPresent(squareText)
+                                    .orElse(null));
+                case 12 ->
+                    financialData
+                            .get(j - 1)
+                            .setCurrentLiabilities(StringParserUtil.parseDoubleIfPresent(squareText)
+                                    .orElse(null));
+                case 13 ->
+                    financialData
+                            .get(j - 1)
+                            .setTotalLiabilities(StringParserUtil.parseDoubleIfPresent(squareText)
+                                    .orElse(null));
+                case 14 ->
+                    financialData
+                            .get(j - 1)
+                            .setTotalEquity(StringParserUtil.parseDoubleIfPresent(squareText)
+                                    .orElse(null));
+                case 16 ->
+                    financialData
+                            .get(j - 1)
+                            .setOperatingCashFlow(StringParserUtil.parseDoubleIfPresent(squareText)
+                                    .orElse(null));
+                case 17 ->
+                    financialData
+                            .get(j - 1)
+                            .setCapitalExpenditure(StringParserUtil.parseDoubleIfPresent(squareText)
+                                    .orElse(null));
+                case 18 ->
+                    financialData
+                            .get(j - 1)
+                            .setFreeCashFlow(StringParserUtil.parseDoubleIfPresent(squareText)
+                                    .orElse(null));
                 default -> {}
             }
         }
