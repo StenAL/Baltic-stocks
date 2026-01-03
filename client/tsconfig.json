@@ -9,6 +9,7 @@
         "moduleResolution": "bundler",
         "resolveJsonModule": true,
         "isolatedModules": true,
+        "skipLibCheck": true,
         "jsx": "preserve",
         "types": ["vite/client"]
     },
